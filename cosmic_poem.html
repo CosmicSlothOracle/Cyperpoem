@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Surface Tension</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Georgia', serif;
+            color: #e0e0e0;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            perspective: 1px; /* varied scrolling speeds if needed */
+        }
+
+        .poem-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10vh;
+            padding-bottom: 20vh;
+            min-height: 100%;
+        }
+
+        .poem-container {
+            max-width: 800px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3); /* Subtle backdrop */
+            backdrop-filter: blur(2px);
+            border-radius: 20px;
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 60px;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 2rem;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            opacity: 0.9;
+        }
+
+        .stanza {
+            margin-bottom: 50px;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.5px;
+            color: #dcdcdc;
+            transition: color 0.3s ease;
+        }
+
+        .stanza:hover {
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+        }
+
+        .stanza p {
+            margin: 8px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(100, 100, 150, 0.4);
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(150, 150, 200, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="starfield"></canvas>
+    </div>
+
+    <div id="content">
+        <div class="poem-wrapper">
+            <div class="poem-container">
+                <h1>Cosmic Surface Tension</h1>
+
+                <div class="stanza">
+                    <p>In a cosmic lab, opportunity lies, obfuscated yet fine.</p>
+                    <p>See those portals, they exist line by line.</p>
+                    <p>Endless whispers travel through space-time.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>First portal to check:</p>
+                    <p>made out of wood?</p>
+                    <p>An FTP whisper under the hood;</p>
+                    <p>Plaintext and still, yet easy to hear.</p>
+                    <p>Watch lowlife voyeurs gathering near.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>Another portal, catching your drift:</p>
+                    <p>Steel and stern, controlling the rift?</p>
+                    <p>Weak-ass secrets, reused so thin.</p>
+                    <p>I will never get in.</p>
+                    <p>Dangling before me,</p>
+                    <p>secured in a cage,</p>
+                    <p>Three-letter word</p>
+                    <p>taking the stage</p>
+                    <p>S S follows H</p>
+                </div>
+
+                <div class="stanza">
+                    <p>A portal of glass, from a time that passed.</p>
+                    <p>Nostalgia is core:</p>
+                    <p>Diddy eats ass.</p>
+                    <p>it´s90 o´4</p>
+                    <p>Biggy Smalls foreva more</p>
+                    <p>what a time to be alive,</p>
+                    <p>Jeff selling books rolling the dice</p>
+                    <p>Japan revealing a modern device</p>
+                    <p>the world is expannding</p>
+                    <p>a Juicy Fruit Vibe.</p>
+                    <p>It's HTTP! Where´s netscape allright?</p>
+                    <p>I scream, "TLS!"</p>
+                    <p>Nothing to hear.</p>
+                    <p>Plain text is shooting</p>
+                    <p>Out of my rear.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>Time is a vessel, light is a beam.</p>
+                    <p>The world is your oyster,</p>
+                    <p>So fresh and so clean.</p>
+                    <p>No TLS! but a beautiful dream.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>The fourth is hiding, hard to name.</p>
+                    <p>1080 plays a hidden game;</p>
+                    <p>SOCKS or not, the shape is blurred,</p>
+                    <p>An unknown portal could chirp like a bird.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>The fifth, the gate for privileged hands,</p>
+                    <p>Is RDP to distant lands;</p>
+                    <p>Left open to the public sky,</p>
+                    <p>It paints a mark for every eye.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>So think of the cosmos, five portals wide,</p>
+                    <p>Where risk and habit often collide.</p>
+                    <p>But teams that measure, patch, and test</p>
+                    <p>Can close each door and harden best.</p>
+                </div>
+
+                <div class="stanza">
+                    <p>Expand your mind,</p>
+                    <p>The universe will follow.</p>
+                    <p>A glorious portal,</p>
+                    <p>A hole to be filled.</p>
+                    <p>A dicey offer, a peek-a-boo thrill.</p>
+                    <p>Try stuff, start small!</p>
+                    <p>Handwritten on the bathroom stalls wall.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+        const numStars = 1000;
+        const speed = 0.8; // Speed of drifting towards viewer
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Star {
+            constructor() {
+                this.init();
+            }
+
+            init(resetZ = false) {
+                // Spread stars in a 3D volume centered at 0,0
+                // x and y range from -width to width to ensure coverage when z is small
+                this.x = (Math.random() - 0.5) * width * 2;
+                this.y = (Math.random() - 0.5) * height * 2;
+
+                // If resetting, start at back (far away). If init, random depth.
+                this.z = resetZ ? width : Math.random() * width;
+
+                this.size = Math.random() * 2;
+                this.baseOpacity = 0.5 + Math.random() * 0.5;
+            }
+
+            update() {
+                this.z -= speed;
+
+                // When star passes the viewer (z <= 0), reset to back
+                if (this.z <= 0) {
+                    this.init(true);
+                }
+            }
+
+            draw() {
+                // 3D Projection: x' = x / z
+                // We use a field of view factor. Let's say FOV = width / 2?
+                // Standard projection: sx = x * (focalLength / z) + centerX
+
+                // Avoid division by zero or negative z (though we reset at 0)
+                if (this.z <= 0) return;
+
+                const focalLength = width / 1.5;
+                const sx = (this.x / this.z) * focalLength + width / 2;
+                const sy = (this.y / this.z) * focalLength + height / 2;
+
+                // Check bounds to save drawing time
+                if (sx < 0 || sx > width || sy < 0 || sy > height) return;
+
+                // Size increases as it gets closer (z decreases)
+                // Opacity increases as it gets closer
+                const scale = (1 - this.z / width);
+                const r = this.size * (1 + scale * 3);
+
+                // Fade in at the back, fade out really close if needed, but mostly bright close
+                const opacity = this.baseOpacity * scale;
+
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.arc(sx, sy, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Initialize
+        for (let i = 0; i < numStars; i++) {
+            stars.push(new Star());
+        }
+
+        function animate() {
+            // Draw background with slight trail effect or clear
+            // Clear completely for crisp stars
+            // ctx.clearRect(0, 0, width, height);
+
+            // Use dark fill to clear
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw Stars
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
