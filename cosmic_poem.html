@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmic Surface Tension</title>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
@@ -32,7 +34,8 @@
             height: 100%;
             overflow-y: auto;
             scroll-behavior: smooth;
-            perspective: 1px; /* varied scrolling speeds if needed */
+            perspective: 1px;
+            /* varied scrolling speeds if needed */
         }
 
         .poem-wrapper {
@@ -48,7 +51,8 @@
             max-width: 800px;
             padding: 40px;
             text-align: center;
-            background: rgba(0, 0, 0, 0.3); /* Subtle backdrop */
+            background: rgba(0, 0, 0, 0.3);
+            /* Subtle backdrop */
             backdrop-filter: blur(2px);
             border-radius: 20px;
             animation: fadeIn 2s ease-out forwards;
@@ -85,26 +89,37 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 10px;
         }
+
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.2);
         }
+
         ::-webkit-scrollbar-thumb {
             background: rgba(100, 100, 150, 0.4);
             border-radius: 5px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(150, 150, 200, 0.6);
         }
     </style>
 </head>
+
 <body>
     <div id="canvas-container">
         <canvas id="starfield"></canvas>
@@ -269,7 +284,7 @@
                 const opacity = this.baseOpacity * scale;
 
                 ctx.beginPath();
-                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                ctx.fillStyle = `rgba(255, 255, 255, ${ opacity })`;
                 ctx.arc(sx, sy, r, 0, Math.PI * 2);
                 ctx.fill();
             }
@@ -301,4 +316,5 @@
         animate();
     </script>
 </body>
+
 </html>
