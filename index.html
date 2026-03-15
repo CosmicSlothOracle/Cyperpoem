@@ -4,13 +4,599 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Surface Tension</title>
-    <meta http-equiv="refresh" content="0; url=cosmic_poem.html">
-    <link rel="canonical" href="cosmic_poem.html">
+    <title>Cyber Steps Analysis – Part 2</title>
+    <style>
+        :root {
+            --bg-color: #0d0d12;
+            --surface-color: #1a1a24;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+
+            /* Flag Colors */
+            --flag-high: #ef4444;
+            --flag-high-bg: rgba(239, 68, 68, 0.1);
+            --flag-med: #f97316;
+            --flag-med-bg: rgba(249, 115, 22, 0.1);
+            --flag-low: #10b981;
+            --flag-low-bg: rgba(16, 185, 129, 0.1);
+            --flag-unknown: #8b5cf6;
+            --flag-unknown-bg: rgba(139, 92, 246, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #cbd5e1;
+        }
+
+        pre {
+            background: #111118;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            color: #cbd5e1;
+            font-size: 0.9em;
+        }
+
+        /* Layout & Sections */
+        .intro-section {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .intro-section ul {
+            color: var(--text-muted);
+            padding-left: 20px;
+        }
+
+        .intro-section li {
+            margin-bottom: 8px;
+        }
+
+        /* Port Cards */
+        .port-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .port-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .port-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .port-title {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .port-number {
+            font-family: ui-monospace, monospace;
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .port-body {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 32px;
+            padding: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .port-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .port-details h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .port-metric-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        /* Flags */
+        .flags-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .flag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .flag.high {
+            background: var(--flag-high-bg);
+            color: var(--flag-high);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .flag.med {
+            background: var(--flag-med-bg);
+            color: var(--flag-med);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .flag.low {
+            background: var(--flag-low-bg);
+            color: var(--flag-low);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .flag.unknown {
+            background: var(--flag-unknown-bg);
+            color: var(--flag-unknown);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* Poetic Mirror */
+        .poetic-mirror {
+            background: rgba(59, 130, 246, 0.03);
+            border-left: 2px solid var(--accent);
+            padding: 24px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .poetic-mirror-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+
+        .poem-stanza {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+            margin: 0;
+        }
+
+        .poem-stanza p {
+            margin: 4px 0;
+            color: inherit;
+        }
+
+        /* Downloads & Links */
+        .action-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 64px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .download-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            background: var(--accent);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background 0.2s, transform 0.1s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
 
 <body>
-    <p>Redirecting to <a href="cosmic_poem.html">Cosmic Surface Tension</a>…</p>
+
+    <div class="container">
+        <header>
+            <h1>Cyber Steps Analysis – Part 2</h1>
+            <div class="subtitle">Evidence-Based Single-Host Reconnaissance Report. Target: scanme.cybersteps.de</div>
+        </header>
+
+        <section class="intro-section">
+            <h3>Methodology & Discovery</h3>
+            <p><strong>Classification:</strong> Authorized Lab Assessment<br>
+                <strong>Scope:</strong> Single host only (no exploitation, no auth bypass attempts). Covers everything
+                discovered during active + passive reconnaissance.
+            </p>
+
+            <p>Interpretations and assumptions are evidently backed. Risk probability assessments follow a custom
+                symbol-based metric system.</p>
+
+            <h4>Initial Findings</h4>
+            <ul>
+                <li><strong>Passive Recon:</strong> Target identified via <code>subfinder</code> (careerportal,
+                    ai-challenge, chat). DNS TTL of 300 implies DDoS hardening.</li>
+                <li><strong>TCP Sweep:</strong> Primary port scan via <code>naabu</code> (SYN scan, moderate rate)
+                    verified 5 open ports: 21, 22, 80, 1080, 3389.</li>
+                <li><strong>UDP Sweep:</strong> Mostly <code>open|filtered</code> due to no-response. Port 520
+                    definitively closed (ICMP port-unreachable).</li>
+            </ul>
+        </section>
+
+        <h2>Service Enumeration & Analysis</h2>
+        <p>Following the discovery phase, service-aware verification was executed on confirmed open TCP ports using
+            custom async Python probes and deep <code>nmap</code> fingerprinting.</p>
+
+        <!-- PORT 21: FTP -->
+        <section class="port-card">
+            <div class="port-header">
+                <h3 class="port-title">
+                    <span class="port-number">21/tcp</span>
+                    FTP
+                </h3>
+            </div>
+            <div class="port-body">
+                <div class="port-details">
+                    <div class="flags-container">
+                        <span class="flag high">⚑ Exposed</span>
+                        <span class="flag high">⚠ Faulty</span>
+                        <span class="flag high">💤 Outdated</span>
+                    </div>
+
+                    <h4>Metrics</h4>
+                    <div class="port-metric-row">
+                        <span class="metric-badge">Detection: ★★★☆☆</span>
+                        <span class="metric-badge">Risk: ☣︎☣︎☣︎</span>
+                    </div>
+
+                    <h4>Banner / Version</h4>
+                    <p><code>220 ProFTPD 1.2.10</code></p>
+
+                    <h4>Proof & Conclusion</h4>
+                    <pre>"port": 21, "open": true, "banner": "220 ProFTPD 1.2.10"</pre>
+                    <p>Legacy plaintext file transfer exposed to the internet. ProFTPD 1.2.10 is an ancient release
+                        (~2004) with numerous critical vulnerabilities (e.g., CVE-2015-3306). Anonymous login potential
+                        poses a massive breach vector.</p>
+                </div>
+
+                <!-- Poetic Mirror -->
+                <div class="poetic-mirror">
+                    <div class="poetic-mirror-title">Poetic Mirror</div>
+                    <div class="poem-stanza">
+                        <p>First portal to check:</p>
+                        <p>made out of wood?</p>
+                        <p>An FTP whisper under the hood;</p>
+                        <p>Plaintext and still, yet easy to hear.</p>
+                        <p>Watch lowlife voyeurs gathering near.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORT 22: SSH -->
+        <section class="port-card">
+            <div class="port-header">
+                <h3 class="port-title">
+                    <span class="port-number">22/tcp</span>
+                    OpenSSH
+                </h3>
+            </div>
+            <div class="port-body">
+                <div class="port-details">
+                    <div class="flags-container">
+                        <span class="flag low">⚑ Standard</span>
+                        <span class="flag low">⚠ Clear</span>
+                        <span class="flag low">💤 Maintained</span>
+                    </div>
+
+                    <h4>Metrics</h4>
+                    <div class="port-metric-row">
+                        <span class="metric-badge">Detection: ★☆☆☆☆</span>
+                        <span class="metric-badge">Risk: ☣︎</span>
+                    </div>
+
+                    <h4>Banner / Version</h4>
+                    <p><code>SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.13</code></p>
+
+                    <h4>Proof & Conclusion</h4>
+                    <pre>"port": 22, "open": true, "banner": "SSH-2.0-OpenSSH_8.9p1..."</pre>
+                    <p>Secure remote administration. OpenSSH 8.9p1 is a current LTS-maintained version with active
+                        security patching (.13). Standard exposure with low security risk, provided password auth is
+                        disabled.</p>
+                </div>
+
+                <div class="poetic-mirror">
+                    <div class="poetic-mirror-title">Poetic Mirror</div>
+                    <div class="poem-stanza">
+                        <p>Another portal, catching your drift:</p>
+                        <p>Steel and stern, controlling the rift?</p>
+                        <p>Weak-ass secrets, reused so thin.</p>
+                        <p>I will never get in.</p>
+                        <p>Dangling before me, secured in a cage,</p>
+                        <p>Three-letter word taking the stage.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORT 80: HTTP -->
+        <section class="port-card">
+            <div class="port-header">
+                <h3 class="port-title">
+                    <span class="port-number">80/tcp</span>
+                    HTTP (Apache)
+                </h3>
+            </div>
+            <div class="port-body">
+                <div class="port-details">
+                    <div class="flags-container">
+                        <span class="flag high">⚑ No TLS</span>
+                        <span class="flag med">⚠ Version Leak</span>
+                        <span class="flag high">💤 Outdated</span>
+                    </div>
+
+                    <h4>Metrics</h4>
+                    <div class="port-metric-row">
+                        <span class="metric-badge">Detection: ★★☆☆☆</span>
+                        <span class="metric-badge">Risk: ☣︎☣︎</span>
+                    </div>
+
+                    <h4>Banner / Version</h4>
+                    <p><code>Server: Apache/2.4.6</code></p>
+
+                    <h4>Proof & Conclusion</h4>
+                    <pre>HTTP/1.0 500 Internal Server Error
+Server: Apache/2.4.6</pre>
+                    <p>Unencrypted web service exposing outdated software (Apache 2.4.6 from 2013). Returns a 500
+                        Internal Server Error, indicating application misconfiguration or staging environment. Lack of
+                        TLS allows traffic interception.</p>
+                </div>
+
+                <div class="poetic-mirror">
+                    <div class="poetic-mirror-title">Poetic Mirror</div>
+                    <div class="poem-stanza">
+                        <p>A portal of glass, from a time that passed.</p>
+                        <p>Nostalgia is core...</p>
+                        <p>It's HTTP! Where´s netscape allright?</p>
+                        <p>I scream, "TLS!" Nothing to hear.</p>
+                        <p>Plain text is shooting Out of my rear.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORT 1080: SOCKS -->
+        <section class="port-card">
+            <div class="port-header">
+                <h3 class="port-title">
+                    <span class="port-number">1080/tcp</span>
+                    SOCKS5 Proxy
+                </h3>
+            </div>
+            <div class="port-body">
+                <div class="port-details">
+                    <div class="flags-container">
+                        <span class="flag med">⚑ Exposed</span>
+                        <span class="flag unknown">⚠ Auth-Gated</span>
+                        <span class="flag unknown">💤 Unknown</span>
+                    </div>
+
+                    <h4>Metrics</h4>
+                    <div class="port-metric-row">
+                        <span class="metric-badge">Detection: ★★☆☆☆</span>
+                        <span class="metric-badge">Risk: ☣︎☣︎</span>
+                    </div>
+
+                    <h4>Banner / Version</h4>
+                    <p>Auth-gated (Method 0x02 confirmed)</p>
+
+                    <h4>Proof & Conclusion</h4>
+                    <pre>1080/tcp open socks | socks-auth-info: Username and password</pre>
+                    <p>SOCKS5 proxy exposed to the internet. Protocol confirmed via NSE and method 0x02 negotiation.
+                        Requires username/password authentication. If credentials are weak, this acts as a pivot point
+                        for lateral movement.</p>
+                </div>
+
+                <div class="poetic-mirror">
+                    <div class="poetic-mirror-title">Poetic Mirror</div>
+                    <div class="poem-stanza">
+                        <p>The fourth is hiding, hard to name.</p>
+                        <p>1080 plays a hidden game;</p>
+                        <p>SOCKS or not, the shape is blurred,</p>
+                        <p>An unknown portal could chirp like a bird.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORT 3389: RDP -->
+        <section class="port-card">
+            <div class="port-header">
+                <h3 class="port-title">
+                    <span class="port-number">3389/tcp</span>
+                    RDP
+                </h3>
+            </div>
+            <div class="port-body">
+                <div class="port-details">
+                    <div class="flags-container">
+                        <span class="flag high">⚑ Public RDP</span>
+                        <span class="flag high">⚠ No VPN</span>
+                        <span class="flag high">💤 Exposed</span>
+                    </div>
+
+                    <h4>Metrics</h4>
+                    <div class="port-metric-row">
+                        <span class="metric-badge">Detection: ★★★★☆</span>
+                        <span class="metric-badge">Risk: ☣︎☣︎☣︎</span>
+                    </div>
+
+                    <h4>Banner / Version</h4>
+                    <p>ms-wbt-server</p>
+
+                    <h4>Proof & Conclusion</h4>
+                    <pre>"protocol_check":"rdp", "matched":true,
+"raw_response_hex":"030000130ed0000012340002..."</pre>
+                    <p>Remote Desktop Protocol exposed to the public internet. Definitively confirmed via binary
+                        TPKT/X.224-style connection response. Direct GUI access vector; highly susceptible to
+                        brute-force and credential-stuffing attacks. Demands immediate VPN/IP restriction.</p>
+                </div>
+
+                <div class="poetic-mirror">
+                    <div class="poetic-mirror-title">Poetic Mirror</div>
+                    <div class="poem-stanza">
+                        <p>The fifth, the gate for privileged hands,</p>
+                        <p>Is RDP to distant lands;</p>
+                        <p>Left open to the public sky,</p>
+                        <p>It paints a mark for every eye.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Actions -->
+        <div class="action-section">
+            <div class="download-box">
+                <h3>Download Evidence Package</h3>
+                <p style="margin: 0; font-size: 0.9rem;">Raw scan outputs, JSON probes, and full logs.</p>
+            </div>
+            <div style="display: flex; gap: 16px;">
+                <a href="evidence_bundle.zip" class="btn">Download .ZIP</a>
+                <a href="cosmic_poem.html" class="btn btn-outline">Poetic Analysis</a>
+            </div>
+        </div>
+
+    </div>
+
 </body>
 
 </html>
