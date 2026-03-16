@@ -1,0 +1,10 @@
+# Nmap 7.80 scan initiated Thu Mar 12 10:51:11 2026 as: "C:\\Program Files (x86)\\Nmap\\nmap.exe" -Pn -n -p 1080 --script=socks-auth-info,socks-open-proxy,banner --script-timeout 15s -oN output/cybersteps/evidence_1080_socks_nse.txt -oX output/cybersteps/evidence_1080_socks_nse.xml 165.232.131.154
+Nmap scan report for 165.232.131.154
+Host is up (0.17s latency).
+
+PORT     STATE SERVICE
+1080/tcp open  socks
+| socks-auth-info: 
+|_  Username and password
+
+# Nmap done at Thu Mar 12 10:51:28 2026 -- 1 IP address (1 host up) scanned in 16.88 seconds

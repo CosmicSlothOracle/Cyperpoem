@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B52 Recon Metric 2.0 — The Slot Machine Console</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+    :root {
+      --void: #0a0a0f;
+      --glass: rgba(0, 0, 0, 0.6);
+      --frost: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #e0e0e0;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+
+      /* CALL colors */
+      --ignore: #7ee787;
+      --note: #79c0ff;
+      --validate: #e3b341;
+      --triage: #f0883e;
+      --escalate: #ff4444;
+      --panic: #d2a8ff;
+
+      /* Factor colors */
+      --signal-low: #58a6ff;
+      --signal-high: #34d399;
+      --threat-low: #e3b341;
+      --threat-mid: #f0883e;
+      --threat-high: #ff4444;
+      --threat-max: #d2a8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    html {
+      background: var(--void);
+      color: var(--text);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .console {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(88, 166, 255, 0.4);
+      margin-bottom: 0.5rem;
+    }
+
+    .header .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .header .target {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--validate);
+      margin-top: 0.5rem;
+      padding: 0.3rem 0.8rem;
+      background: rgba(227, 179, 65, 0.1);
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    /* Tumbler Section */
+    .tumbler-section {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .section-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .tumblers {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .tumbler {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 0.8rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .tumbler.locked {
+      border-color: rgba(88, 166, 255, 0.5);
+      box-shadow: 0 0 20px rgba(88, 166, 255, 0.15);
+    }
+
+    .tumbler.spinning {
+      animation: spinTumbler 0.1s linear infinite;
+    }
+
+    @keyframes spinTumbler {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-2px);
+      }
+    }
+
+    .tumbler-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .tumbler-value {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      min-height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tumbler-name {
+      font-size: 0.75rem;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .tumbler-detail {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+
+    /* Connector lines */
+    .connectors {
+      display: flex;
+      justify-content: space-around;
+      padding: 0 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .connector {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(180deg, var(--border) 0%, rgba(88, 166, 255, 0.5) 100%);
+    }
+
+    /* Composite Bars */
+    .composites {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .composite {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .composite-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .composite-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    .composite-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .bar-container {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s ease-out;
+      position: relative;
+    }
+
+    .bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .signal-bar {
+      background: linear-gradient(90deg, var(--signal-low) 0%, var(--signal-high) 100%);
+    }
+
+    .threat-low {
+      background: var(--threat-low);
+    }
+
+    .threat-mid {
+      background: var(--threat-mid);
+    }
+
+    .threat-high {
+      background: var(--threat-high);
+    }
+
+    .threat-max {
+      background: var(--threat-max);
+    }
+
+    /* CALL Section */
+    .call-section {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.8) 100%);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .call-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+      }
+    }
+
+    .call-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .call-display {
+      font-size: 3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 40px currentColor;
+      transition: all 0.5s ease;
+    }
+
+    .call-display.ignore {
+      color: var(--ignore);
+    }
+
+    .call-display.note {
+      color: var(--note);
+    }
+
+    .call-display.validate {
+      color: var(--validate);
+    }
+
+    .call-display.triage {
+      color: var(--triage);
+    }
+
+    .call-display.escalate {
+      color: var(--escalate);
+    }
+
+    .call-display.panic {
+      color: var(--panic);
+      animation: panicPulse 0.5s ease-in-out infinite;
+    }
+
+    @keyframes panicPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        text-shadow: 0 0 40px var(--panic);
+      }
+
+      50% {
+        opacity: 0.8;
+        text-shadow: 0 0 60px var(--panic), 0 0 80px var(--panic);
+      }
+    }
+
+    .call-description {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glyph Display */
+    .glyph-section {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    .glyph-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    .glyph {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    /* Port Cards */
+    .ports-section {
+      margin-top: 2rem;
+    }
+
+    .ports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .port-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .port-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(88, 166, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .port-card.active {
+      border-color: rgba(88, 166, 255, 0.5);
+      box-shadow: 0 0 30px rgba(88, 166, 255, 0.1);
+    }
+
+    .port-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .port-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .port-service {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .port-glyph {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      padding: 0.4rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+    }
+
+    .port-call {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .call-badge.ignore {
+      background: rgba(126, 231, 135, 0.2);
+      color: var(--ignore);
+    }
+
+    .call-badge.note {
+      background: rgba(121, 192, 255, 0.2);
+      color: var(--note);
+    }
+
+    .call-badge.validate {
+      background: rgba(227, 179, 65, 0.2);
+      color: var(--validate);
+    }
+
+    .call-badge.triage {
+      background: rgba(240, 136, 62, 0.2);
+      color: var(--triage);
+    }
+
+    .call-badge.escalate {
+      background: rgba(255, 68, 68, 0.2);
+      color: var(--escalate);
+    }
+
+    .call-badge.panic {
+      background: rgba(210, 168, 255, 0.2);
+      color: var(--panic);
+    }
+
+    /* Legend Panel */
+    .legend-panel {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 280px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .legend-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legend-section {
+      margin-bottom: 1rem;
+    }
+
+    .legend-section-title {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .legend-symbol {
+      font-size: 1rem;
+      width: 1.5rem;
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .legend-panel {
+        position: static;
+        width: 100%;
+        transform: none;
+        margin-top: 2rem;
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .tumblers {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .composites {
+        grid-template-columns: 1fr;
+      }
+
+      .call-display {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="starfield"></canvas>
+
+  <div class="console">
+    <!-- Header -->
+    <div class="header">
+      <h1>★ B52 Recon Metric 2.0 ★</h1>
+      <div class="subtitle">The Slot Machine Console — Where Findings Lock Into Place</div>
+      <div class="target">TARGET: scanme.cybersteps.de (165.232.131.154)</div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="tumbler-section">
+      <div class="section-title">The Five Tumblers — Click a Port Card to Lock In</div>
+
+      <div class="tumblers" id="tumblers">
+        <div class="tumbler" data-factor="noise">
+          <div class="tumbler-label">Noise</div>
+          <div class="tumbler-value" id="noise-val">☆☆☆</div>
+          <div class="tumbler-name" id="noise-name">Murmur</div>
+          <div class="tumbler-detail" id="noise-detail">Level 3</div>
+        </div>
+        <div class="tumbler" data-factor="intel">
+          <div class="tumbler-label">Intelligence</div>
+          <div class="tumbler-value" id="intel-val">🔮✨</div>
+          <div class="tumbler-name" id="intel-name">Glimmering</div>
+          <div class="tumbler-detail" id="intel-detail">Level 3</div>
+        </div>
+        <div class="tumbler" data-factor="likely">
+          <div class="tumbler-label">Likelihood</div>
+          <div class="tumbler-value" id="likely-val">◑</div>
+          <div class="tumbler-name" id="likely-name">Dusk</div>
+          <div class="tumbler-detail" id="likely-detail">15–35%</div>
+        </div>
+        <div class="tumbler" data-factor="damage">
+          <div class="tumbler-label">Damage</div>
+          <div class="tumbler-value" id="damage-val">💸💸</div>
+          <div class="tumbler-name" id="damage-name">Stream</div>
+          <div class="tumbler-detail" id="damage-detail">Level 4–5</div>
+        </div>
+        <div class="tumbler" data-factor="confidence">
+          <div class="tumbler-label">Confidence</div>
+          <div class="tumbler-value" id="confidence-val">🎲🎲🎲</div>
+          <div class="tumbler-name" id="confidence-name">Plausible</div>
+          <div class="tumbler-detail" id="confidence-detail">40–60%</div>
+        </div>
+      </div>
+
+      <div class="connectors">
+        <div class="connector"></div>
+        <div class="connector"></div>
+        <div class="connector"></div>
+        <div class="connector"></div>
+        <div class="connector"></div>
+      </div>
+
+      <div class="composites">
+        <div class="composite">
+          <div class="composite-header">
+            <span class="composite-label">📡 Signal (Noise × Intel)</span>
+            <span class="composite-value" id="signal-val">9/25</span>
+          </div>
+          <div class="bar-container">
+            <div class="bar-fill signal-bar" id="signal-bar" style="width: 36%"></div>
+          </div>
+        </div>
+        <div class="composite">
+          <div class="composite-header">
+            <span class="composite-label">⚠️ Threat (Likely × Damage × Conf)</span>
+            <span class="composite-value" id="threat-val">5.5%</span>
+          </div>
+          <div class="bar-container">
+            <div class="bar-fill threat-low" id="threat-bar" style="width: 5.5%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="call-section">
+        <div class="call-label">★ The Slot Machine Lock-In ★</div>
+        <div class="call-display note" id="call-display">NOTE</div>
+        <div class="call-description" id="call-desc">
+          Log it, check later. This finding shows medium signal but low threat.
+          Worth monitoring for pattern analysis.
+        </div>
+      </div>
+
+      <div class="glyph-section">
+        <div class="glyph-label">Compact B52 Glyph</div>
+        <div class="glyph" id="glyph">☆☆☆ 🔮✨ ◑ 💸💸 🎲🎲🎲 → NOTE</div>
+      </div>
+    </div>
+
+    <!-- Port Cards -->
+    <div class="ports-section">
+      <div class="section-title">Calibration Set — Five Ports from Part 2 Analysis</div>
+      <div class="ports-grid" id="ports-grid">
+        <!-- Port cards injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Legend Panel -->
+  <div class="legend-panel">
+    <div class="legend-title">Quick Reference</div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Noise (Visibility)</div>
+      <div class="legend-item"><span class="legend-symbol">☆</span>Ghost (1)</div>
+      <div class="legend-item"><span class="legend-symbol">☆☆</span>Whisper (2)</div>
+      <div class="legend-item"><span class="legend-symbol">☆☆☆</span>Murmur (3)</div>
+      <div class="legend-item"><span class="legend-symbol">☆☆☆☆</span>Siren (4)</div>
+      <div class="legend-item"><span class="legend-symbol">☆☆☆☆☆</span>Beacon (5)</div>
+    </div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Intelligence (Potential)</div>
+      <div class="legend-item"><span class="legend-symbol">⚪</span>Veiled (1)</div>
+      <div class="legend-item"><span class="legend-symbol">🔮</span>Clouded (2)</div>
+      <div class="legend-item"><span class="legend-symbol">🔮✨</span>Glimmering (3)</div>
+      <div class="legend-item"><span class="legend-symbol">🔮✨✨</span>Radiant (4)</div>
+      <div class="legend-item"><span class="legend-symbol">🔮✨✨✨</span>Chosen (5)</div>
+    </div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">Likelihood Bands</div>
+      <div class="legend-item"><span class="legend-symbol">◐</span>Lunar 5–15%</div>
+      <div class="legend-item"><span class="legend-symbol">◑</span>Dusk 15–35%</div>
+      <div class="legend-item"><span class="legend-symbol">◒</span>Twilight 35–55%</div>
+      <div class="legend-item"><span class="legend-symbol">◓</span>Dawn 55–75%</div>
+      <div class="legend-item"><span class="legend-symbol">●</span>Solar 75–90%</div>
+    </div>
+
+    <div class="legend-section">
+      <div class="legend-section-title">CALL Actions</div>
+      <div class="legend-item"><span class="legend-symbol" style="color:var(--ignore)">●</span>IGNORE</div>
+      <div class="legend-item"><span class="legend-symbol" style="color:var(--note)">●</span>NOTE</div>
+      <div class="legend-item"><span class="legend-symbol" style="color:var(--validate)">●</span>VALIDATE</div>
+      <div class="legend-item"><span class="legend-symbol" style="color:var(--triage)">●</span>TRIAGE</div>
+      <div class="legend-item"><span class="legend-symbol" style="color:var(--escalate)">●</span>ESCALATE</div>
+      <div class="legend-item"><span class="legend-symbol" style="color:var(--panic)">●</span>PANIC</div>
+    </div>
+  </div>
+
+  <script>
+    // Port data from Part 2 analysis
+    const ports = [
+      {
+        number: 21,
+        service: 'FTP',
+        version: 'ProFTPD 1.2.10',
+        noise: { level: 4, symbol: '☆☆☆☆', name: 'Siren' },
+        intel: { level: 4, symbol: '🔮✨✨', name: 'Radiant' },
+        likelihood: { band: '◓', name: 'Dawn', range: '55–75%', midpoint: 0.65 },
+        damage: { level: 7, symbol: '💸💸💨', name: 'Torrent' },
+        confidence: { level: 75, symbol: '🎲🎲🎲🎲', name: 'Locked-In' },
+        call: 'TRIAGE'
+      },
+      {
+        number: 22,
+        service: 'SSH',
+        version: 'OpenSSH 8.9p1',
+        noise: { level: 3, symbol: '☆☆☆', name: 'Murmur' },
+        intel: { level: 4, symbol: '🔮✨✨', name: 'Radiant' },
+        likelihood: { band: '◐', name: 'Lunar', range: '5–15%', midpoint: 0.10 },
+        damage: { level: 7, symbol: '💸💸💨', name: 'Torrent' },
+        confidence: { level: 80, symbol: '🎲🎲🎲🎲', name: 'Locked-In' },
+        call: 'NOTE'
+      },
+      {
+        number: 80,
+        service: 'HTTP',
+        version: 'Apache 2.4.6',
+        noise: { level: 2, symbol: '☆☆', name: 'Whisper' },
+        intel: { level: 3, symbol: '🔮✨', name: 'Glimmering' },
+        likelihood: { band: '◒', name: 'Twilight', range: '35–55%', midpoint: 0.45 },
+        damage: { level: 5, symbol: '💸💸', name: 'Stream' },
+        confidence: { level: 85, symbol: '🎲🎲🎲🎲', name: 'Locked-In' },
+        call: 'VALIDATE'
+      },
+      {
+        number: 1080,
+        service: 'SOCKS-like',
+        version: 'Auth-gated',
+        noise: { level: 3, symbol: '☆☆☆', name: 'Murmur' },
+        intel: { level: 3, symbol: '🔮✨', name: 'Glimmering' },
+        likelihood: { band: '◑', name: 'Dusk', range: '15–35%', midpoint: 0.25 },
+        damage: { level: 4, symbol: '💸💸', name: 'Stream' },
+        confidence: { level: 55, symbol: '🎲🎲🎲', name: 'Plausible' },
+        call: 'NOTE'
+      },
+      {
+        number: 3389,
+        service: 'RDP',
+        version: 'ms-wbt-server',
+        noise: { level: 4, symbol: '☆☆☆☆', name: 'Siren' },
+        intel: { level: 4, symbol: '🔮✨✨', name: 'Radiant' },
+        likelihood: { band: '◓', name: 'Dawn', range: '55–75%', midpoint: 0.65 },
+        damage: { level: 8, symbol: '💸💸💨', name: 'Flood' },
+        confidence: { level: 90, symbol: '🎲🎲🎲🎲🎲', name: 'Chosen One' },
+        call: 'ESCALATE'
+      }
+    ];
+
+    // Call descriptions
+    const callDescriptions = {
+      'IGNORE': 'Not worth your time. Signal too low or confidence too shaky to justify cycles.',
+      'NOTE': 'Log for pattern analysis. Medium signal, low threat. May become relevant in cluster.',
+      'VALIDATE': 'Active confirmation needed. Promising but unverified. Safe probing authorized.',
+      'TRIAGE': 'Priority queue. Develop exploitation hypothesis. This has potential.',
+      'ESCALATE': 'Immediate analyst attention. High threat profile confirmed. Alert the team.',
+      'PANIC': 'ALL HANDS. Incident response mode. This is the real deal.'
+    };
+
+    // Damage symbols generator
+    function getDamageSymbol(level) {
+      if (level <= 2) return '💵' + '💵'.repeat(level - 1);
+      if (level <= 5) return '💸'.repeat(Math.floor(level / 2));
+      if (level <= 7) return '💸💸💨';
+      if (level <= 9) return '💸💸💨💨';
+      return '💨💨💨💸💸💸💨💨💨';
+    }
+
+    // Confidence symbols
+    function getConfidenceSymbol(level) {
+      const dice = Math.ceil(level / 20);
+      return '🎲'.repeat(Math.max(1, dice));
+    }
+
+    // Calculate Signal
+    function calculateSignal(noise, intel) {
+      return noise * intel;
+    }
+
+    // Calculate Threat
+    function calculateThreat(likelihood, damage, confidence) {
+      const raw = (likelihood * damage) * (confidence / 100);
+      const max = 0.825 * 10 * 1.0; // max possible
+      return (raw / max) * 100;
+    }
+
+    // Determine CALL
+    function determineCall(signal, threat, confidence) {
+      if (signal < 6 || confidence < 20) return 'IGNORE';
+      if (signal < 10 && threat < 20) return 'NOTE';
+      if (confidence < 60) return 'VALIDATE';
+      if (threat < 50) return 'TRIAGE';
+      if (threat < 75) return 'ESCALATE';
+      return 'PANIC';
+    }
+
+    // Update dashboard with port data
+    function updateDashboard(port) {
+      // Calculate composites
+      const signal = calculateSignal(port.noise.level, port.intel.level);
+      const threat = calculateThreat(port.likelihood.midpoint, port.damage.level, port.confidence.level);
+      const call = determineCall(signal, threat, port.confidence.level);
+
+      // Update tumblers with animation
+      document.querySelectorAll('.tumbler').forEach(t => t.classList.add('spinning'));
+
+      setTimeout(() => {
+        document.getElementById('noise-val').textContent = port.noise.symbol;
+        document.getElementById('noise-name').textContent = port.noise.name;
+        document.getElementById('noise-detail').textContent = `Level ${ port.noise.level }`;
+
+        document.getElementById('intel-val').textContent = port.intel.symbol;
+        document.getElementById('intel-name').textContent = port.intel.name;
+        document.getElementById('intel-detail').textContent = `Level ${ port.intel.level }`;
+
+        document.getElementById('likely-val').textContent = port.likelihood.band;
+        document.getElementById('likely-name').textContent = port.likelihood.name;
+        document.getElementById('likely-detail').textContent = port.likelihood.range;
+
+        document.getElementById('damage-val').textContent = port.damage.symbol;
+        document.getElementById('damage-name').textContent = port.damage.name;
+        document.getElementById('damage-detail').textContent = `Level ${ port.damage.level }`;
+
+        document.getElementById('confidence-val').textContent = port.confidence.symbol;
+        document.getElementById('confidence-name').textContent = port.confidence.name;
+        document.getElementById('confidence-detail').textContent = `${ port.confidence.level }%`;
+
+        document.querySelectorAll('.tumbler').forEach(t => {
+          t.classList.remove('spinning');
+          t.classList.add('locked');
+        });
+      }, 300);
+
+      // Update composites
+      setTimeout(() => {
+        document.getElementById('signal-val').textContent = `${ signal }/25`;
+        document.getElementById('signal-bar').style.width = `${ (signal / 25) * 100 }%`;
+
+        document.getElementById('threat-val').textContent = `${ threat.toFixed(1) }%`;
+        document.getElementById('threat-bar').style.width = `${ threat }%`;
+        document.getElementById('threat-bar').className = `bar-fill ${ threat < 20 ? 'threat-low' : threat < 50 ? 'threat-mid' : threat < 75 ? 'threat-high' : 'threat-max'
+          }`;
+
+        // Update CALL
+        const callDisplay = document.getElementById('call-display');
+        callDisplay.className = `call-display ${ call.toLowerCase() }`;
+        callDisplay.textContent = call;
+        document.getElementById('call-desc').textContent = callDescriptions[call];
+
+        // Update glyph
+        document.getElementById('glyph').textContent =
+          `${ port.noise.symbol } ${ port.intel.symbol } ${ port.likelihood.band } ${ port.damage.symbol } ${ port.confidence.symbol } → ${ call }`;
+      }, 600);
+    }
+
+    // Render port cards
+    function renderPortCards() {
+      const grid = document.getElementById('ports-grid');
+
+      ports.forEach((port, index) => {
+        const signal = calculateSignal(port.noise.level, port.intel.level);
+        const threat = calculateThreat(port.likelihood.midpoint, port.damage.level, port.confidence.level);
+        const call = determineCall(signal, threat, port.confidence.level);
+
+        const card = document.createElement('div');
+        card.className = 'port-card' + (index === 0 ? ' active' : '');
+        card.innerHTML = `
+          <div class="port-header">
+            <span class="port-number">${ port.number }/tcp</span>
+            <span class="port-service">${ port.service }</span>
+          </div>
+          <div class="port-glyph">
+            ${ port.noise.symbol } ${ port.intel.symbol } ${ port.likelihood.band } ${ port.damage.symbol } ${ port.confidence.symbol } → ${ call }
+          </div>
+          <span class="port-call call-badge ${ call.toLowerCase() }">${ call }</span>
+        `;
+
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.port-card').forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          updateDashboard(port);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Starfield animation
+    function initStarfield() {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function initStars(n = 200) {
+        stars = [];
+        for (let i = 0; i < n; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.2 + 0.2,
+            a: Math.random(),
+            speed: Math.random() * 0.003 + 0.001,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = '#0a0a0f';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const t = Date.now() / 1000;
+        for (const s of stars) {
+          const alpha = 0.3 + 0.5 * Math.abs(Math.sin(t * s.speed * 10 + s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${ alpha })`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', () => { resize(); initStars(); });
+      resize();
+      initStars();
+      draw();
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initStarfield();
+      renderPortCards();
+      updateDashboard(ports[0]); // Load first port by default
+    });
+  </script>
+</body>
+
+</html>

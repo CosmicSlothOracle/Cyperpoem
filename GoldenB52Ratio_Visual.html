@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoldenB52Ratio — Connoisseur's Risk Matrix</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #000;
+      --text: #e0e0e0;
+      --text-muted: #9ca3af;
+      --accent: #58a6ff;
+      --cmd: #7ee787;
+      --proof: #d2a8ff;
+      --risk: #f0883e;
+      --border: rgba(255, 255, 255, 0.1);
+
+      --ice: #a8d8f0;
+      --chill: #79c0ff;
+      --room: #e3b341;
+      --warm: #f0883e;
+      --flame: #ff4444;
+
+      --water: #60a5fa;
+      --beer: #d97706;
+      --sake: #a78bfa;
+      --whisky: #b45309;
+      --abs: #34d399;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    html {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 6rem;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(88, 166, 255, 0.4);
+    }
+
+    .header .sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 0.4rem;
+    }
+
+    .header .philosophy {
+      max-width: 640px;
+      margin: 1.2rem auto 0;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem;
+      text-align: left;
+    }
+
+    /* ── AXES LEGEND ── */
+    .axes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .axis-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .axis-card h3 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .axis-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .axis-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .axis-emoji {
+      font-size: 1.2rem;
+      width: 1.8rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .axis-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .axis-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ── MATRIX ── */
+    .matrix-wrap {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      backdrop-filter: blur(4px);
+      margin-bottom: 3rem;
+      overflow-x: auto;
+    }
+
+    .matrix-wrap h2 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: 90px repeat(5, 1fr);
+      gap: 4px;
+      min-width: 600px;
+    }
+
+    .matrix-header-corner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 4px 8px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: right;
+      line-height: 1.2;
+    }
+
+    .matrix-col-header {
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .matrix-col-header .big {
+      font-size: 1.3rem;
+      display: block;
+    }
+
+    .matrix-row-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 6px 8px 6px 4px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .matrix-row-header .big {
+      font-size: 1.3rem;
+      display: block;
+    }
+
+    .cell {
+      border-radius: 8px;
+      padding: 10px 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      position: relative;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .cell:hover {
+      transform: scale(1.08);
+      z-index: 10;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .cell .combo-symbol {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .cell .combo-name {
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .cell .ratio-badge {
+      font-size: 0.55rem;
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0.6;
+    }
+
+    /* Color scale: columns = gain, rows = risk.
+       Background hue = blend of risk (red hot) × gain (green/blue value).
+       Low risk + high gain = green/teal zone. High risk + low gain = red zone. */
+
+    /* Row 1 (Ice): blue-tinted */
+    .r1c1 {
+      background: rgba(30, 50, 80, 0.7);
+      border: 1px solid rgba(168, 216, 240, 0.15);
+    }
+
+    .r1c2 {
+      background: rgba(30, 55, 90, 0.7);
+      border: 1px solid rgba(168, 216, 240, 0.2);
+    }
+
+    .r1c3 {
+      background: rgba(20, 65, 80, 0.75);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+    }
+
+    .r1c4 {
+      background: rgba(15, 75, 75, 0.8);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      box-shadow: inset 0 0 8px rgba(52, 211, 153, 0.1);
+    }
+
+    .r1c5 {
+      background: rgba(10, 80, 70, 0.85);
+      border: 1px solid rgba(52, 211, 153, 0.6);
+      box-shadow: inset 0 0 12px rgba(52, 211, 153, 0.15);
+    }
+
+    /* Row 2 (Chill): cool tones */
+    .r2c1 {
+      background: rgba(30, 50, 80, 0.7);
+      border: 1px solid rgba(121, 192, 255, 0.15);
+    }
+
+    .r2c2 {
+      background: rgba(35, 55, 85, 0.7);
+      border: 1px solid rgba(121, 192, 255, 0.2);
+    }
+
+    .r2c3 {
+      background: rgba(25, 65, 80, 0.75);
+      border: 1px solid rgba(121, 192, 255, 0.3);
+    }
+
+    .r2c4 {
+      background: rgba(15, 70, 70, 0.8);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      box-shadow: inset 0 0 8px rgba(52, 211, 153, 0.1);
+    }
+
+    .r2c5 {
+      background: rgba(10, 75, 65, 0.85);
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      box-shadow: inset 0 0 10px rgba(52, 211, 153, 0.12);
+    }
+
+    /* Row 3 (Room): neutral yellow tinge */
+    .r3c1 {
+      background: rgba(45, 40, 20, 0.7);
+      border: 1px solid rgba(227, 179, 65, 0.2);
+    }
+
+    .r3c2 {
+      background: rgba(50, 50, 20, 0.7);
+      border: 1px solid rgba(227, 179, 65, 0.25);
+    }
+
+    .r3c3 {
+      background: rgba(45, 55, 20, 0.75);
+      border: 1px solid rgba(227, 179, 65, 0.3);
+    }
+
+    .r3c4 {
+      background: rgba(25, 60, 30, 0.8);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .r3c5 {
+      background: rgba(15, 65, 45, 0.85);
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      box-shadow: inset 0 0 8px rgba(52, 211, 153, 0.1);
+    }
+
+    /* Row 4 (Warm): orange danger zone */
+    .r4c1 {
+      background: rgba(80, 30, 10, 0.75);
+      border: 1px solid rgba(240, 136, 62, 0.3);
+    }
+
+    .r4c2 {
+      background: rgba(75, 35, 10, 0.75);
+      border: 1px solid rgba(240, 136, 62, 0.3);
+    }
+
+    .r4c3 {
+      background: rgba(65, 45, 15, 0.75);
+      border: 1px solid rgba(240, 136, 62, 0.25);
+    }
+
+    .r4c4 {
+      background: rgba(50, 50, 10, 0.8);
+      border: 1px solid rgba(227, 179, 65, 0.35);
+    }
+
+    .r4c5 {
+      background: rgba(30, 55, 20, 0.8);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    /* Row 5 (Flame): red hot — but last col is "worth it" */
+    .r5c1 {
+      background: rgba(100, 15, 15, 0.8);
+      border: 1px solid rgba(255, 68, 68, 0.4);
+      box-shadow: inset 0 0 10px rgba(255, 68, 68, 0.1);
+    }
+
+    .r5c2 {
+      background: rgba(90, 20, 10, 0.8);
+      border: 1px solid rgba(255, 68, 68, 0.35);
+    }
+
+    .r5c3 {
+      background: rgba(80, 30, 10, 0.8);
+      border: 1px solid rgba(240, 136, 62, 0.35);
+    }
+
+    .r5c4 {
+      background: rgba(70, 35, 10, 0.8);
+      border: 1px solid rgba(240, 136, 62, 0.4);
+    }
+
+    .r5c5 {
+      background: rgba(60, 15, 15, 0.85);
+      border: 1px solid rgba(255, 68, 68, 0.55);
+      box-shadow: inset 0 0 16px rgba(255, 68, 68, 0.15);
+    }
+
+    /* Golden corner glow on hover */
+    .golden {
+      position: relative;
+    }
+
+    .golden::after {
+      content: '★';
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-size: 0.55rem;
+      color: gold;
+      opacity: 0.7;
+    }
+
+    /* ── TOOLTIP ── */
+    .tooltip {
+      position: fixed;
+      background: rgba(0, 0, 0, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      max-width: 280px;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .tooltip.show {
+      opacity: 1;
+    }
+
+    .tooltip .tt-head {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .tooltip .tt-tag {
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .tooltip .tt-body {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ── HIGHLIGHTS ROW ── */
+    .highlights {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+
+    .hl-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1rem;
+      backdrop-filter: blur(4px);
+      text-align: center;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .hl-card:hover {
+      box-shadow: 0 0 20px rgba(88, 166, 255, 0.12);
+    }
+
+    .hl-card .hl-symbol {
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .hl-card .hl-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.2rem;
+    }
+
+    .hl-card .hl-tag {
+      font-size: 0.68rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .hl-card .hl-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .hl-card.golden-card {
+      border-color: rgba(52, 211, 153, 0.4);
+      box-shadow: 0 0 16px rgba(52, 211, 153, 0.08);
+    }
+
+    .hl-card.suicide-card {
+      border-color: rgba(255, 68, 68, 0.3);
+    }
+
+    .hl-card.standard-card {
+      border-color: rgba(240, 136, 62, 0.25);
+    }
+
+    .hl-card.grail-card {
+      border-color: rgba(52, 211, 153, 0.6);
+      box-shadow: 0 0 20px rgba(52, 211, 153, 0.1);
+    }
+
+    /* ── QUOTE ── */
+    .quote {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .quote blockquote {
+      display: inline-block;
+      max-width: 600px;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+      padding: 0.6rem 1.2rem;
+      text-align: left;
+    }
+
+    .quote blockquote strong {
+      color: #fff;
+      font-style: normal;
+    }
+
+    /* ── STATE MARKER LEGEND ── */
+    .markers {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .marker-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .marker-item .m-sym {
+      font-size: 1rem;
+    }
+
+    /* ── PRINT ── */
+    @media print {
+      canvas {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      .cell {
+        border: 1px solid #ccc !important;
+        background: #f9f9f9 !important;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .axes {
+        grid-template-columns: 1fr;
+      }
+
+      .highlights {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <h1>🥂 GoldenB52Ratio</h1>
+      <div class="sub">A Connoisseur's Guide to Operational Risk</div>
+      <p class="philosophy">
+        "A B52 shot requires precise layering and temperature control to avoid burning the patron
+        while delivering the kick — so does an operation."
+      </p>
+    </div>
+
+    <!-- AXES -->
+    <div class="axes">
+      <!-- Y: Temperature -->
+      <div class="axis-card">
+        <h3>↑ Y-Axis — Temperature (Detection Risk)</h3>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--ice)"></div>
+          <div class="axis-emoji">❄️</div>
+          <div class="axis-label">Ice Cold</div>
+          <div class="axis-desc">Passive OSINT — zero direct contact</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--chill)"></div>
+          <div class="axis-emoji">❄️</div>
+          <div class="axis-label">Chilled</div>
+          <div class="axis-desc">Normal traffic — looks like a user</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--room)"></div>
+          <div class="axis-emoji">🌡️</div>
+          <div class="axis-label">Room Temp</div>
+          <div class="axis-desc">Automated scans — heuristics may stir</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--warm)"></div>
+          <div class="axis-emoji">♨️</div>
+          <div class="axis-label">Warm</div>
+          <div class="axis-desc">Brute force — SOC is probably awake</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--flame)"></div>
+          <div class="axis-emoji">🔥</div>
+          <div class="axis-label">Flaming</div>
+          <div class="axis-desc">Active exploit — blue team is running</div>
+        </div>
+      </div>
+
+      <!-- X: Beverage -->
+      <div class="axis-card">
+        <h3>→ X-Axis — Beverage (Potential Gain)</h3>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--water)"></div>
+          <div class="axis-emoji">🥛</div>
+          <div class="axis-label">Water</div>
+          <div class="axis-desc">Noise / nothing useful</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--beer)"></div>
+          <div class="axis-emoji">🍺</div>
+          <div class="axis-label">Beer</div>
+          <div class="axis-desc">Low gain — versioning, IP leaks</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--sake)"></div>
+          <div class="axis-emoji">🍶</div>
+          <div class="axis-label">Sake</div>
+          <div class="axis-desc">Medium gain — shell, LFI, non-crit data</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--whisky)"></div>
+          <div class="axis-emoji">🏺</div>
+          <div class="axis-label">Whiskey</div>
+          <div class="axis-desc">High gain — root, SQLi dump, creds</div>
+        </div>
+        <div class="axis-row">
+          <div class="axis-dot" style="background:var(--abs)"></div>
+          <div class="axis-emoji">🍸</div>
+          <div class="axis-label">Absinthe</div>
+          <div class="axis-desc">Critical — DA, Golden Ticket, full pwn</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATRIX -->
+    <div class="matrix-wrap">
+      <h2>The 25-Concoction Matrix · Hover for details</h2>
+      <div class="matrix" id="matrix">
+
+        <!-- Corner + Column headers -->
+        <div class="matrix-header-corner">Risk ↓ / Gain →</div>
+        <div class="matrix-col-header"><span class="big">🥛</span>Water</div>
+        <div class="matrix-col-header"><span class="big">🍺</span>Beer</div>
+        <div class="matrix-col-header"><span class="big">🍶</span>Sake</div>
+        <div class="matrix-col-header"><span class="big">🏺</span>Whiskey</div>
+        <div class="matrix-col-header"><span class="big">🍸</span>Absinthe</div>
+
+        <!-- ROW 1: Ice Cold -->
+        <div class="matrix-row-header"><span class="big">❄️</span>Ice Cold</div>
+        <div class="cell r1c1" data-name="Glacial Drip" data-tag="❄️🥛💧 1/1"
+          data-desc="Reading the company's 'About Us' page. Useless, but safe. Zero exposure.">
+          <span class="combo-symbol">❄️🥛💧</span>
+          <span class="combo-name">Glacial Drip</span>
+          <span class="ratio-badge">1/1</span>
+        </div>
+        <div class="cell r1c2" data-name="Arctic Brew" data-tag="❄️🍺💧 1/2"
+          data-desc="Finding email naming conventions on LinkedIn. Small mapping gain, zero touch.">
+          <span class="combo-symbol">❄️🍺💧</span>
+          <span class="combo-name">Arctic Brew</span>
+          <span class="ratio-badge">1/2</span>
+        </div>
+        <div class="cell r1c3" data-name="Frozen Bloom" data-tag="❄️🍶✨ 1/3"
+          data-desc="Identifying tech stack via builtwith.com. Solid planning intel, no contact.">
+          <span class="combo-symbol">❄️🍶✨</span>
+          <span class="combo-name">Frozen Bloom</span>
+          <span class="ratio-badge">1/3</span>
+        </div>
+        <div class="cell r1c4 golden" data-name="Winter Reserve" data-tag="❄️🏺✨ 1/4 ★ GOLDEN"
+          data-desc="Finding leaked employee credentials in a public breach DB. High impact, absolute zero touch.">
+          <span class="combo-symbol">❄️🏺✨</span>
+          <span class="combo-name">Winter Reserve</span>
+          <span class="ratio-badge">1/4 ★</span>
+        </div>
+        <div class="cell r1c5 golden" data-name="Glacial Absinthe" data-tag="❄️🍸✨ 1/5 ★ THE HOLY GRAIL"
+          data-desc="Finding hardcoded AWS root keys in a public GitHub repo. Maximum gain, zero risk. THE HOLY GRAIL.">
+          <span class="combo-symbol">❄️🍸✨</span>
+          <span class="combo-name">Glacial Absinthe</span>
+          <span class="ratio-badge">1/5 ★</span>
+        </div>
+
+        <!-- ROW 2: Chilled -->
+        <div class="matrix-row-header"><span class="big">❄️</span>Chilled</div>
+        <div class="cell r2c1" data-name="Cool Sip" data-tag="❄️🥛💧 2/1"
+          data-desc="Browsing the homepage and getting a 404. Normal user behaviour, zero result.">
+          <span class="combo-symbol">❄️🥛💧</span>
+          <span class="combo-name">Cool Sip</span>
+          <span class="ratio-badge">2/1</span>
+        </div>
+        <div class="cell r2c2" data-name="Chilled Brew" data-tag="❄️🍺💧 2/2"
+          data-desc="Inspecting HTML source manually for comments or dev notes. Slow, undetectable.">
+          <span class="combo-symbol">❄️🍺💧</span>
+          <span class="combo-name">Chilled Brew</span>
+          <span class="ratio-badge">2/2</span>
+        </div>
+        <div class="cell r2c3" data-name="Crisp Bloom" data-tag="❄️🍶✨ 2/3"
+          data-desc="Finding a logic flaw in a shopping cart (negative price). Manual, stealthy, actionable.">
+          <span class="combo-symbol">❄️🍶✨</span>
+          <span class="combo-name">Crisp Bloom</span>
+          <span class="ratio-badge">2/3</span>
+        </div>
+        <div class="cell r2c4 golden" data-name="Refined Chill" data-tag="❄️🏺✨ 2/4 ★ GOLDEN"
+          data-desc="Guessing admin:admin on a login page manually. Default creds still exist in the wild.">
+          <span class="combo-symbol">❄️🏺✨</span>
+          <span class="combo-name">Refined Chill</span>
+          <span class="ratio-badge">2/4 ★</span>
+        </div>
+        <div class="cell r2c5 golden" data-name="Iced Absinthe" data-tag="❄️🍸✨ 2/5 ★ GOLDEN"
+          data-desc="Accessing an exposed .env file via a normal browser request. Server misconfiguration = full secrets.">
+          <span class="combo-symbol">❄️🍸✨</span>
+          <span class="combo-name">Iced Absinthe</span>
+          <span class="ratio-badge">2/5 ★</span>
+        </div>
+
+        <!-- ROW 3: Room Temp -->
+        <div class="matrix-row-header"><span class="big">🌡️</span>Room Temp</div>
+        <div class="cell r3c1" data-name="Neutral Water" data-tag="🌡️🥛💧 3/1"
+          data-desc="Running a full port scan and finding everything filtered. Logged, wasted, nothing to show.">
+          <span class="combo-symbol">🌡️🥛💧</span>
+          <span class="combo-name">Neutral Water</span>
+          <span class="ratio-badge">3/1</span>
+        </div>
+        <div class="cell r3c2" data-name="Mild Lager" data-tag="🌡️🍺✨ 3/2"
+          data-desc="Banner grabbing that reveals an outdated Apache version. Now you know where to look.">
+          <span class="combo-symbol">🌡️🍺✨</span>
+          <span class="combo-name">Mild Lager</span>
+          <span class="ratio-badge">3/2</span>
+        </div>
+        <div class="cell r3c3" data-name="Subtle Bloom" data-tag="🌡️🍶✨ 3/3"
+          data-desc="Automated enumeration finding a writeable FTP directory. Standard recon, usable result.">
+          <span class="combo-symbol">🌡️🍶✨</span>
+          <span class="combo-name">Subtle Bloom</span>
+          <span class="ratio-badge">3/3</span>
+        </div>
+        <div class="cell r3c4" data-name="Room Reserve" data-tag="🌡️🏺✨ 3/4"
+          data-desc="sqlmap confirming a valid injection point. You're in the logs, but you have the injection.">
+          <span class="combo-symbol">🌡️🏺✨</span>
+          <span class="combo-name">Room Reserve</span>
+          <span class="ratio-badge">3/4</span>
+        </div>
+        <div class="cell r3c5" data-name="Radiant Absinthe" data-tag="🌡️🍸✨ 3/5"
+          data-desc="Scanner auto-confirms RCE via safe check. Automated and critical — risky but worth it.">
+          <span class="combo-symbol">🌡️🍸✨</span>
+          <span class="combo-name">Radiant Absinthe</span>
+          <span class="ratio-badge">3/5</span>
+        </div>
+
+        <!-- ROW 4: Warm -->
+        <div class="matrix-row-header"><span class="big">♨️</span>Warm</div>
+        <div class="cell r4c1" data-name="Warm Mist" data-tag="♨️🥛💨 4/1 ✗ AVOID"
+          data-desc="Brute-forcing a login for 4 hours — account was locked. High noise, zero gain. Classic script kiddie.">
+          <span class="combo-symbol">♨️🥛💨</span>
+          <span class="combo-name">Warm Mist</span>
+          <span class="ratio-badge">4/1 ✗</span>
+        </div>
+        <div class="cell r4c2" data-name="Heated Brew" data-tag="♨️🍺💨 4/2"
+          data-desc="Fuzzing 10k subdomains to find one staging server that just redirects. Noisy for minimal intel.">
+          <span class="combo-symbol">♨️🍺💨</span>
+          <span class="combo-name">Heated Brew</span>
+          <span class="ratio-badge">4/2</span>
+        </div>
+        <div class="cell r4c3" data-name="Warm Sake" data-tag="♨️🍶✨ 4/3"
+          data-desc="XSS that triggers an alert but steals a session cookie. Burned OpSec partially, got the cookie.">
+          <span class="combo-symbol">♨️🍶✨</span>
+          <span class="combo-name">Warm Sake</span>
+          <span class="ratio-badge">4/3</span>
+        </div>
+        <div class="cell r4c4" data-name="Spiced Reserve" data-tag="♨️🏺✨ 4/4"
+          data-desc="Password spray across O365 — logs lit up, but one account hit. You traded noise for keys.">
+          <span class="combo-symbol">♨️🏺✨</span>
+          <span class="combo-name">Spiced Reserve</span>
+          <span class="ratio-badge">4/4</span>
+        </div>
+        <div class="cell r4c5" data-name="Heated Absinthe" data-tag="♨️🍸✨ 4/5"
+          data-desc="Buffer overflow crashes service once, then gives a shell. Calculated burn for maximum gain.">
+          <span class="combo-symbol">♨️🍸✨</span>
+          <span class="combo-name">Heated Absinthe</span>
+          <span class="ratio-badge">4/5</span>
+        </div>
+
+        <!-- ROW 5: Flaming -->
+        <div class="matrix-row-header"><span class="big">🔥</span>Flaming</div>
+        <div class="cell r5c1" data-name="Flaming Vapor" data-tag="🔥🥛💨 5/1 ✗ SUICIDE SHOT"
+          data-desc="DDoSing Cloudflare. Maximum noise, zero effect. You're banned, logged, and got nothing.">
+          <span class="combo-symbol">🔥🥛💨</span>
+          <span class="combo-name">Flaming Vapor</span>
+          <span class="ratio-badge">5/1 ✗✗</span>
+        </div>
+        <div class="cell r5c2" data-name="Blazing Beer" data-tag="🔥🍺💨 5/2 ✗ SUICIDE SHOT"
+          data-desc="Nessus/OpenVAS with defaults during business hours. Security team is notified. You found some CVEs.">
+          <span class="combo-symbol">🔥🍺💨</span>
+          <span class="combo-name">Blazing Beer</span>
+          <span class="ratio-badge">5/2 ✗</span>
+        </div>
+        <div class="cell r5c3" data-name="Fiery Bloom" data-tag="🔥🍶💨 5/3"
+          data-desc="Web shell upload, not obfuscated, deleted by AV. You made noise, you got caught, no persistence.">
+          <span class="combo-symbol">🔥🍶💨</span>
+          <span class="combo-name">Fiery Bloom</span>
+          <span class="ratio-badge">5/3</span>
+        </div>
+        <div class="cell r5c4" data-name="Smoked Reserve" data-tag="🔥🏺💨 5/4"
+          data-desc="Mimikatz on LSASS — alert triggered, but plaintext passwords extracted. You burned, you got creds.">
+          <span class="combo-symbol">🔥🏺💨</span>
+          <span class="combo-name">Smoked Reserve</span>
+          <span class="ratio-badge">5/4</span>
+        </div>
+        <div class="cell r5c5" data-name="Molten Absinthe" data-tag="🔥🍸💨 5/5 ☠ GAME OVER"
+          data-desc="Ransomware deployed or logs wiped on the DC. The bar is scorched. Everyone knows. Game Over.">
+          <span class="combo-symbol">🔥🍸💨</span>
+          <span class="combo-name">Molten Absinthe</span>
+          <span class="ratio-badge">5/5 ☠</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STATE MARKER LEGEND -->
+    <div class="markers">
+      <div class="marker-item"><span class="m-sym">💧</span> Subtle / Controlled — minimal trace, low-pressure flow
+      </div>
+      <div class="marker-item"><span class="m-sym">✨</span> Effective / Balanced — clear potent signal or real gain
+      </div>
+      <div class="marker-item"><span class="m-sym">💨</span> Hot / Noisy — pressure leaked, detectable exhaust</div>
+    </div>
+
+    <!-- HIGHLIGHTS -->
+    <div class="highlights">
+      <div class="hl-card grail-card">
+        <span class="hl-symbol">❄️🍸✨</span>
+        <div class="hl-name">The Holy Grail</div>
+        <div class="hl-tag">Glacial Absinthe · 1/5</div>
+        <div class="hl-desc">Maximum gain, absolute zero risk. Root keys in a public repo. The unicorn scenario.</div>
+      </div>
+      <div class="hl-card golden-card">
+        <span class="hl-symbol">❄️🏺✨</span>
+        <div class="hl-name">Golden Ratio</div>
+        <div class="hl-tag">Winter Reserve · 1/4</div>
+        <div class="hl-desc">The master's pour. High impact intel with zero direct contact. Sip it slowly.</div>
+      </div>
+      <div class="hl-card standard-card">
+        <span class="hl-symbol">🌡️🍶✨</span>
+        <div class="hl-name">Standard Op</div>
+        <div class="hl-tag">Subtle Bloom · 3/3</div>
+        <div class="hl-desc">Logged but not alarmed. Useful result from automated recon. The daily bread.</div>
+      </div>
+      <div class="hl-card suicide-card">
+        <span class="hl-symbol">🔥🥛💨</span>
+        <div class="hl-name">Suicide Shot</div>
+        <div class="hl-tag">Flaming Vapor · 5/1</div>
+        <div class="hl-desc">Maximum noise, zero gain. DDoS on Cloudflare. The most expensive nothing.</div>
+      </div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="quote">
+      <blockquote>
+        "The novice burns their tongue on <strong>Flaming Water</strong> 🔥🥛💨, gaining nothing but attention.
+        The master savors <strong>Glacial Absinthe</strong> ❄️🍸✨ — maximum effect, ultimate discretion."
+      </blockquote>
+    </div>
+
+  </div>
+
+  <!-- TOOLTIP -->
+  <div class="tooltip" id="tooltip">
+    <div class="tt-head" id="tt-name"></div>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-body" id="tt-body"></div>
+  </div>
+
+  <script>
+    /* ── STARFIELD (from cosmic_poem.html style) ── */
+    (() => {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function initStars(n = 260) {
+        stars = [];
+        for (let i = 0; i < n; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.2 + 0.2,
+            a: Math.random(),
+            speed: Math.random() * 0.003 + 0.001,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const t = Date.now() / 1000;
+        for (const s of stars) {
+          const alpha = 0.3 + 0.5 * Math.abs(Math.sin(t * s.speed * 10 + s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${ alpha })`;
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', () => { resize(); initStars(); });
+      resize();
+      initStars();
+      draw();
+    })();
+
+    /* ── MATRIX TOOLTIP ── */
+    (() => {
+      const tooltip = document.getElementById('tooltip');
+      const ttName = document.getElementById('tt-name');
+      const ttTag = document.getElementById('tt-tag');
+      const ttBody = document.getElementById('tt-body');
+
+      document.querySelectorAll('.cell').forEach(cell => {
+        cell.addEventListener('mouseenter', e => {
+          ttName.textContent = cell.dataset.name || '';
+          ttTag.textContent = cell.dataset.tag || '';
+          ttBody.textContent = cell.dataset.desc || '';
+          tooltip.classList.add('show');
+          moveTooltip(e);
+        });
+
+        cell.addEventListener('mousemove', moveTooltip);
+
+        cell.addEventListener('mouseleave', () => {
+          tooltip.classList.remove('show');
+        });
+      });
+
+      function moveTooltip(e) {
+        const offset = 16;
+        let x = e.clientX + offset;
+        let y = e.clientY + offset;
+        const tw = 280, th = 120;
+        if (x + tw > window.innerWidth) x = e.clientX - tw - offset;
+        if (y + th > window.innerHeight) y = e.clientY - th - offset;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top = y + 'px';
+      }
+    })();
+  </script>
+
+</body>
+
+</html>

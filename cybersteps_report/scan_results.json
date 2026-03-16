@@ -1,0 +1,43 @@
+{
+  "hostname": "scanme.cybersteps.de",
+  "ip_address": "165.232.131.154",
+  "open_ports": [
+    {
+      "port": 21,
+      "protocol": "tcp",
+      "state": "open",
+      "service": "ftp",
+      "version": "",
+      "banner": "220 ProFTPD 1.2.10"
+    },
+    {
+      "port": 22,
+      "protocol": "tcp",
+      "state": "open",
+      "service": "ssh",
+      "version": "",
+      "banner": "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.13"
+    },
+    {
+      "port": 80,
+      "protocol": "tcp",
+      "state": "open",
+      "service": "http",
+      "version": "",
+      "banner": "HTTP/1.0 500 Internal Server Error\r\nDate: Tue, 10 Mar 2026 10:49:44 GMT\r\nServer: Apache/2.4.6\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: 1334"
+    },
+    {
+      "port": 3389,
+      "protocol": "tcp",
+      "state": "open",
+      "service": "unknown",
+      "version": "",
+      "banner": "\u0003\u0000\u0000\u0013\u000e\ufffd\u0000\u0000\u00124\u0000\u0002\u0000\b\u0000\u0001\u0000\u0000\u0000"
+    }
+  ],
+  "security_issues": [
+    "FTP service detected (port 21) - Consider using SFTP instead",
+    "Port 80 reveals detailed banner information - Consider minimizing version disclosure",
+    "RDP service (port 3389) - Verify NLA enabled, restrict source IPs"
+  ]
+}

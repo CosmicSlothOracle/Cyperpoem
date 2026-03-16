@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Thu Mar 12 10:51:11 2026 as: &quot;C:\\Program Files (x86)\\Nmap\\nmap.exe&quot; -Pn -n -p 1080 -&#45;script=socks-auth-info,socks-open-proxy,banner -&#45;script-timeout 15s -oN output/cybersteps/evidence_1080_socks_nse.txt -oX output/cybersteps/evidence_1080_socks_nse.xml 165.232.131.154 -->
+<nmaprun scanner="nmap" args="&quot;C:\\Program Files (x86)\\Nmap\\nmap.exe&quot; -Pn -n -p 1080 -&#45;script=socks-auth-info,socks-open-proxy,banner -&#45;script-timeout 15s -oN output/cybersteps/evidence_1080_socks_nse.txt -oX output/cybersteps/evidence_1080_socks_nse.xml 165.232.131.154" start="1773309071" startstr="Thu Mar 12 10:51:11 2026" version="7.80" xmloutputversion="1.04">
+<scaninfo type="syn" protocol="tcp" numservices="1" services="1080"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1773309072" endtime="1773309088"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="165.232.131.154" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="1080"><state state="open" reason="syn-ack" reason_ttl="55"/><service name="socks" method="table" conf="3"/><script id="socks-auth-info" output="&#xa;  Username and password"><table>
+<elem key="method">2</elem>
+<elem key="name">Username and password</elem>
+</table>
+</script></port>
+</ports>
+<times srtt="166000" rttvar="166000" to="830000"/>
+</host>
+<runstats><finished time="1773309088" timestr="Thu Mar 12 10:51:28 2026" elapsed="16.88" summary="Nmap done at Thu Mar 12 10:51:28 2026; 1 IP address (1 host up) scanned in 16.88 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 1: Subdomain Enumeration Writeup</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --text-color: #c9d1d9;
+            --accent-color: #58a6ff;
+            --secondary-color: #8b949e;
+            --code-bg: #161b22;
+            --border-color: #30363d;
+            --success-color: #2ea043;
+            --warning-color: #d29922;
+            --icy-color: #00d2ff;
+            --flammable-color: #ff3c00;
+            --soda-color: #c0c0c0;
+            --absynth-color: #39ff14;
+        }
+
+        .risk-metric {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .risk-icy {
+            color: var(--icy-color);
+            background: rgba(0, 210, 255, 0.1);
+        }
+
+        .risk-tepid {
+            color: #f0e68c;
+            background: rgba(240, 230, 140, 0.1);
+        }
+
+        .risk-warm {
+            color: #ff8c00;
+            background: rgba(255, 140, 0, 0.1);
+        }
+
+        .risk-flammable {
+            color: var(--flammable-color);
+            background: rgba(255, 60, 0, 0.1);
+        }
+
+        .yield-soda {
+            color: var(--soda-color);
+        }
+
+        .yield-beer {
+            color: #ffd700;
+        }
+
+        .yield-wine {
+            color: #da70d6;
+        }
+
+        .yield-absynth {
+            color: var(--absynth-color);
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .meta {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        h2 {
+            color: #fff;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+            margin-top: 50px;
+            font-weight: 500;
+        }
+
+        h3 {
+            color: var(--text-color);
+            margin-top: 30px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        li::before {
+            content: "›";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background-color: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent-color);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .highlight-box {
+            background-color: rgba(88, 166, 255, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--success-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .disclaimer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            font-style: italic;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Part 1: Subdomain Enumeration</h1>
+            <div class="meta">
+                PROJECT: R&E Surface Tension - Attack Surface Analysis<br>
+                DATE: 2026-03-10
+            </div>
+        </header>
+
+        <section>
+            <h2>0. Reconnaissance Threat Metric (RTM)</h2>
+            <p>To qualify the methodology, actions are tagged with the <strong>RTM (Risk/Yield)</strong>. This framework
+                evaluates the detection footprint against the potential intelligence value.</p>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                <div
+                    style="flex: 1; background: var(--code-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border-color);">
+                    <h4 style="margin-top: 0; color: #fff;">Risk (Detection Footprint)</h4>
+                    <ul style="font-size: 0.9em; padding-left: 0; list-style: none;">
+                        <li style="padding-left: 0;">🧊 <strong>Icy:</strong> Zero/Near-zero footprint (OSINT, DB
+                            lookups).</li>
+                        <li style="padding-left: 0;">💧 <strong>Tepid:</strong> Standard background traffic (DNS/HTTP).
+                        </li>
+                        <li style="padding-left: 0;">♨️ <strong>Warm:</strong> Anomalous probing (UDP sweeps, 404s).
+                        </li>
+                        <li style="padding-left: 0;">🔥 <strong>Flammable:</strong> Loud, aggressive (Full port scans,
+                            fuzzing).</li>
+                        <li style="padding-left: 0;">☢️ <strong>Radioactive:</strong> Guaranteed SIEM/IDS alerts
+                            (Exploitation).</li>
+                    </ul>
+                </div>
+                <div
+                    style="flex: 1; background: var(--code-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--border-color);">
+                    <h4 style="margin-top: 0; color: #fff;">Yield (Intelligence Value)</h4>
+                    <ul style="font-size: 0.9em; padding-left: 0; list-style: none;">
+                        <li style="padding-left: 0;">🥤 <strong>Soda:</strong> Low yield (Basic topology).</li>
+                        <li style="padding-left: 0;">🍻 <strong>Beer:</strong> Moderate yield (Structural routing).</li>
+                        <li style="padding-left: 0;">🍷 <strong>Wine:</strong> High yield (Surface narrowing, bulk
+                            assets).</li>
+                        <li style="padding-left: 0;">🍸 <strong>Absynth:</strong> Critical yield (Actionable compromise
+                            paths).</li>
+                        <li style="padding-left: 0;">🌌 <strong>Liquid-Schwartz:</strong> God-tier (Admin-level
+                            structural flaws).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>1. Methodology & Tools</h2>
+            <p>To achieve maximum coverage while adhering to strict verification rules, I implemented a hybrid pipeline
+                combining professional open-source intelligence with custom targeted enumeration.</p>
+
+            <h3>Phase 1: Passive Discovery</h3>
+            <div class="risk-metric risk-icy">Level: Icy Wine 🧊🍷</div>
+            <p>I utilized a curated recommendation by agentic LLM ᯓKimK2.5ᯓ <code>subfinder</code> to query public sources (archives, search engines, transparency logs)
+                without directly touching the target infrastructure. This provided a high-volume initial dataset. </p>
+            <pre> CLI: 🕷🕷🕷 subfinder -dL domains.txt -all -recursive -silent -o subdomains_primary.txt 🕷🕷🕷 </pre>
+
+            <h3>Phase 2: Active Enumeration</h3>
+            <div class="risk-metric risk-warm">Level: Warm Absynth ♨️🍸</div>
+            <p>I instructed AI to create a custom Python tool, <code>subdomain_enum.py</code>, to perform targeted
+                discovery. This
+                script used a curated list of common prefixes to identify subdomains that might be missed by passive
+                collection.</p>
+            <pre>CLI: 🕷🕷🕷 python subdomain_enum.py -d domains.txt -o subdomains_bruteforce.txt -w 100 🕷🕷🕷</pre>
+
+            <h3>Phase 3: The Merge</h3>
+            <div class="risk-metric risk-icy">Level: Icy Beer ❄️🍻</div>
+            <p>Results from both phases were merged, deduplicated, and strictly filtered. Crucially, I removed
+                <strong>bare root domains</strong>
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Verification Strategy</h2>
+            <div class="risk-metric risk-tepid">Level: Tepid Absynth 💧🍸</div>
+            <div class="highlight-box">
+                <strong>The Golden Rule:</strong> Every single entry in <code>subdomains.txt</code> has been actively
+                verified against Google's Public DNS.
+            </div>
+
+            <p>My custom verification logic (implemented in <code>subdomain_enum.py</code>) strictly followed the lab
+                requirements:</p>
+            <ul>
+                <li><strong>Resolver:</strong> All queries were sent to <code>8.8.8.8</code>.</li>
+                <li><strong>Record Types:</strong> I specifically checked for <code>A</code>, <code>CNAME</code>,
+                    <code>MX</code>, and <code>TXT</code> records.
+                </li>
+                <li><strong>Filtering:</strong> Any domain returning <code>NXDOMAIN</code> wasdiscarded to prevent point deductions.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Interesting Discovery</h2>
+            <p>While verifying thousands of subdomains, I discovered that Google's DNS resolver (<code>8.8.8.8</code>)
+                is surprisingly resilient to high-volume queries if handled correctly.</p>
+            <p>By implementing a <strong>semaphore-based concurrency model</strong> in my Python script (limiting active
+                workers to 100), I was able to verify over 20,000 candidates without triggering rate-limits or bans.
+                This architectural choice was essential—without it, the resolver would likely have started dropping
+                packets, leading to false negatives and a lower score.</p>
+        </section>
+
+        <section>
+            <h2>4. Final Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">20,235</span>
+                    <span class="stat-label">Candidates Processed</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">16,537</span>
+                    <span class="stat-label">Valid Subdomains</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" style="color: var(--warning-color)">3,698</span>
+                    <span class="stat-label">Invalid / NXDOMAIN Filtered</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="disclaimer">
+            <h3>AI Disclaimer</h3>
+            <p>AI was used for reasearching educational resources i prepared locally eg. https://medium.com/@anandrishav2228/mastering-nmap-firewall-evasion-techniques-a-detailed-guide-f5d5b9f00587
+                from there worked through the lab instructions and specific project rules to suggest tools for lab useability.
+                curated a specific knowledge base for the lab and project evaluating the lab requirements and scoring system.
+                https://medium.com/@anandrishav2228/mastering-nmap-firewall-evasion-techniques-a-detai
+                assisted in styling and terminology correction.
+                heavily assisted in writing the python script.
+                the precise translation of natural language helped tremendously
+                to be free for my personal observations instead of observing errors in the CLI
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

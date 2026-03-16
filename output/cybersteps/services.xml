@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///C:/Program Files (x86)/Nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.80 scan initiated Tue Mar 10 14:08:20 2026 as: &quot;C:\\Program Files (x86)\\Nmap\\nmap.exe&quot; -sV -Pn -n -T3 -&#45;version-intensity 5 -p 21,22,80,1080,3389 -oX output\\cybersteps\\services.xml 165.232.131.154 -->
+<nmaprun scanner="nmap" args="&quot;C:\\Program Files (x86)\\Nmap\\nmap.exe&quot; -sV -Pn -n -T3 -&#45;version-intensity 5 -p 21,22,80,1080,3389 -oX output\\cybersteps\\services.xml 165.232.131.154" start="1773148100" startstr="Tue Mar 10 14:08:20 2026" version="7.80" xmloutputversion="1.04">
+<scaninfo type="syn" protocol="tcp" numservices="5" services="21-22,80,1080,3389"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1773148103" endtime="1773148192"><status state="up" reason="user-set" reason_ttl="0"/>
+<address addr="165.232.131.154" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="21"><state state="open" reason="syn-ack" reason_ttl="55"/><service name="ftp" product="vsftpd (before 2.0.8) or WU-FTPD" method="probed" conf="10"><cpe>cpe:/a:vsftpd:vsftpd</cpe></service></port>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="55"/><service name="ssh" product="OpenSSH" version="8.9p1 Ubuntu 3ubuntu0.13" extrainfo="Ubuntu Linux; protocol 2.0" ostype="Linux" method="probed" conf="10"><cpe>cpe:/a:openbsd:openssh:8.9p1</cpe><cpe>cpe:/o:linux:linux_kernel</cpe></service></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="55"/><service name="http" product="Apache httpd" version="2.4.6" method="probed" conf="10"><cpe>cpe:/a:apache:http_server:2.4.6</cpe></service></port>
+<port protocol="tcp" portid="1080"><state state="open" reason="syn-ack" reason_ttl="55"/><service name="socks5" extrainfo="Username/password authentication required" method="probed" conf="10"/></port>
+<port protocol="tcp" portid="3389"><state state="open" reason="syn-ack" reason_ttl="55"/><service name="ms-wbt-server" servicefp="SF-Port3389-TCP:V=7.80%I=5%D=3/10%Time=69B017D2%P=i686-pc-windows-windows%r(TerminalServerCookie,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(TLSSessionReq,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(TerminalServer,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(GenericLines,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(GetRequest,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(HTTPOptions,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(RTSPRequest,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(RPCCheck,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(DNSVersionBindReqTCP,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(Help,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(SSLSessionReq,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(Kerberos,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(SMBProgNeg,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(X11Probe,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;)%r(SIPOptions,13,&quot;\x03\0\0\x13\x0e\xd0\0\0\x124\0\x02\0\x08\0\x01\0\0\0&quot;);" method="table" conf="3"/></port>
+</ports>
+<times srtt="161640" rttvar="51905" to="369260"/>
+</host>
+<runstats><finished time="1773148192" timestr="Tue Mar 10 14:09:52 2026" elapsed="91.40" summary="Nmap done at Tue Mar 10 14:09:52 2026; 1 IP address (1 host up) scanned in 91.40 seconds" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>

@@ -1,0 +1,5 @@
+
+Name                                           Type   TTL   Section    IPAddress
+----                                           ----   ---   -------    ---------
+scanme.cybersteps.de                           A      300   Answer     165.232.131.154
+

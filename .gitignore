@@ -1,0 +1,7 @@
+# Python
+__pycache__/
+*.py[cod]
+.env
+.venv/
+# Optional: uncomment to exclude local output
+# output/

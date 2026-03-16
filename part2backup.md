@@ -1,0 +1,299 @@
+================================================================================
+            PART 2: CYBERSTEPS TARGET ANALYSIS
+            Evidence-Based Single-Host Reconnaissance Report
+================================================================================
+
+Report Date: 2026-03-10
+Classification: Authorized Lab Assessment
+Scope: Single host only (no exploitation, no auth bypass attempts)
+
+  - covers everything discoverd during reconnaissance active + passive
+    - Inerpretations and assumpations are evidently backed.
+    - Risk prioritization uses B52 Recon Metric 2.0 (compact: glyph + CALL + one-line rationale; evidence refs below). Full definitions: B52_Recon_Metric_2.0_Spec.md and dashboard.
+    - No claim on scientific standards nor professionalism.
+  - No claim that UDP open|filtered ports are definitively open.
+  - No claim to fame
+  - No exploitation or CVE confirmation was performed.
+  - No claim that UDP open|filtered ports are definitively open.
+    - One UDP port (520) is definitively closed; most others returned no-response.
+  - No claim that port 1080 is definitively SOCKS without protocol confirmation.
+
+⌐╦ᡁ᠊╾━
+𓆟 𓆞 𓆝𓃬 𓅟 𓃰 𓃬 𓆏 𓆟
+▬ι══════ﺤ ▬ι═ﺤ ̸/̸̅̅ ̆̅ ̅̅ ̅̅🕸‧₊˚🕷‧₊˚🕷🕸️╾━╤데╦︻ (▀̿ĺ̯▀̿ ̿) ▄︻╦芫≡══--▄︻デ══━一💨☣︎𓍯ₕₒₙₑʸ𓂃 ˖⋆𖠒☯⚧⚧⚧✞✞𓃰𓃰𓃰𓆏𓇼 ⋆.˚ 𓆉 𓆝  𓆡⋆.˚ 𓇼𓇢𓆸▬ι𓆃𓅟
+⛱ Port 21/TCP ⛱Ɑ͞ ̶͞ ̶͞ ̶͞ لں͞𒌐ㅤㅤㅤㅤㅤㅤㅤ𔒝꧁𓊈𒆜𝓟𝓻𝓸𒆜𓊉꧂ꙮ𓆤𓆤⚕🀥🂡★/̵͇̿̿/'̿'̿ ̿ ̿̿ ̿̿ ̿̿𓉸𓉸𓉸𓉸皿🛦✟✟✟𓆲𓆲𓆲𓃬𓃬  𓆝 𓆟 𓆞 𓆝 𓆟♨♨♨☸🕯𓍯ཀ⏾⏾⏾𓆣𓆣˙⋆✮
+--------------------------------------------------------------------------------★★★★☆☀ـــــــــــــــــﮩ٨ـ✩₊˚.⋆🕸️⋆⁺₊✧
+================================================================================
+⋆✴︎˚｡⋆⋆｡ﾟ｡⋆｡ ﾟ☾ ﾟ｡⋆𓋼𓍊 ﾟ｡⋆𓍊𓋼𓍊 𓆏 TARGET ⋆✴︎˚ IDENTIFICATION ｡⋆｡⋆✴︎˚｡⋆⋆｡ﾟ｡⋆｡ ﾟ☾ ﾟ｡⋆𓋼𓍊 𓆏 𓍊𓋼𓍊⋆
+================================================================================
+Verify Main Target:
+  - Hostname: scanme.cybersteps.de
+  - IP: 165.232.131.154 -> ping
+  - Proof remark (raw DNS): scanme.cybersteps.de A 300 Answer 165.232.131.154
+    - 300 TTL -> hardened for DDoS or undergoing frequent changes
+--------------------------------------------------------------------------------
+⋆✴︎˚｡⋆⋆｡ﾟ｡⋆｡ ﾟ☾ ﾟ｡⋆𓋼𓍊 ﾟ｡⋆𓍊𓋼𓍊 𓆏 PASSIVE ⋆✴︎˚ Reconnaissance ｡⋆｡⋆✴︎˚｡⋆⋆｡ﾟ｡⋆｡ ﾟ☾ ﾟ｡⋆𓋼𓍊 𓆏 𓍊𓋼𓍊⋆
+================================================================================
+Subdomain discovery:
+  - TOOL: subfinder https://github.com/projectdiscovery/subfinder.git ✴︎arrigato gomaizasu /dogoncanbakir✴︎
+
+🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷
+⋆✴︎˚｡⋆⋆｡ﾟ｡⋆｡ ﾟhttps://dhiyaneshgeek.github.io/bug/bounty/2020/02/06/recon-with-me/☾ ﾟ｡⋆𓋼𓍊｡⋆｡⋆✴︎˚｡⋆⋆｡ﾟ｡⋆｡ ﾟ☾ ﾟ｡⋆𓋼𓍊 𓆏
+       - - subfinder passively queries public sources to collected known subdomains. - -
+- Actively tested scan-related candidates (scan, scanner, scanning, scanme, scanthis, scanthat, vulnscan, portscan)
+  with Resolve-DnsName against 8.8.8.8 to identify the target host; subfinder was used as fallback.
+  - raw passive sample: careerportal.cybersteps.de, ai-challenge.cybersteps.de, chat.cybersteps.de
+🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷🕷
+
+================================================================================
+3. SERVICE ENUMERATION & ANALYSIS (CHRONOLOGICAL EVIDENCE FLOW)
+================================================================================
+[ 3.1 Discovery Phase: Port Existence Validation ]
+[ B52v2: discovery phase — see per-port CALL below ]
+Primary port scan (first standalone process):
+  - Tool: naabu (ProjectDiscovery)
+  - Run type: full TCP sweep (-p -), plus verification run on top-1000 ports
+  - Noise control: moderate rate/retries; non-intrusive scanning only
+
+- naabu: -rate 2000 (cap packets/sec), -retries 2 (avoid repeated probes).
+- nmap: -T2 or -T3 (slower timing), --max-retries 2, bounded RTT timeouts
+  (--max-rtt-timeout 3s, --initial-rtt-timeout 1s) so probes don’t hang.
+    - A port guarded by A firewall drops the packet A stateless filter blocks the reply
+      Some IDS/IPS silently drops it
+      There is no reconnaissance value gained in waiting for an RST or a reply
+    - Non-intrusive: SYN scan only for discovery; no exploit scripts, no
+      aggressive timing (T4/T5); service version (-sV) only on already confirmed ports.
+      Avoiding nmap -f because fragmented obfuscation might trigger modern firewall detections
+      since it´s so widely used and since we allready know what ports are active
+      a fragmented nmap scan would be redundant and
+  - TCP service fingerprinting: nmap -sV on discovered open TCP ports
+  - UDP coverage: nmap focused UDP scan + top-ports UDP scan
+    "165.232.131.154" | naabu -p - -silent -rate 2000 -retries 2
+    nmap -sV -Pn -n -p 21,22,80,1080,3389 165.232.131.154
+
+Confirmed open TCP ports (from full sweep):
+  - 21/tcp
+  - 22/tcp
+  - 80/tcp
+  - 1080/tcp
+  - 3389/tcp
+  - Curated proof snippet (raw naabu): 165.232.131.154:1080, :21, :22, :3389, :80
+  (see output/cybersteps/evidence_naabu_full_tcp.txt)
+
+
+UDP findings:
+  [ B52v2: UDP validation — low confidence; see spec for likelihood bands ]
+  - Focused UDP scan results:
+      curated command snippet:
+      nmap -sU -Pn -n -T3 --max-retries 1 --reason -p 53,67,68,69,123,137,138,161,162,500,514,520 165.232.131.154
+      open|filtered: 53, 67, 68, 69, 123, 137, 138, 161, 162, 500, 514
+      closed: 520 (ICMP port-unreachable)
+      raw: <port protocol="udp" portid="520"><state state="closed" reason="port-unreach" reason_ttl="55"/>
+      raw: <port protocol="udp" portid="53"><state state="open|filtered" reason="no-response" reason_ttl="0"/>
+    (see output/cybersteps/nmap_udp_focused_reason.xml)
+  - Top-200 UDP corroboration:
+                    ### arrigato gomaizasu to NMAP´s kawaii devs curating the 200 most popular ports.
+      mostly open|filtered states due no-response behavior on UDP,
+      plus specific closed/filtered entries (including 1900/udp filtered,
+      123/udp closed in that run).
+    (see output/cybersteps/nmap_udp_top200.xml)
+
+UDP Conclusion:
+Confidence: Very High
+520 closed:
+    The server replied with a icmp type 3 Destination unreachable.n
+    This proofs the OS alerted the ping to port 520 communicating: No service will be reached using this port
+    it replies with an error message.
+    proof: state="closed" reason="port-unreach"
+
+Chronology note:
+  - Discovery/validation was completed first (port existence + protocol-state checks).
+  - Service-aware verification was run only on the confirmed open TCP set afterward.
+
+[ 3.2 Service Verification on Confirmed Open TCP Ports ]
+
+  - execution -
+[ goldenB52ratio: service verification — see per-port CALL below ]
+- nmap -Pn -n -p 1080 --script=socks-auth-info,socks-open-proxy,banner --script-timeout 15s 165.232.131.154
+- 🛠🛠 b52_ratio_scanner.py 🛠🛠
+
+⛱ Port 21/TCP ⛱
+--------------------------------------------------------------------------------
+  Service:        FTP
+  Version/Banner: "220 ProFTPD 1.2.10"
+  Raw proof:      "port": 21, "open": true, "banner": "220 ProFTPD 1.2.10"
+  Evidence:       output/cybersteps/evidence_banner_probe.json
+  Confidence:     High
+  Purpose:        File Transfer Protocol (legacy plaintext file transfer)
+  Conclusions:
+    Security Risk: Very high Running version 1.2.10 is ancient and  significant security risk. It is vulnerable
+    to multiple issues. Verfied Vulnerabiliy records and exploits is just one google search away.
+  Risk (3.3): FTP exposed to internet (Medium-High). Plaintext by design unless wrapped; increases credential/data exposure.
+  Recommendation: Replace with SFTP/FTPS and restrict source IPs.
+Slothflags:
+  𓅟 Heron 𓅟: Serene surface, strike already written. Banner reads harmless; CVEs one search away.
+
+Port 22/TCP
+--------------------------------------------------------------------------------
+  Service:        SSH
+  Version/Banner: "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.13"
+  Raw proof:      "port": 22, "open": true, "banner": "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.13"
+  Evidence:       output/cybersteps/evidence_banner_probe.json
+  Confidence:     High
+  Purpose:        Secure remote administration / shell access
+
+  Slothflags:
+  𓆣 Cuttlefish 𓆣: Camouflage. Modern stack, low profile; blends with baseline. Note for pattern.
+
+  ▄︻デ══━一  ⌖⌖ Port 80/TCP ⌖⌖ 一━══デ︻▄
+  Service:        HTTP (Apache)
+
+  Version/Banner
+  ▄︻デ══━一 - - "Server: Apache/2.4.6"
+  82-V-U-L-N-E-R-A-B-I-L-I-T-I-E-S https://www.cvedetails.com/version/514578/Apache-Http-Server-2.4.6.html
+  Raw proof:      "HTTP/1.0 500 Internal Server Error ... Server: Apache/2.4.6"
+  Evidence:       output/cybersteps/evidence_banner_probe.json
+                  output/cybersteps/evidence_httpx.txt
+  Confidence:     High
+  Purpose:        Unencrypted web service
+  HTTP exposed without HTTPS on discovered open ports (High)
+   - Fact: HTTP on 80 is confirmed; 443 did not appear in discovered open TCP ports.
+   - Curated proof snippet: raw naabu list contains :80 and does not contain :443
+   - Curated proof snippet: "HTTP/1.0 500 Internal Server Error ... Server: Apache/2.4.6"
+   - Risk: Traffic can be intercepted or modified in transit (credentials, cookies,
+     sensitive payloads) in on-path scenarios.
+   - Recommendation: Enable TLS on 443, redirect 80->443, enforce HSTS.
+  Risk (3.3): Server/version disclosure (Medium). Apache/2.4.6 in response metadata; easier fingerprinting for targeted planning.
+  Recommendation: Reduce banner verbosity; patch to supported versions.
+
+Slothflags:
+  --salamandar--𓆈 ancient 𓆈 reptilian 𓆈 unpatched   Swarm. 82 CVEs; many small bites.
+  Chameleon: Version disclosure in metadata; blends until probed.
+
+Port 1080/TCP
+--------------------------------------------------------------------------------
+  Service:        SOCKS-like endpoint (auth-gated behavior observed)
+  Version/Banner: No stable text banner; protocol behavior tested via NSE
+  Raw proof:      1080/tcp open socks | socks-auth-info: Username and password
+  Evidence:       output/cybersteps/evidence_1080_socks_nse.txt
+                  output/cybersteps/nmap_services_tcp.xml
+                  output/cybersteps/evidence_naabu_full_tcp.txt
+  Confidence:     Medium-High
+
+  Purpose:        Proxy-like service; requires service-aware verification
+  Risk (3.3): Proxy-like exposure (Medium). Unknown externally exposed service; attack surface uncertainty.
+  Recommendation: Validate ownership/purpose, restrict exposure, log and monitor.
+
+  Sloth rating == 𓃰 Opossum 𓃰: No banner, auth-gated; plays dead until challenged.
+  - Since we established validation of somehow gated activity.
+    - -sV-intensety started at 1 and increased each probe by 2.
+        - nmap -sV --version-intensity 9 -p 1080 165.232.131.154
+          Risking detection on being very noisy when probing with intensity -9
+          A wide spread pattern on intensety 9 a firewall might drop it on malicuos pattern recognition or worse will log your ip -- that´s why i used proton vpn -- get your 30 % discount with the code -- slothlife69
+        - at this point i was pretty certain it´s either SOCKS4/SOCKS5 with probably       proxy running.
+
+Port 3389/TCP
+--------------------------------------------------------------------------------
+  Service:        RDP (ms-wbt-server behavior)
+  Version/Banner: Binary TPKT/X.224-style response to RDP negotiation probe
+  Raw proof:      "protocol_check":"rdp","matched":true,"raw_response_hex":"030000130ed000001234000200080001000000"
+  Evidence:       output/cybersteps/evidence_protocol_probe.json
+  Confidence:     High
+  Purpose:        Remote Desktop access
+  Risk (3.3): RDP exposed to internet (High). Remote access surface for brute-force and credential attacks.
+  Recommendation: Restrict by IP/VPN, enforce NLA + MFA, monitor auth events.
+   → ESCALATE — High threat; escalate to analyst. Evidence: output/cybersteps/evidence_protocol_probe.json
+  Slothflags:
+  𓃬 Cobra 𓃬: Small surface, deadly strike. Escalation path; privilege pivot one cred away.
+  𓅓 OWL 𓅓 sleep is for the weak → ESCALATE — High threat; escalate to analyst. Evidence: output/cybersteps/          evidence_protocol_probe.json
+
+Historical context (memory anchors, not exploit claims on this host):
+  - 3389/RDP: BlueKeep (CVE-2019-0708) showed how exposed RDP can become
+    a high-impact remote-access risk on vulnerable systems.
+  - 21/FTP: Legacy FTP stacks (including older ProFTPD branches) have had
+    serious issues (e.g., CVE-2015-3306 in specific configurations).
+  - 80/HTTP: Most web compromise stories start at an exposed HTTP surface,
+    then pivot through app-layer bugs (auth bypass, injection, session theft).
+
+================================================================================
+5. METHODOLOGY NOTES (SCRUTINY-READY)
+================================================================================
+
+What this report does:
+  - Security Evaluation based only on observed outputs from executed commands/tools.
+  - Separates confirmed facts from uncertainty.
+  - Includes evidence file paths for each major claim.
+
+What this report does NOT claim:
+  - No exploitation or CVE confirmation was performed.
+  - No claim that UDP open|filtered ports are definitively open.
+  - One UDP port (520) is definitively closed; most others returned no-response.
+  - No claim that port 1080 is definitively SOCKS without protocol confirmation.
+
+Commands executed (representative):
+  - Resolve-DnsName -Name scanme.cybersteps.de -Server 8.8.8.8 -Type A
+  - subfinder -d cybersteps.de -silent
+  - "165.232.131.154" | naabu -p - -silent -rate 2000 -retries 2
+  - nmap -sV -Pn -n -p 21,22,80,1080,3389 165.232.131.154
+  - nmap -Pn -n -p 1080 --script=socks-auth-info,socks-open-proxy,banner --script-timeout 15s 165.232.131.154
+  - nmap -sU -Pn -n -p 53,67,68,69,123,137,138,161,162,500,514,520 165.232.131.154
+  - nmap -sU -Pn -n --top-ports 200 165.232.131.154
+  - "scanme.cybersteps.de" | httpx -silent -status-code -title -tech-detect
+  - python output/cybersteps/banner_probe.py
+  - python output/cybersteps/protocol_probe.py
+
+================================================================================
+7. CUSTOM AI-ASSISTED SCRIPTING
+================================================================================
+
+Scripts used in this Part 2 workflow:
+  - run_part2_with_tools.ps1
+  - output/cybersteps/banner_probe.py
+  - output/cybersteps/protocol_probe.py
+
+Disclaimer:
+  All AI-generated suggestions were critically evaluated before integration.
+  The author remains fully responsible for the final code and its correctness.
+
+How AI was used during this project week:
+  - Tutor: explained concepts (UDP open|filtered, banner grabbing, RDP hex response).
+  - Curator: suggested commands/tools and helped compare alternatives.
+  - Research helper: pointed to standards/sources (NIST/OWASP/PTES/NCSC references).
+  - Writing helper: grammar/terminology cleanup and report structure polishing.
+  - Debug helper: troubleshooting script errors and improving command reliability.
+  - Styling helper: HTML/CSS formatting support for readable report assets.
+
+Actual workflow quality (realistic note):
+  - AI output was useful but noisy.
+  - Roughly ~30% of generated output looked initially usable.
+  - After verification, only ~10% was directly integrated.
+  - Everything accepted was re-checked against raw evidence files and command output.
+
+Example prompt/answer cycle #1 (report QA against standard):
+  Prompt used:
+    "evaluate my Reconnaissance Report on the basis of nistspecialpublication800-115.pdf
+     look for deviations in my report deriving from the standards found in the pdf.
+     Suggest improvements including cited proof for the suggestion from the pdf."
+  Typical AI answer (summary):
+    - suggested clearer scope/method/results split
+    - suggested explicit evidence traceability per claim
+    - suggested stronger limitations/disclaimer wording
+  What was kept:
+    - only verifiable structure/evidence suggestions
+  What was lost:
+    - no unverifiable claims
+Example prompt/answer cycle #2 (script generation):
+  Prompt used:
+    "Create a minimal Python async banner probe script for authorized lab use with
+     timeout handling and JSON output."
+  Typical AI answer (summary):
+    - produced asyncio scaffold with connect/read timeouts and JSON serialization
+    - included generic payload order and broad exception handling
+  What was kept:
+    - core async/socket skeleton
+    - then manually adapted target ports, probe behavior, output path, and validation logic
+    - final script accepted only after matching raw outputs to observed evidence
+
+================================================================================
+                          END OF REPORT
+================================================================================
