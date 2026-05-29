@@ -1,471 +1,615 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penetration Test & Exposure Report — 10.10.10.130</title>
+    <title>CyberStepsVuln — Continuous Security Assessment Guidelines</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
         :root {
-            /* Vintage Blue Ticket Colors */
-            --bg-color: #3b5998; /* Main Ticket Body */
-            --grid-line: #a3b8cc; /* Grid Layout borders */
-            --text-main: #f0f6fc;
-            --text-muted: #c9d1d9;
-            
-            /* Provided Palette */
-            --keppel: #6CC2B1;      /* Low/Info Mint */
-            --cinnabar: #EC5D3D;    /* Critical/High Orange-Red */
-            --almond: #E9DACD;      /* Metas / Headers Cream */
-            --dim-gray: #72665C;    /* Structural Accent Slate */
-
-            /* Severity Colors adapted for high contrast on blue */
-            --critical: var(--cinnabar);
-            --high: #f2a154;
-            --medium: #d2a8ff;
-            --low: var(--keppel);
-            --info: var(--almond);
-
-            --mono: 'Share Tech Mono', ui-monospace, SFMono-Regular, Consolas, monospace;
+            --bg-color: #080a0f;
+            --surface-color: #11141e;
+            --border-color: rgba(0, 255, 208, 0.15);
+            --border-hover: rgba(0, 255, 208, 0.35);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+            --accent: #00ffd0;
+            --accent-blue: #38bdf8;
+            --accent-glow: rgba(0, 255, 208, 0.15);
+            --card-glow: rgba(0, 255, 208, 0.02);
+            --mono-font: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
         }
 
         body {
-            background-color: #12141d; /* Clean cyber dark environment */
+            background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: var(--mono);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.6;
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
             -webkit-font-smoothing: antialiased;
-            text-transform: uppercase;
         }
 
-        .container {
-            max-width: 950px;
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 10, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+        }
+
+        .navbar-container {
+            max-width: 1000px;
             margin: 0 auto;
-            background-color: var(--bg-color);
-            padding: 40px;
-            border: 2px solid var(--grid-line);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--mono-font);
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(0, 255, 208, 0.3);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            background: rgba(0, 255, 208, 0.06);
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.88rem;
+            font-family: var(--mono-font);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: #080a0f;
+            box-shadow: 0 0 12px var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: none;
+            color: #ffffff;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            font-family: var(--mono-font);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 48px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--accent-blue);
+            font-family: var(--mono-font);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        code {
+            font-family: var(--mono-font);
+            background: rgba(0, 255, 208, 0.04);
+            border: 1px solid rgba(0, 255, 208, 0.12);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        /* Lead Quote Card */
+        .quote-card {
+            background: linear-gradient(135deg, rgba(0, 255, 208, 0.02), rgba(56, 189, 248, 0.01));
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 24px 32px;
+            margin-bottom: 40px;
             position: relative;
         }
 
-        /* Jagged ticket edge detailing */
-        .container::before, .container::after {
-            content: '';
+        .quote-text {
+            font-family: var(--mono-font);
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin: 0 0 8px;
+            letter-spacing: -0.01em;
+        }
+
+        .quote-author {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface-color);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 4px 20px var(--card-glow);
+        }
+
+        .card-accent {
+            border-left: 2px solid var(--accent);
+        }
+
+        .card-accent-blue {
+            border-left: 2px solid var(--accent-blue);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-family: var(--mono-font);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Tables */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: var(--mono-font);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        li strong {
+            color: var(--text-main);
+        }
+
+        /* Steps list */
+        .step-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 36px;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
             position: absolute;
             left: 0;
-            right: 0;
-            height: 10px;
-            background-size: 20px 20px;
+            top: 2px;
+            width: 22px;
+            height: 22px;
+            background: rgba(0, 255, 208, 0.08);
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono-font);
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
-        .container::before {
-            top: -5px;
-            background-image: radial-gradient(circle at 10px 0, transparent 10px, var(--bg-color) 11px);
+        /* Links */
+        a.text-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: border-color 0.2s ease;
+            border-bottom: 1px solid transparent;
         }
 
-        .container::after {
-            bottom: -5px;
-            background-image: radial-gradient(circle at 10px 20px, transparent 10px, var(--bg-color) 11px);
+        a.text-link:hover {
+            border-color: var(--accent);
         }
 
+        /* Print styling */
         @media print {
-            body { background: white; color: black; text-transform: none; font-family: sans-serif; }
-            .container { padding: 0; max-width: 100%; box-shadow: none; border: none; background: white; }
-            .container::before, .container::after { display: none; }
-            .no-print { display: none !important; }
-            .page-break { page-break-before: always; }
-            * { border-color: #ddd !important; color: black !important; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid #ccc !important; }
-            .severity-critical { color: #d73a49 !important; font-weight: bold; }
-            .severity-high { color: #b08800 !important; font-weight: bold; }
-        }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                font-size: 11pt !important;
+                line-height: 1.5 !important;
+            }
 
-        h1, h2, h3, h4 { 
-            color: var(--text-main); 
-            margin-top: 1.5em; 
-            margin-bottom: 0.8em; 
-            font-weight: normal;
-            letter-spacing: 2px;
-        }
+            .navbar, .btn, .btn-group, iframe, #print-btn {
+                display: none !important;
+            }
 
-        h1 { 
-            font-size: 2rem; 
-            border-bottom: 2px solid var(--grid-line); 
-            padding-bottom: 0.3em; 
-            margin-top: 0; 
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
 
-        .ticket-number {
-            font-size: 1.3rem;
-            color: var(--almond);
-            letter-spacing: 4px;
-        }
+            h1, h2, h3, h4 {
+                color: #000000 !important;
+                border-color: #cccccc !important;
+            }
 
-        h2 { 
-            font-size: 1.4rem; 
-            border-bottom: 1px solid var(--grid-line); 
-            padding-bottom: 0.3em; 
-            margin-top: 2.5em; 
-            color: var(--almond);
-        }
+            h1 {
+                font-size: 20pt !important;
+            }
 
-        h3 { font-size: 1.15rem; margin-top: 1.5em; color: var(--keppel); }
+            h2 {
+                font-size: 14pt !important;
+                margin-top: 30pt !important;
+                page-break-after: avoid;
+            }
 
-        p, ul, li { margin-bottom: 1em; font-size: 0.95rem; }
-        ul { padding-left: 24px; list-style-type: square; }
-        li { margin-bottom: 0.8em; }
+            .card {
+                background: #ffffff !important;
+                border: 1px solid #cccccc !important;
+                page-break-inside: avoid;
+            }
 
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-bottom: 2em; 
-            font-size: 0.9em; 
-            border: 2px solid var(--grid-line);
-        }
-        
-        th, td { 
-            border: 1px solid var(--grid-line); 
-            padding: 12px; 
-            text-align: left; 
-            vertical-align: top; 
-        }
-        
-        th { 
-            background: rgba(255,255,255,0.06); 
-            color: var(--almond); 
-            font-weight: normal; 
-            letter-spacing: 1px; 
-        }
+            .quote-card {
+                background: #ffffff !important;
+                border: 1px dashed #666666 !important;
+                color: #000000 !important;
+            }
 
-        .meta-table th { width: 30%; }
+            .quote-text {
+                color: #000000 !important;
+            }
 
-        code { 
-            background: rgba(0,0,0,0.3); 
-            padding: 0.2em 0.4em; 
-            border: 1px solid var(--grid-line);
-            color: var(--almond); 
-        }
+            table {
+                page-break-inside: avoid;
+            }
 
-        pre {
-            background: rgba(0,0,0,0.35);
-            border: 1px solid var(--grid-line);
-            padding: 16px;
-            overflow-x: auto;
-            color: var(--text-main);
-            font-family: var(--mono);
-            font-size: 0.85em;
-            margin-bottom: 1.5em;
-            text-transform: none; /* preserve layout and case sensitivity of evidence */
-        }
+            td, th {
+                border-color: #cccccc !important;
+                color: #000000 !important;
+            }
 
-        .severity-critical { color: var(--critical); font-weight: bold; }
-        .severity-high { color: var(--high); font-weight: bold; }
-        .severity-medium { color: var(--medium); font-weight: bold; }
-        .severity-low { color: var(--low); font-weight: bold; }
-        .severity-info { color: var(--info); font-weight: bold; }
+            code {
+                background: #eeeeee !important;
+                border: 1px solid #cccccc !important;
+                color: #000000 !important;
+            }
 
-        .toolbar { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 3em; 
+            p, li {
+                color: #333333 !important;
+            }
         }
-
-        .btn { 
-            background: transparent; 
-            color: var(--text-main); 
-            border: 1px solid var(--grid-line); 
-            padding: 8px 16px; 
-            cursor: pointer; 
-            font-size: 0.9em; 
-            font-family: var(--mono);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px; 
-            text-decoration: none; 
-        }
-
-        .btn:hover { 
-            background: var(--grid-line); 
-            color: var(--bg-color); 
-        }
-
-        .box { 
-            background: rgba(0,0,0,0.12); 
-            border: 1px solid var(--grid-line); 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            border-left: 4px solid var(--dim-gray);
-        }
-        
-        .box h4 { 
-            margin-top: 0; 
-            margin-bottom: 12px; 
-            font-size: 1.05rem; 
-            color: var(--almond);
-        }
-        
-        .finding-list li { 
-            margin-bottom: 16px; 
-            padding-bottom: 16px;
-            border-bottom: 1px dashed rgba(163, 184, 204, 0.3);
-        }
-
-        .finding-list li:last-child {
-            border-bottom: none;
-        }
-
-        .signature-block {
-            margin-top: 4em;
-            border-top: 1px solid var(--grid-line);
-            padding-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--grid-line);
-        }
-
-        .scan-cmd-row {
-            margin-bottom: 1.5em;
-            border-bottom: 1px dashed rgba(163, 184, 204, 0.3);
-            padding-bottom: 1em;
-        }
-
-        .scan-cmd-row:last-child {
-            border-bottom: none;
-        }
-
     </style>
 </head>
+
 <body>
 
-<div class="toolbar no-print" style="max-width: 950px; margin: 0 auto 2em auto;">
-    <a href="index.html" class="btn">← Back to Dashboard</a>
-    <button class="btn" onclick="window.print()">Print to PDF</button>
-</div>
-
-<div class="container">
-    
-    <h1>
-        <span>Exposure Audit</span>
-        <span class="ticket-number">CZ294855</span>
-    </h1>
-    
-    <div style="margin-bottom: 2em; color: var(--almond); letter-spacing: 1px;">
-        TARGET HOST: 10.10.10.130<br>
-        CLASSIFICATION: CONFIDENTIAL - ENTERPRISE INFRASTRUCTURE AUDIT
-    </div>
-
-    <table class="meta-table">
-        <tbody>
-            <tr>
-                <th>Audit Date</th>
-                <td>2026-04-03</td>
-            </tr>
-            <tr>
-                <th>Scope Matrix</th>
-                <td>Perimeter Services & Web Interfaces (Single Host: 10.10.10.130)</td>
-            </tr>
-            <tr>
-                <th>Risk Metrics</th>
-                <td>NIST SP 800-30, NIST CSF 2.0, OWASP Top 10, CWE / CVSS v3.1</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>1. Executive Summary</h2>
-    
-    <h3>Purpose</h3>
-    <p>This report details the perimeter vulnerability assessment of host <code>10.10.10.130</code>. Our objective was to evaluate the exposed attack surface, map the running configurations, and provide actionable security recommendations to strengthen the infrastructure boundary.</p>
-
-    <h3>Overall Posture</h3>
-    <p>The system displays critical defensive gaps. Port scanning discovered two open TCP services (SSH on port 22 and HTTP on port 80). The web interface exposes active backdoors/test scripts inside an indexable <code>/test/</code> directory. Specifically, an unauthenticated web shell (<code>/test/shell.php</code>) was confirmed, allowing complete, unauthorized system access. In addition, the underlying web server (<code>lighttpd/1.4.28</code>) and the SSH daemon (<code>OpenSSH 5.9p1</code>) are severely outdated, introducing critical vulnerability vectors.</p>
-
-    <h3>Consolidated Findings</h3>
-    <ul class="finding-list">
-        <li><strong>F-01: Exposed Web Shell (TCP/80)</strong> – Active backdoor endpoint identified at <code>/test/shell.php</code>. Accepts remote system command parameters. <span class="severity-critical">[CRITICAL]</span></li>
-        <li><strong>F-02: Web Directory Indexing Enabled (TCP/80)</strong> – Directory listing enabled on <code>/test/</code>, exposing critical backend scripts (<code>shell.php</code>, <code>revs.php</code>). <span class="severity-high">[HIGH]</span></li>
-        <li><strong>F-03: Outdated Web Daemon (TCP/80)</strong> – Operating <code>lighttpd/1.4.28</code>. End-of-life server susceptible to direct host exploitation. <span class="severity-high">[HIGH]</span></li>
-        <li><strong>F-04: Outdated & Vulnerable SSH Suite (TCP/22)</strong> – Running <code>OpenSSH 5.9p1</code> on Debian. Susceptible to user enumeration (CVE-2016-6210, CVE-2018-15473) and weak KEX negotiation. <span class="severity-medium">[MEDIUM]</span></li>
-        <li><strong>F-05: Missing HTTP Transport Protections (TCP/80)</strong> – The web service transmits data in plaintext without SSL/TLS, and lacks critical security headers (CSP, HSTS, X-Frame-Options). <span class="severity-medium">[MEDIUM]</span></li>
-        <li><strong>F-06: Unauthenticated Diagnostic Endpoints (TCP/80)</strong> – <code>/test/revs.php</code> triggers 500 internal errors on targeted parameters, indicating active diagnostic/log exposure. <span class="severity-medium">[MEDIUM]</span></li>
-    </ul>
-
-    <div class="box">
-        <h4>NOTE: Audit Limitations</h4>
-        <ul>
-            <li>No active brute-forcing or credentials spray succeeded on SSH port 22.</li>
-            <li>No active network database ports (MSSQL/1433, Oracle/1521) or printer services (9100) are open.</li>
-            <li>Network boundary testing verified a default Linux initial TTL of 64 on syn-ack handshakes.</li>
-        </ul>
-    </div>
-
-    <h2>2. Scope & Technical Methodology</h2>
-    <p><strong>Technical Scope:</strong> Non-destructive network analysis against <code>10.10.10.130</code>. Services were probed using synchronized port sweeps, protocol-specific handshakes (SSH/HTTP), and directory fuzzing tools. Exploitation of the discovered web shell backdoor was intentionally avoided to comply with lab rules.</p>
-    <p><strong>Tools Leveraged:</strong> <code>nmap</code>, <code>naabu</code>, <code>ffuf</code>, <code>nuclei</code>, and targeted protocol analyzers.</p>
-
-    <h2>3. Risk Evaluation Framework</h2>
-
-    <h3>CIA Impact Matrix</h3>
-    <table>
-        <thead>
-            <tr><th>Pillar</th><th>Defensive Impact State</th></tr>
-        </thead>
-        <tbody>
-            <tr><td><strong>Confidentiality</strong></td><td>Compromised – Enabled directory indexing and active web backdoors permit arbitrary file read access on the host webroot.</td></tr>
-            <tr><td><strong>Integrity</strong></td><td>Compromised – Unauthenticated RCE/Web shell capability permits write access to host configurations and backend code.</td></tr>
-            <tr><td><strong>Availability</strong></td><td>At risk – Exploitable backend errors and unmanaged PHP execution pathways threaten service uptime.</td></tr>
-            <tr><td><strong>Accountability</strong></td><td>Weak – Lack of robust logging, transport-level encryption, or authentication mechanisms breaks audit trails.</td></tr>
-        </tbody>
-    </table>
-
-    <div class="page-break"></div>
-
-    <h2>4. Detailed Evidence Appendix</h2>
-    <p>This section outlines the command configurations and actual terminal captures obtained during the assessment of <code>10.10.10.130</code>.</p>
-
-    <h3>4.1 Active Scan Command Trace</h3>
-    <div class="box">
-        <div class="scan-cmd-row">
-            <strong>Stealth TCP Service Scan</strong><br>
-            <code>nmap -sS -Pn -n -T2 --max-retries 2 --max-rtt-timeout 3s --initial-rtt-timeout 1s --open -p- 10.10.10.130</code>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="nav-logo">CyberSteps // Project Spec</div>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-outline">Back to Dashboard</a>
+                <button type="button" class="btn" id="print-btn">Print Specs</button>
+            </div>
         </div>
-        <div class="scan-cmd-row">
-            <strong>Deep Protocol Investigation</strong><br>
-            <code>nmap -sV -Pn -n -T3 --version-intensity 7 -p 21,22,25,80,1080,3389,5900,9200 10.10.10.130</code>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Continuous <span>Penetration Testing Project</span></h1>
+            <div class="subtitle">Operational Scope & Report Guidelines — Target: CyberStepsVuln</div>
+        </header>
+
+        <section class="quote-card">
+            <p class="quote-text">"Learning without application is just reading. Let's break things."</p>
+            <p class="quote-author">Continuous Training Paradigm</p>
+        </section>
+
+        <section>
+            <p>Throughout this block, you will actively test and find real web application vulnerabilities, including <strong>SQL Injection</strong>, <strong>Cross-Site Scripting (XSS)</strong>, <strong>Broken Access Control</strong>, <strong>CSRF</strong>, <strong>SSRF</strong>, <strong>XML External Entities (XXE)</strong>, <strong>LFI</strong>, <strong>RFI</strong>, and <strong>WordPress Security Flaws</strong>.</p>
+            <p>Your objective is to execute a continuous, structured penetration test against a custom, deliberately vulnerable target environment called <strong>CyberStepsVuln</strong>. Rather than deferring analysis to the end of the term, apply your testing methodologies immediately following each technical session. You are expected to document all findings incrementally to build a professional-grade final deliverable.</p>
+            <p>This mimics standard industry engagement lifecycles. The final report is a technical portfolio piece demonstrating rigorous evidence collection, clear impact analysis, and practical remediation guidance.</p>
+        </section>
+
+        <h2>The Target</h2>
+        <div class="card card-accent">
+            <h3>Target Specifications</h3>
+            <p><strong>CyberStepsVuln</strong> is a custom, realistic virtual machine hosting a range of services, administrative interfaces, and hidden pathways designed to test diverse exploitation chains.</p>
+            <p><strong>Setup Instructions:</strong></p>
+            <ol>
+                <li>Download the virtualization archive: <a class="text-link" href="https://drive.google.com/file/d/19FeKR4NqXpyhLoleD2pJ2WIIyaLh5DXp/view?usp=drive_link" target="_blank" rel="noopener noreferrer">CyberStepsVuln.ova</a></li>
+                <li>Import the image into your hypervisor (VMware / VirtualBox).</li>
+                <li>Configure the network adapter to <strong>NAT</strong> mode (Subnet <code>10.10.10.0/24</code>, matching your Kali Linux testing instance).</li>
+                <li>Boot the target virtual machine.</li>
+                <li>Access the initial web interface directly from your testing browser at: <code>http://10.10.10.10</code></li>
+            </ol>
+            <p>All active analysis and testing must be performed exclusively from your isolated Kali Linux virtual machine.</p>
         </div>
-        <div class="scan-cmd-row">
-            <strong>Targeted Ffuf Directory Fuzzing</strong><br>
-            <code>ffuf -u http://10.10.10.130/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt -fc 404</code>
+
+        <h2>Operational Scope</h2>
+        <p>A rigorous definition of scope separates authorized assessments from illegal network intrusions. Strict adherence to these boundaries is mandatory.</p>
+
+        <div class="grid-2">
+            <div class="card card-accent-blue">
+                <h3>In Scope</h3>
+                <ul>
+                    <li><strong>Web Application:</strong> All hosted endpoints, parameter sets, forms, and input fields on <code>10.10.10.10</code>.</li>
+                    <li><strong>Discovered Services:</strong> Any exposed TCP/UDP ports and daemons identified during host enumeration.</li>
+                    <li><strong>Vulnerability Classes:</strong> Injection flaws, server-side actions (SSRF/XXE), file inclusion (LFI/RFI), broken authentication, and session handling.</li>
+                    <li><strong>Content Management:</strong> Installed CMS platforms (WordPress, etc.) and active plugins.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Out of Scope</h3>
+                <ul>
+                    <li><strong>External Dependencies:</strong> Third-party CDNs, hosted libraries (Bootstrap, jQuery from external links), or external APIs.</li>
+                    <li><strong>Social Engineering:</strong> Phishing, credential harvesting, or physical coercion targeting instructors, classmates, or staff.</li>
+                    <li><strong>Physical Assessments:</strong> Facilities, hosting infrastructure, or networking equipment.</li>
+                </ul>
+            </div>
         </div>
-    </div>
+        <p><em>Note:</em> Vulnerabilities identified in third-party CDN resources may be logged as auxiliary observations, but they do not constitute valid findings against the core application layer itself.</p>
 
-    <h3>4.2 Custom Python Banner Prober Tool</h3>
-    <pre>
-import asyncio
-import json
+        <h2>Structured Testing Methodology</h2>
+        <p>Avoid chaotic testing. Apply a methodical, systematic process following each module session. The recommended analytical flow is structured below:</p>
 
-TARGET = "10.10.10.130"
-PORTS = [21, 22, 80, 1080, 3389]
+        <ol class="step-list">
+            <li class="step-item">
+                <span class="step-number">1</span>
+                <strong>Reconnaissance & Footprinting:</strong> Enumerate open ports, identify server banners, and map general infrastructure technologies.
+            </li>
+            <li class="step-item">
+                <span class="step-number">2</span>
+                <strong>Directory & Path Mapping:</strong> Fuzz directories, discover hidden interfaces, and map all input parameters.
+            </li>
+            <li class="step-item">
+                <span class="step-number">3</span>
+                <strong>Input Validation Testing:</strong> Systematically test for SQL Injection (SQLi), Cross-Site Scripting (XSS), and Command Injection.
+            </li>
+            <li class="step-item">
+                <span class="step-number">4</span>
+                <strong>Authorization & Authentication:</strong> Probe session handling, cookies, token strength, privilege boundaries, and IDOR vectors.
+            </li>
+            <li class="step-item">
+                <span class="step-number">5</span>
+                <strong>File Handling & Parser Vulnerabilities:</strong> Enumerate Local and Remote File Inclusions (LFI/RFI), SSRF endpoints, and XXE injection vectors.
+            </li>
+            <li class="step-item">
+                <span class="step-number">6</span>
+                <strong>CMS and Third-Party Audits:</strong> Scan active content management systems for known, unpatched CVEs.
+            </li>
+            <li class="step-item">
+                <span class="step-number">7</span>
+                <strong>Post-Exploitation (Safe Limits):</strong> Pivot from initial access to confirm lateral movement possibilities and local host misconfigurations.
+            </li>
+        </ol>
 
-async def probe(port: int):
-    result = {"port": port, "open": False, "banner": ""}
-    try:
-        reader, writer = await asyncio.wait_for(asyncio.open_connection(TARGET, port), timeout=4)
-        result["open"] = True
-        probes = [b"", b"HEAD / HTTP/1.0\r\nHost: 10.10.10.130\r\n\r\n", b"\r\n"]
-        data = b""
-        for p in probes:
-            if p:
-                writer.write(p)
-                await writer.drain()
-            try:
-                chunk = await asyncio.wait_for(reader.read(1024), timeout=3)
-            except Exception:
-                chunk = b""
-            if chunk:
-                data = chunk
-                break
-        writer.close()
-        await writer.wait_closed()
-        if data:
-            result["banner"] = data.decode("utf-8", errors="replace").strip()
-    except Exception:
-        pass
-    return result
+        <p>Utilize the official <a class="text-link" href="https://owasp.org/www-project-web-security-testing-guide/" target="_blank" rel="noopener noreferrer">OWASP Web Security Testing Guide (WSTG)</a> as your core technical checklist.</p>
 
-async def main():
-    results = await asyncio.gather(*[probe(p) for p in PORTS])
-    print(json.dumps(results, indent=2))
+        <h2>Assessment Tooling</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool Name</th>
+                        <th>Primary Use Case</th>
+                        <th>Application Context</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Nmap</code></td>
+                        <td>Port scanning & service fingerprinting</td>
+                        <td>Initial host discovery and protocol analysis</td>
+                    </tr>
+                    <tr>
+                        <td><code>gobuster / ffuf / dirb</code></td>
+                        <td>Directory and resource fuzzing</td>
+                        <td>Locating hidden folders, configurations, and scripts</td>
+                    </tr>
+                    <tr>
+                        <td><code>Burp Suite</code></td>
+                        <td>Request interception & manipulation</td>
+                        <td>Manual analysis of session flow and input fields</td>
+                    </tr>
+                    <tr>
+                        <td><code>SQLMap</code></td>
+                        <td>Automated database injection testing</td>
+                        <td>Verifying injection paths after manual identification</td>
+                    </tr>
+                    <tr>
+                        <td><code>WPScan</code></td>
+                        <td>CMS-specific vulnerability checks</td>
+                        <td>Scanning target WordPress core and plugins</td>
+                    </tr>
+                    <tr>
+                        <td><code>Nikto / curl</code></td>
+                        <td>Server scanning & manual request craft</td>
+                        <td>Probing web configurations and raw HTTP handshakes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-if __name__ == "__main__":
-    asyncio.run(main())
-    </pre>
+        <h2>Project Deliverable & Reporting Standards</h2>
+        <p>The primary deliverable is a comprehensive, client-ready security assessment document (PDF or DOCX format). It must bridge high-level operational risk with deep technical evidence, maintaining a professional tone throughout.</p>
 
-    <div class="page-break"></div>
+        <div class="grid-2">
+            <div class="card card-accent">
+                <h3>Minimum Requirements</h3>
+                <ul>
+                    <li><strong>Vulnerability Count:</strong> Minimum of 5 fully documented unique findings.</li>
+                    <li><strong>Replication (PoC):</strong> Clear, reproducible steps accompanied by annotated, high-resolution evidence screenshots.</li>
+                    <li><strong>Remediation:</strong> Actionable, specific programming or architecture level solutions for each finding.</li>
+                    <li><strong>Executive Briefing:</strong> A non-technical security health summary suitable for business stakeholders.</li>
+                </ul>
+            </div>
 
-    <h3>4.3 Raw Evidence Captures</h3>
+            <div class="card card-accent-blue">
+                <h3>Required Document Structure</h3>
+                <ol>
+                    <li><strong>Cover Page:</strong> Title, target, author details, date, and confidentiality status.</li>
+                    <li><strong>Executive Summary:</strong> High-level summary, overall posture, and critical metrics without technical jargon.</li>
+                    <li><strong>Scope & Methodology:</strong> Scope details, exceptions, and tools.</li>
+                    <li><strong>Summary Table:</strong> Consolidated findings prioritized by industry-standard severities.</li>
+                    <li><strong>Detailed Findings:</strong> Severity, affected components, PoCs, business impact, and specific fixes.</li>
+                    <li><strong>Technical Appendix:</strong> Raw payloads, long-form system outputs, and standards.</li>
+                </ol>
+            </div>
+        </div>
 
-    <h4>Host ICMP/TTL Scan Evidence (syn-ack)</h4>
-    <pre>
-RCVD (0.1438s) TCP 10.10.10.130:80 > 10.10.10.128:61836 SA ttl=64 id=0 iplen=44 seq=3481925739 win=29200
--> 80/tcp open http syn-ack ttl 64 (Linux Kernel Fingerprint)
-    </pre>
-
-    <h4>SSH Handshake & Weak Algorithms (Nuclei Engine)</h4>
-    <pre>
-INFO: SSH Service Detected
-ServerID: SSH-2.0-OpenSSH_5.9p1 Debian-5ubuntu1.8
-Kex Algorithms: [ecdh-sha2-nistp256, diffie-hellman-group-exchange-sha256, diffie-hellman-group-exchange-sha1, diffie-hellman-group1-sha1]
-Client-to-Server MACs: [hmac-md5, hmac-sha1, umac-64@openssh.com, hmac-sha2-256, hmac-sha1-96, hmac-md5-96]
-Client-to-Server Ciphers: [aes128-ctr, aes256-ctr, arcfour256, aes128-cbc, 3des-cbc, blowfish-cbc]
-    </pre>
-
-    <h4>Nikto Vulnerability Scan Details</h4>
-    <pre>
-Target: 10.10.10.130 port 80 (lighttpd/1.4.28)
---------------------------------------------------------
-- /: Suggested security header missing: x-content-type-options
-- /: Suggested security header missing: Content-Security-Policy
-- /: Suggested security header missing: Strict-Transport-Security
-- /test/: Directory indexing found. http://10.10.10.130:80/test/
-- /test/: This might be interesting.
-    </pre>
-
-    <h4>HTTP Handshake Response</h4>
-    <pre>
-HTTP/1.1 200 OK
-Connection: close
-Content-Length: 114
-Content-Type: text/html
-Date: Wed, 01 Apr 2026 16:07:02 GMT
-Server: lighttpd/1.4.28
-
-&lt;html&gt;
-&lt;title&gt; Root me &lt;/title&gt;
-&lt;body&gt;
-&lt;center&gt;
-&lt;p&gt; Can you root me? &lt;/p&gt;
-&lt;/center&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-    </pre>
-
-    <h2>5. Action Items & Security Recommendations</h2>
-    <div class="box" style="border-left-color: var(--cinnabar);">
-        <h4 style="color: var(--cinnabar);">Priority P0 – Critical System Remediation</h4>
+        <h2>Technical Guidance & Quality Tips</h2>
         <ul>
-            <li><strong>Remove Backdoors</strong>: Instantly delete <code>shell.php</code>, <code>revs.php</code>, and any files from the <code>/test/</code> directory.</li>
-            <li><strong>Disable Directory Indexing</strong>: Alter web server configuration to globally forbid directory indexing (set <code>dir-listing.activate = "disable"</code> in lighttpd configuration).</li>
-            <li><strong>Restrict Access</strong>: Place testing environments completely behind internal firewalls or VPNs.</li>
+            <li><strong>Write the Executive Summary Last:</strong> It is the single most visible page in the report. Summarize business impact plainly; avoid tool listings or specific CVE strings here.</li>
+            <li><strong>Provide Actionable Remediation:</strong> Avoid generic advice. Instead of writing "Fix input validation", specify "Utilize parameterized prepared statements for the query at <code>/search.php</code> on line 42."</li>
+            <li><strong>Do Not Dump Tool Outputs:</strong> Raw terminal dumps from scanners do not equal a finding. Explain what the output means, context-link it to the environment, and provide a clear narrative.</li>
+            <li><strong>Document Continuously:</strong> Capture evidence and screenshots in real-time as you test. Finding replication is significantly more difficult after-the-fact.</li>
         </ul>
+
+        <p>Review the presentation materials on <a class="text-link" href="https://gamma.app/docs/Penetration-Testing-Report-arg23adlmupk2wj?mode=doc" target="_blank" rel="noopener noreferrer">Penetration Test Reporting</a> for advanced details on professional narrative drafting.</p>
     </div>
 
-    <div class="box" style="border-left-color: var(--high);">
-        <h4 style="color: var(--high);">Priority P1 – Package Hardening and Upgrades</h4>
-        <ul>
-            <li><strong>Upgrade Web Server</strong>: Transition from legacy <code>lighttpd/1.4.28</code> to the latest security-hardened stable release.</li>
-            <li><strong>Harden SSH Daemon</strong>: Disable weak algorithms (CBC ciphers, HMAC-MD5, HMAC-SHA1) in <code>/etc/ssh/sshd_config</code>. Mandate public-key authentication.</li>
-            <li><strong>Enable Transport Security</strong>: Setup HTTPS using TLS 1.3, configure valid certificates, and append transport protection headers (HSTS, CSP, X-Content-Type-Options).</li>
-        </ul>
-    </div>
-
-    <div class="signature-block">
-        <span>Signature of security analyst in charge</span>
-        <span>DO NOT MAKE SETTLEMENT ON THIS PORTION</span>
-    </div>
-
-</div>
-
+    <script>
+        document.getElementById('print-btn').addEventListener('click', function () {
+            window.print();
+        });
+    </script>
 </body>
+
 </html>
