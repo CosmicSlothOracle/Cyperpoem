@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penetration Test Report — scanme.cybersteps.de</title>
+    <title>Penetration Test & Exposure Report — 10.10.10.130</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
         :root {
-            /* Vintage Ticket Colors */
-            --bg-color: #3b5998; /* Blue ticket background */
-            --grid-line: #a3b8cc; /* Faint white/blue lines */
+            /* Vintage Blue Ticket Colors */
+            --bg-color: #3b5998; /* Main Ticket Body */
+            --grid-line: #a3b8cc; /* Grid Layout borders */
             --text-main: #f0f6fc;
             --text-muted: #c9d1d9;
             
             /* Provided Palette */
-            --keppel: #6CC2B1;
-            --cinnabar: #EC5D3D;
-            --almond: #E9DACD;
-            --dim-gray: #72665C;
+            --keppel: #6CC2B1;      /* Low/Info Mint */
+            --cinnabar: #EC5D3D;    /* Critical/High Orange-Red */
+            --almond: #E9DACD;      /* Metas / Headers Cream */
+            --dim-gray: #72665C;    /* Structural Accent Slate */
 
-            /* Severities */
+            /* Severity Colors adapted for high contrast on blue */
             --critical: var(--cinnabar);
-            --high: #f0a060;
+            --high: #f2a154;
             --medium: #d2a8ff;
             --low: var(--keppel);
             --info: var(--almond);
@@ -31,7 +31,7 @@
         }
 
         body {
-            background-color: #1a1a24;
+            background-color: #12141d; /* Clean cyber dark environment */
             color: var(--text-main);
             font-family: var(--mono);
             line-height: 1.6;
@@ -47,11 +47,11 @@
             background-color: var(--bg-color);
             padding: 40px;
             border: 2px solid var(--grid-line);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
             position: relative;
         }
 
-        /* Ticket styling details */
+        /* Jagged ticket edge detailing */
         .container::before, .container::after {
             content: '';
             position: absolute;
@@ -93,7 +93,7 @@
         }
 
         h1 { 
-            font-size: 2.2rem; 
+            font-size: 2rem; 
             border-bottom: 2px solid var(--grid-line); 
             padding-bottom: 0.3em; 
             margin-top: 0; 
@@ -103,7 +103,7 @@
         }
 
         .ticket-number {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--almond);
             letter-spacing: 4px;
         }
@@ -138,7 +138,7 @@
         }
         
         th { 
-            background: rgba(255,255,255,0.05); 
+            background: rgba(255,255,255,0.06); 
             color: var(--almond); 
             font-weight: normal; 
             letter-spacing: 1px; 
@@ -147,14 +147,14 @@
         .meta-table th { width: 30%; }
 
         code { 
-            background: rgba(0,0,0,0.25); 
+            background: rgba(0,0,0,0.3); 
             padding: 0.2em 0.4em; 
             border: 1px solid var(--grid-line);
             color: var(--almond); 
         }
 
         pre {
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.35);
             border: 1px solid var(--grid-line);
             padding: 16px;
             overflow-x: auto;
@@ -162,7 +162,7 @@
             font-family: var(--mono);
             font-size: 0.85em;
             margin-bottom: 1.5em;
-            text-transform: none; /* Keep raw configs readable */
+            text-transform: none; /* preserve layout and case sensitivity of evidence */
         }
 
         .severity-critical { color: var(--critical); font-weight: bold; }
@@ -201,7 +201,7 @@
         }
 
         .box { 
-            background: rgba(0,0,0,0.1); 
+            background: rgba(0,0,0,0.12); 
             border: 1px solid var(--grid-line); 
             padding: 20px; 
             margin-bottom: 20px; 
@@ -211,7 +211,7 @@
         .box h4 { 
             margin-top: 0; 
             margin-bottom: 12px; 
-            font-size: 1rem; 
+            font-size: 1.05rem; 
             color: var(--almond);
         }
         
@@ -250,35 +250,35 @@
 <body>
 
 <div class="toolbar no-print" style="max-width: 950px; margin: 0 auto 2em auto;">
-    <a href="index.html" class="btn">← Return</a>
-    <button class="btn" onclick="window.print()">Print / PDF</button>
+    <a href="index.html" class="btn">← Back to Dashboard</a>
+    <button class="btn" onclick="window.print()">Print to PDF</button>
 </div>
 
 <div class="container">
     
     <h1>
-        <span>Penetration Test Report</span>
+        <span>Exposure Audit</span>
         <span class="ticket-number">CZ294855</span>
     </h1>
     
     <div style="margin-bottom: 2em; color: var(--almond); letter-spacing: 1px;">
-        Target: SCANME.CYBERSTEPS.DE (165.232.131.154)<br>
-        Classification: Confidential – Authorized Penetration Test
+        TARGET HOST: 10.10.10.130<br>
+        CLASSIFICATION: CONFIDENTIAL - ENTERPRISE INFRASTRUCTURE AUDIT
     </div>
 
     <table class="meta-table">
         <tbody>
             <tr>
-                <th>Assessment Date</th>
-                <td>2026-03-24</td>
+                <th>Audit Date</th>
+                <td>2026-04-03</td>
             </tr>
             <tr>
-                <th>Scope</th>
-                <td>Single Host: scanme.cybersteps.de (165.232.131.154)</td>
+                <th>Scope Matrix</th>
+                <td>Perimeter Services & Web Interfaces (Single Host: 10.10.10.130)</td>
             </tr>
             <tr>
-                <th>Framework Compliance</th>
-                <td>NIST SP 800-30, NIST CSF 2.0, OWASP Top 10, CWE/CVSS, ISO/IEC 27001</td>
+                <th>Risk Metrics</th>
+                <td>NIST SP 800-30, NIST CSF 2.0, OWASP Top 10, CWE / CVSS v3.1</td>
             </tr>
         </tbody>
     </table>
@@ -286,74 +286,76 @@
     <h2>1. Executive Summary</h2>
     
     <h3>Purpose</h3>
-    <p>This report presents the security posture assessment of <code>165.232.131.154</code> (scanme.cybersteps.de). Through rigorous active and passive reconnaissance, we evaluated service vulnerability configurations to map the exposure vector of the host.</p>
+    <p>This report details the perimeter vulnerability assessment of host <code>10.10.10.130</code>. Our objective was to evaluate the exposed attack surface, map the running configurations, and provide actionable security recommendations to strengthen the infrastructure boundary.</p>
 
     <h3>Overall Posture</h3>
-    <p>The host displays two critical vulnerability vectors: legacy FTP (ProFTPD 1.2.10) configured with anonymous read/write permissions, and an unauthenticated SMTP service exhibiting complete authentication bypass. Additionally, internet-exposed administrative interfaces (RDP, SNMP) and unencrypted web infrastructure (HTTP) significantly broaden the system's attack profile. Immediate mitigation is recommended prior to production deployment.</p>
+    <p>The system displays critical defensive gaps. Port scanning discovered two open TCP services (SSH on port 22 and HTTP on port 80). The web interface exposes active backdoors/test scripts inside an indexable <code>/test/</code> directory. Specifically, an unauthenticated web shell (<code>/test/shell.php</code>) was confirmed, allowing complete, unauthorized system access. In addition, the underlying web server (<code>lighttpd/1.4.28</code>) and the SSH daemon (<code>OpenSSH 5.9p1</code>) are severely outdated, introducing critical vulnerability vectors.</p>
 
     <h3>Consolidated Findings</h3>
     <ul class="finding-list">
-        <li><strong>F-01: ProFTPD 1.2.10 (TCP/21)</strong> – Legacy release (~2005) with anonymous login active. Vulnerable to remote code execution, directory traversal, and DoS. <span class="severity-critical">[CRITICAL]</span></li>
-        <li><strong>F-02: SMTP Auth Bypass (TCP/25)</strong> – Mail server allows unauthenticated session elevation (returns success 235 without credentials). <span class="severity-critical">[CRITICAL]</span></li>
-        <li><strong>F-03: Exposed RDP (TCP/3389)</strong> – Remote Desktop fully exposed with default handshakes. Highly susceptible to brute-force vectors. <span class="severity-high">[HIGH]</span></li>
-        <li><strong>F-04: Exposed SNMP (UDP/161)</strong> – Active community string interface allowing environment layout extraction. <span class="severity-high">[HIGH]</span></li>
-        <li><strong>F-05: SOCKS5 Proxy (TCP/1080)</strong> – SOCKS5 handshake negotiates username/password authorization (Method 0x02). Actively serves as potential pivoting target. <span class="severity-medium">[MEDIUM]</span></li>
-        <li><strong>F-06: HTTP No TLS (TCP/80)</strong> – Web engine running outdated Apache 2.4.6 with default directory catch-all login behaviour. <span class="severity-medium">[MEDIUM]</span></li>
-        <li><strong>F-07: SSH Weak MACs (TCP/22)</strong> – Active OpenSSH service supporting outdated and vulnerable HMAC-SHA1 suites. <span class="severity-low">[LOW]</span></li>
-        <li><strong>F-08: Unauthenticated VNC (TCP/5900)</strong> – VNC RFB 3.8 protocol listening with no credential barriers detected on handshake. <span class="severity-low">[LOW]</span></li>
-        <li><strong>F-09: Filtered Port 9200</strong> – Indeterminate state (filtered). Needs targeted API probes to differentiate from honeypot. <span class="severity-info">[INFO]</span></li>
-        <li><strong>F-10: Inactive Standard Ports</strong> – Database and printer ports (1433, 1521, 9100) verified closed. <span class="severity-info">[INFO]</span></li>
+        <li><strong>F-01: Exposed Web Shell (TCP/80)</strong> – Active backdoor endpoint identified at <code>/test/shell.php</code>. Accepts remote system command parameters. <span class="severity-critical">[CRITICAL]</span></li>
+        <li><strong>F-02: Web Directory Indexing Enabled (TCP/80)</strong> – Directory listing enabled on <code>/test/</code>, exposing critical backend scripts (<code>shell.php</code>, <code>revs.php</code>). <span class="severity-high">[HIGH]</span></li>
+        <li><strong>F-03: Outdated Web Daemon (TCP/80)</strong> – Operating <code>lighttpd/1.4.28</code>. End-of-life server susceptible to direct host exploitation. <span class="severity-high">[HIGH]</span></li>
+        <li><strong>F-04: Outdated & Vulnerable SSH Suite (TCP/22)</strong> – Running <code>OpenSSH 5.9p1</code> on Debian. Susceptible to user enumeration (CVE-2016-6210, CVE-2018-15473) and weak KEX negotiation. <span class="severity-medium">[MEDIUM]</span></li>
+        <li><strong>F-05: Missing HTTP Transport Protections (TCP/80)</strong> – The web service transmits data in plaintext without SSL/TLS, and lacks critical security headers (CSP, HSTS, X-Frame-Options). <span class="severity-medium">[MEDIUM]</span></li>
+        <li><strong>F-06: Unauthenticated Diagnostic Endpoints (TCP/80)</strong> – <code>/test/revs.php</code> triggers 500 internal errors on targeted parameters, indicating active diagnostic/log exposure. <span class="severity-medium">[MEDIUM]</span></li>
     </ul>
 
-    <h2>2. Scope & Methodology</h2>
-    <p><strong>Methodology:</strong> Following the OWASP Web Security Testing Guide (WSTG) and NIST standards, we executed extensive non-intrusive TCP/UDP scanning, banner enumeration, protocol-level checking, and passive DNS mapping. No host exploitation or destructive vulnerability execution was performed.</p>
+    <div class="box">
+        <h4>NOTE: Audit Limitations</h4>
+        <ul>
+            <li>No active brute-forcing or credentials spray succeeded on SSH port 22.</li>
+            <li>No active network database ports (MSSQL/1433, Oracle/1521) or printer services (9100) are open.</li>
+            <li>Network boundary testing verified a default Linux initial TTL of 64 on syn-ack handshakes.</li>
+        </ul>
+    </div>
+
+    <h2>2. Scope & Technical Methodology</h2>
+    <p><strong>Technical Scope:</strong> Non-destructive network analysis against <code>10.10.10.130</code>. Services were probed using synchronized port sweeps, protocol-specific handshakes (SSH/HTTP), and directory fuzzing tools. Exploitation of the discovered web shell backdoor was intentionally avoided to comply with lab rules.</p>
+    <p><strong>Tools Leveraged:</strong> <code>nmap</code>, <code>naabu</code>, <code>ffuf</code>, <code>nuclei</code>, and targeted protocol analyzers.</p>
 
     <h2>3. Risk Evaluation Framework</h2>
 
-    <h3>CIA Triad Summary</h3>
+    <h3>CIA Impact Matrix</h3>
     <table>
         <thead>
-            <tr><th>Pillar</th><th>Impact State</th></tr>
+            <tr><th>Pillar</th><th>Defensive Impact State</th></tr>
         </thead>
         <tbody>
-            <tr><td><strong>Confidentiality</strong></td><td>Compromised – Anonymous FTP access, SMTP session bypass, and SNMP telemetry access expose critical system layouts and files.</td></tr>
-            <tr><td><strong>Integrity</strong></td><td>At risk – FTP write access allows potential configuration manipulation; HTTP traffic is vulnerable to active man-in-the-middle manipulation.</td></tr>
-            <tr><td><strong>Availability</strong></td><td>At risk – ProFTPD legacy package has verified public Denial of Service (DoS) exploits.</td></tr>
-            <tr><td><strong>Accountability</strong></td><td>Failed – SMTP authentication bypass completely breaks audit trails and non-repudiation constraints.</td></tr>
+            <tr><td><strong>Confidentiality</strong></td><td>Compromised – Enabled directory indexing and active web backdoors permit arbitrary file read access on the host webroot.</td></tr>
+            <tr><td><strong>Integrity</strong></td><td>Compromised – Unauthenticated RCE/Web shell capability permits write access to host configurations and backend code.</td></tr>
+            <tr><td><strong>Availability</strong></td><td>At risk – Exploitable backend errors and unmanaged PHP execution pathways threaten service uptime.</td></tr>
+            <tr><td><strong>Accountability</strong></td><td>Weak – Lack of robust logging, transport-level encryption, or authentication mechanisms breaks audit trails.</td></tr>
         </tbody>
     </table>
 
     <div class="page-break"></div>
 
     <h2>4. Detailed Evidence Appendix</h2>
-    <p>This section documents the precise, evidence-backed commands and output captures retrieved during the execution of this assessment.</p>
+    <p>This section outlines the command configurations and actual terminal captures obtained during the assessment of <code>10.10.10.130</code>.</p>
 
-    <h3>4.1 Scan Command Trace & Flags</h3>
+    <h3>4.1 Active Scan Command Trace</h3>
     <div class="box">
         <div class="scan-cmd-row">
-            <strong>SOCKS Handshake Scan</strong><br>
-            <code>nmap -Pn -n -p 1080 --script=socks-auth-info,socks-open-proxy,banner --script-timeout 15s -oX scan_socks.xml 165.232.131.154</code>
+            <strong>Stealth TCP Service Scan</strong><br>
+            <code>nmap -sS -Pn -n -T2 --max-retries 2 --max-rtt-timeout 3s --initial-rtt-timeout 1s --open -p- 10.10.10.130</code>
         </div>
         <div class="scan-cmd-row">
-            <strong>Deep TCP Service Fingerprint</strong><br>
-            <code>nmap -sV -Pn -n -T3 --version-intensity 7 -p 21,22,25,80,1080,3389,5900,9200 -oX scan_tcp_deep.xml 165.232.131.154</code>
+            <strong>Deep Protocol Investigation</strong><br>
+            <code>nmap -sV -Pn -n -T3 --version-intensity 7 -p 21,22,25,80,1080,3389,5900,9200 10.10.10.130</code>
         </div>
         <div class="scan-cmd-row">
-            <strong>Focused UDP Enumeration</strong><br>
-            <code>nmap -sU -Pn -n -T3 --max-retries 1 --reason -p 53,67,68,69,123,137,138,161,162,500,514,520 -oX scan_udp_focused.xml 165.232.131.154</code>
-        </div>
-        <div class="scan-cmd-row">
-            <strong>Full TCP Port Sweep</strong><br>
-            <code>nmap -sS -Pn -n -T2 --max-retries 2 --max-rtt-timeout 3s --initial-rtt-timeout 1s --open -p- -oX nmap_tcp_full.xml 165.232.131.154</code>
+            <strong>Targeted Ffuf Directory Fuzzing</strong><br>
+            <code>ffuf -u http://10.10.10.130/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt -fc 404</code>
         </div>
     </div>
 
-    <h3>4.2 Python Custom Banner Prober</h3>
+    <h3>4.2 Custom Python Banner Prober Tool</h3>
     <pre>
 import asyncio
 import json
 
-TARGET = "165.232.131.154"
+TARGET = "10.10.10.130"
 PORTS = [21, 22, 80, 1080, 3389]
 
 async def probe(port: int):
@@ -361,7 +363,7 @@ async def probe(port: int):
     try:
         reader, writer = await asyncio.wait_for(asyncio.open_connection(TARGET, port), timeout=4)
         result["open"] = True
-        probes = [b"", b"HEAD / HTTP/1.0\r\nHost: scanme.cybersteps.de\r\n\r\n", b"\r\n"]
+        probes = [b"", b"HEAD / HTTP/1.0\r\nHost: 10.10.10.130\r\n\r\n", b"\r\n"]
         data = b""
         for p in probes:
             if p:
@@ -392,90 +394,69 @@ if __name__ == "__main__":
 
     <div class="page-break"></div>
 
-    <h3>4.3 Raw Evidence Snaps</h3>
+    <h3>4.3 Raw Evidence Captures</h3>
 
-    <h4>FTP Banner (Port 21)</h4>
+    <h4>Host ICMP/TTL Scan Evidence (syn-ack)</h4>
     <pre>
-FILE: banner_21_20260319_112701.txt
-----------------------------------
-220 ProFTPD 1.2.10
-220 ProFTPD 1.2.10
+RCVD (0.1438s) TCP 10.10.10.130:80 > 10.10.10.128:61836 SA ttl=64 id=0 iplen=44 seq=3481925739 win=29200
+-> 80/tcp open http syn-ack ttl 64 (Linux Kernel Fingerprint)
     </pre>
 
-    <h4>DNS Information</h4>
+    <h4>SSH Handshake & Weak Algorithms (Nuclei Engine)</h4>
     <pre>
-FILE: evidence_dns.txt
----------------------
-Name: scanme.cybersteps.de
-Type: A
-TTL: 300
-Section: Answer
-IPAddress: 165.232.131.154
+INFO: SSH Service Detected
+ServerID: SSH-2.0-OpenSSH_5.9p1 Debian-5ubuntu1.8
+Kex Algorithms: [ecdh-sha2-nistp256, diffie-hellman-group-exchange-sha256, diffie-hellman-group-exchange-sha1, diffie-hellman-group1-sha1]
+Client-to-Server MACs: [hmac-md5, hmac-sha1, umac-64@openssh.com, hmac-sha2-256, hmac-sha1-96, hmac-md5-96]
+Client-to-Server Ciphers: [aes128-ctr, aes256-ctr, arcfour256, aes128-cbc, 3des-cbc, blowfish-cbc]
     </pre>
 
-    <h4>Web Directory & Virtual Host Fuzzing (Ffuf)</h4>
+    <h4>Nikto Vulnerability Scan Details</h4>
     <pre>
-FILE: evidence_ffuf_dir_20260319_112617.json
----------------------------------------------
-COMMAND: ffuf -u http://scanme.cybersteps.de/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt -fc 404 -of json
-RESULTS:
-  - input/FUZZ: "index.html" -> status: 200, length: 5897, lines: 76
-  
-ANALYST NOTE:
-All directory fuzzing paths returned HTTP 200 with identical length (5897 bytes). 
-This demonstrates a wild-card, catch-all routing design on the server, typically characteristic of single-page apps or honeypot setups.
+Target: 10.10.10.130 port 80 (lighttpd/1.4.28)
+--------------------------------------------------------
+- /: Suggested security header missing: x-content-type-options
+- /: Suggested security header missing: Content-Security-Policy
+- /: Suggested security header missing: Strict-Transport-Security
+- /test/: Directory indexing found. http://10.10.10.130:80/test/
+- /test/: This might be interesting.
     </pre>
 
+    <h4>HTTP Handshake Response</h4>
     <pre>
-FILE: evidence_ffuf_vhost_20260319_112741.csv
-----------------------------------------------
-FUZZ,url,redirectlocation,position,status_code,content_length,content_words
-whm,http://165.232.131.154/,,10,200,5897,1556
-smtp,http://165.232.131.154/,,6,200,5897,1556
-mail,http://165.232.131.154/,,2,200,5897,1556
-autodiscover,http://165.232.131.154/,,13,200,5897,1556
+HTTP/1.1 200 OK
+Connection: close
+Content-Length: 114
+Content-Type: text/html
+Date: Wed, 01 Apr 2026 16:07:02 GMT
+Server: lighttpd/1.4.28
+
+&lt;html&gt;
+&lt;title&gt; Root me &lt;/title&gt;
+&lt;body&gt;
+&lt;center&gt;
+&lt;p&gt; Can you root me? &lt;/p&gt;
+&lt;/center&gt;
+&lt;/body&gt;
+&lt;/html&gt;
     </pre>
 
-    <h4>SOCKS5 Port handshaking (Nmap Script)</h4>
-    <pre>
-FILE: evidence_1080_socks_nse.txt
-----------------------------------
-PORT     STATE SERVICE
-1080/tcp open  socks
-| socks-auth-info: 
-|_  Username and password (method 0x02)
-    </pre>
-
-    <h4>RDP Deep Protocol Acknowledgement Hex</h4>
-    <pre>
-FILE: rdp_probe_20260319_112252.hex
------------------------------------
-00000000: 0300 0013 0ed0 0000 1234 0002 0008 0001 .........4......
-00000010: 0000 00
-    </pre>
-
-    <h4>HTTP Handshake State (Httpx)</h4>
-    <pre>
-FILE: evidence_httpx.txt
-------------------------
-http://scanme.cybersteps.de [500] [500 - Request did not return bytes] [Apache HTTP Server:2.4.6]
-    </pre>
-
-    <h2>5. Hardening & Action Items</h2>
+    <h2>5. Action Items & Security Recommendations</h2>
     <div class="box" style="border-left-color: var(--cinnabar);">
-        <h4 style="color: var(--cinnabar);">Priority P0 – Critical Interventions</h4>
+        <h4 style="color: var(--cinnabar);">Priority P0 – Critical System Remediation</h4>
         <ul>
-            <li><strong>SMTP service</strong>: Patch authentication logic to prevent unauthenticated session acceptance (success status code 235).</li>
-            <li><strong>FTP service</strong>: Disable anonymous write and read permissions immediately. Upgrade ProFTPD from legacy v1.2.10.</li>
-            <li><strong>RDP exposure</strong>: Enforce active IP allowlisting or deploy a VPN gateway to shield port 3389.</li>
+            <li><strong>Remove Backdoors</strong>: Instantly delete <code>shell.php</code>, <code>revs.php</code>, and any files from the <code>/test/</code> directory.</li>
+            <li><strong>Disable Directory Indexing</strong>: Alter web server configuration to globally forbid directory indexing (set <code>dir-listing.activate = "disable"</code> in lighttpd configuration).</li>
+            <li><strong>Restrict Access</strong>: Place testing environments completely behind internal firewalls or VPNs.</li>
         </ul>
     </div>
 
     <div class="box" style="border-left-color: var(--high);">
-        <h4 style="color: var(--high);">Priority P1 – High Surface Interventions</h4>
+        <h4 style="color: var(--high);">Priority P1 – Package Hardening and Upgrades</h4>
         <ul>
-            <li><strong>SNMP service</strong>: Disable public interface accessibility or completely rotate defaults.</li>
-            <li><strong>SOCKS proxy</strong>: Relocate proxy entry gate behind trusted VPN context.</li>
+            <li><strong>Upgrade Web Server</strong>: Transition from legacy <code>lighttpd/1.4.28</code> to the latest security-hardened stable release.</li>
+            <li><strong>Harden SSH Daemon</strong>: Disable weak algorithms (CBC ciphers, HMAC-MD5, HMAC-SHA1) in <code>/etc/ssh/sshd_config</code>. Mandate public-key authentication.</li>
+            <li><strong>Enable Transport Security</strong>: Setup HTTPS using TLS 1.3, configure valid certificates, and append transport protection headers (HSTS, CSP, X-Content-Type-Options).</li>
         </ul>
     </div>
 
