@@ -1,0 +1,8 @@
+=== VERDACHT / NICHT IN DIESEM LAUF BELEGT ===
+
+- CSRF auf passchangedocument.php / Admin-Formulare: Logisch wahrscheinlich (keine Token sichtbar), aber kein expliziter PoC in dieser Evidence-Session.
+- Command Injection in module=fetch: Nicht bestätigt; nachgewiesen ist SSRF über file_get_contents (siehe evidence_ssrf_fetch_module.txt).
+- Session Fixation: Nicht getestet.
+- Zusätzliche SQLi in Reviews.php / Deals.php: In diesem Lauf nicht erneut mit sqlmap verifiziert — nur visiter-newsdesk.php vollständig dokumentiert.
+
+Diese Punkte bei Bedarf nachziehen und mit eigenen evidence_* Dateien ergänzen.

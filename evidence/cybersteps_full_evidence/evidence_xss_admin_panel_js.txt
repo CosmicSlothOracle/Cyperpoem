@@ -1,0 +1,14 @@
+=== FINDING: DOM-XSS / unsichere HTML-Zusammenführung (Admin-Panel JavaScript) ===
+
+Der Admin-Bereich baut HTML per Stringkonkatenation mit innerHTML; Profilfelder (name, email, password, …) werden unescaped in Karten eingefügt.
+
+Beleg (Live-HTML Ausschnitt von GET /Admin.php — Funktion Able('home')):
+
+          var name = document.getElementById("name").value;
+          ...
+          document.getElementById("myTabContent").innerHTML = "<br>\
+              ...
+              \<h5 class=\"card-title\"> "+ name + " </h5>\
+              ...
+
+Erkenntnis: Kontrollierte Eingaben im Profil können zu XSS im Admin-Kontext führen (Stored/Reflected je nach Speicherung — hier nachweisbar unsichere Ausgabe im Client-Template).

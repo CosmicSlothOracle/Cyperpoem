@@ -1,0 +1,15 @@
+=== ANGRIFFSKETTE (End-to-End, mit Evidence-Verweisen) ===
+
+1. Recon: nmap alle TCP-Ports + Service-Versionen → evidence_recon_nmap.txt
+2. Discovery: robots.txt → decoda-Liste, ThemeLoader → evidence_disclosure_robots.txt, evidence_theme_lfi_wrapper.txt
+3. Enumeration: gobuster (Stichprobe + große Wortlisten im Lab) → evidence_gobuster_common.txt
+4. SQLi: visiter-newsdesk.php?id → Dump TechNation.Users → evidence_sqlmap_visiter_newsdesk.txt
+5. Dashboard: Cookie uid/auth_token gefälscht → FLAG → evidence_dashboard_idor.txt
+6. Admin: Login mit eliasv / 5225
+7. LFI+RCE: loadfile + Support-Upload cmd.jpg → evidence_lfi_rce_admin_upload.txt
+8. SSRF: module=fetch → internal-status → evidence_ssrf_fetch_module.txt
+9. XXE: module=import → /etc/hostname → evidence_xxe_import_module.txt
+10. Statische Flags: topsecret, classifiedadmin → evidence_flags_static_pages.txt
+11. PrivEsc: SUID python3.8 → root → evidence_lfi_rce_admin_upload.txt (Abschnitt 4)
+
+HTML-Report: mit evidence2html.py aus diesem Ordner generieren (CyberSteps_Evidence_Report.html).

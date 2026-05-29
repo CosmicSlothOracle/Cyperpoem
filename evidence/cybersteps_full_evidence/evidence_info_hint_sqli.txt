@@ -1,0 +1,7 @@
+=== FINDING: info.txt — Hinweis auf SQL / Editierung ===
+
+$ curl -sS http://10.10.10.10/info.txt
+
+This function is still in development, Please Use SQL in order to see edit the website.
+
+Erkenntnis: Offener Hinweis, die Anwendung per SQL zu „bearbeiten“ — stützt Priorisierung von SQLi-Tests.

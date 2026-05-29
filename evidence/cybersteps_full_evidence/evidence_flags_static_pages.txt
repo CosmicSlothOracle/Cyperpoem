@@ -1,0 +1,16 @@
+=== FINDING: Statische / versteckte Seiten — Flags ===
+
+$ curl -sS http://10.10.10.10/topsecret.html | grep -i FLAG
+
+    <!-- FLAG{y0u_f0und_th3_s3cr3t_p4g3} -->
+ FLAG{s0urc3_c0d3_r3v34ls_4ll}
+                <!-- FLAG #2: highlight text below or inspect DevTools -->
+
+---
+
+$ curl -sS http://10.10.10.10/classifiedadmin/ | grep -i FLAG
+
+<!-- FLAG{d1r_bru3f0rc3_0nly_raft_l4rg3_w1ns} -->
+    🚩 FLAG: FLAG{d1r_bru3f0rc3_0nly_raft_l4rg3_w1ns}
+
+Erkenntnis: Mehrere Flags außerhalb des Admin-Panels; Enumeration (Gobuster / Wortlisten) sinnvoll.

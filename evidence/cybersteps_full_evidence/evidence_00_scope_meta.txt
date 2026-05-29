@@ -1,0 +1,8 @@
+CyberStepsVuln — Penetrationstest (Evidence-Bundle)
+==================================================
+Ziel: 10.10.10.10 (VMware MAC 00:0C:29:C6:3B:AA)
+Datum (Evidence-Lauf): 2026-03-31
+Kontext: Autorisiertes Lab / eigene VM
+
+Hinweis: Alle folgenden Dateien enthalten reale Kommandoausgaben aus diesem Lauf,
+sofern nicht explizit als „Code-Review (lokal)“ gekennzeichnet.

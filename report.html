@@ -209,6 +209,22 @@
             text-align: center;
         }
 
+        .evidence-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0 28px;
+        }
+
+        .evidence-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 0.88em;
+        }
+
+        .evidence-link:hover { text-decoration: underline; }
+
         a { color: var(--accent); }
 
         @media print {
@@ -248,7 +264,7 @@
                     <tr><td><strong>Target</strong></td><td>Web application at <code>http://10.10.10.10</code> (lab VM)</td></tr>
                     <tr><td><strong>Assessment snapshot</strong></td><td>March–April 2026</td></tr>
                     <tr><td><strong>Evidence roots</strong></td><td>Primary: <code>Cyberlab Report/cybersteps_full_evidence/</code> — supplementary: <code>/home/laurin/cosmicdfiscovery/</code> (upload/LFI transcripts, independent methodology)</td></tr>
-                    <tr><td><strong>Delivered bundle</strong></td><td><code>Cyberlab Report/CyberSteps_report_delivery/CyberSteps_report_bundle.zip</code> (this report + mirrored evidence tree; see Section 10)</td></tr>
+                    <tr><td><strong>Delivered bundle</strong></td><td><a href="CyberSteps_evidence_bundle.zip"><code>CyberSteps_evidence_bundle.zip</code></a> — see Section 10</td></tr>
                     <tr><td><strong>Classification</strong></td><td>Confidential — educational / authorized lab use only</td></tr>
                     <tr><td><strong>Frameworks referenced</strong></td><td>NIST (risk &amp; controls), CVE/CVSS/CWE, DIN EN ISO/IEC 27001 (control themes), OWASP Top 10 / ASVS</td></tr>
                 </tbody>
@@ -540,52 +556,65 @@
 
         <hr>
 
-        <h2>10. Evidence corpus and delivery bundle</h2>
+        <h2>10. Evidence corpus</h2>
+
+        <div class="evidence-actions">
+            <a href="CyberSteps_evidence_bundle.zip" class="btn btn-primary" download>Download evidence bundle (.zip)</a>
+            <a href="evidence.html" class="btn">Browse individual files</a>
+        </div>
 
         <div class="block">
             <span class="label">Primary bundle (March‑31 evidence run)</span>
-            <p>All files under:</p>
-            <p><code>Cyberlab Report/cybersteps_full_evidence/</code></p>
-            <p>Includes: <code>evidence_00_scope_meta.txt</code>, <code>evidence_attack_chain_summary.txt</code>, <code>evidence_suspected_not_fully_proven.txt</code>, <code>evidence_recon_nmap.txt</code>, <code>scan_tcp.xml</code>, <code>nmap_services.xml</code>, <code>evidence_disclosure_robots.txt</code>, <code>evidence_theme_lfi_wrapper.txt</code>, <code>evidence_gobuster_common.txt</code>, <code>evidence_info_hint_sqli.txt</code>, <code>evidence_sqlmap_visiter_newsdesk.txt</code>, <code>evidence_guest_credentials_status.txt</code>, <code>evidence_dashboard_idor.txt</code>, <code>evidence_lfi_rce_admin_upload.txt</code>, <code>evidence_ssrf_fetch_module.txt</code>, <code>evidence_xxe_import_module.txt</code>, <code>evidence_flags_static_pages.txt</code>, <code>evidence_xss_admin_panel_js.txt</code>, <code>evidence_admin_mysql_hardcoded_review.txt</code>, <code>merged_scan.xml</code>, <code>CyberSteps_Evidence_Report.html</code>.</p>
+            <p><code>evidence/cybersteps_full_evidence/</code> — 20 files including:</p>
+            <p>
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_00_scope_meta.txt">evidence_00_scope_meta.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_attack_chain_summary.txt">evidence_attack_chain_summary.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_suspected_not_fully_proven.txt">evidence_suspected_not_fully_proven.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_recon_nmap.txt">evidence_recon_nmap.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/scan_tcp.xml">scan_tcp.xml</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/nmap_services.xml">nmap_services.xml</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_disclosure_robots.txt">evidence_disclosure_robots.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_theme_lfi_wrapper.txt">evidence_theme_lfi_wrapper.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_gobuster_common.txt">evidence_gobuster_common.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_info_hint_sqli.txt">evidence_info_hint_sqli.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_sqlmap_visiter_newsdesk.txt">evidence_sqlmap_visiter_newsdesk.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_guest_credentials_status.txt">evidence_guest_credentials_status.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_dashboard_idor.txt">evidence_dashboard_idor.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_ssrf_fetch_module.txt">evidence_ssrf_fetch_module.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_xxe_import_module.txt">evidence_xxe_import_module.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_flags_static_pages.txt">evidence_flags_static_pages.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_xss_admin_panel_js.txt">evidence_xss_admin_panel_js.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/evidence_admin_mysql_hardcoded_review.txt">evidence_admin_mysql_hardcoded_review.txt</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/merged_scan.xml">merged_scan.xml</a>,
+                <a class="evidence-link" href="evidence/cybersteps_full_evidence/CyberSteps_Evidence_Report.html">CyberSteps_Evidence_Report.html</a>
+            </p>
         </div>
 
         <div class="block">
             <span class="label">Narrative / lab write-up</span>
-            <p><code>Cyberlab Report/cybersteps_vm_reset_evidence/Security Assessment Report.md</code></p>
+            <p><a class="evidence-link" href="evidence/cybersteps_vm_reset_evidence/Security%20Assessment%20Report.md">evidence/cybersteps_vm_reset_evidence/Security Assessment Report.md</a></p>
         </div>
 
         <div class="block">
-            <span class="label">Supplementary transcripts and methodology</span>
-            <p>Under <code>/home/laurin/cosmicdfiscovery/</code>:</p>
+            <span class="label">Supplementary transcripts</span>
+            <p><code>evidence/cosmicdfiscovery/</code></p>
             <div class="table-wrap">
                 <table class="data-table">
                     <thead>
-                        <tr><th>Relative path</th><th>Role</th></tr>
+                        <tr><th>File</th><th>Role</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><code>upload_debug.txt</code></td><td>Full HTTP trace: <code>POST /support.php</code> (multipart upload)</td></tr>
-                        <tr><td><code>output_10.10.10.10/upload_response.txt</code></td><td>Saved upload response body</td></tr>
-                        <tr><td><code>output_10.10.10.10/sqli_dump.txt</code></td><td>Extended SQLi / page context (earlier run)</td></tr>
-                        <tr><td><code>output_10.10.10.10/sqli_request.txt</code></td><td>Request artifact for SQLi testing</td></tr>
-                        <tr><td><code>output_10.10.10.10/gobust.txt</code></td><td>Additional directory enumeration</td></tr>
-                        <tr><td><code>output_10.10.10.10/evidence_20260326/</code></td><td>Gobuster wordlists output, <code>login_guest_test.txt</code>, recon snapshots, <code>scan_*.xml</code>, etc.</td></tr>
-                        <tr><td><code>pentest_correction_20260408/command_log.txt</code></td><td>Long-form session log (LFI, upload, RCE, privesc)</td></tr>
-                        <tr><td><code>pentest_correction_20260408/LEAD_PENTESTER_REVIEW.md</code></td><td>Methodology notes + explicit <code>curl</code> upload line</td></tr>
-                        <tr><td><code>pentest_independent_20260408/INDEPENDENT_PENTEST_REPORT.md</code></td><td>Clean-slate chain; <code>php://filter</code> source recovery</td></tr>
-                        <tr><td><code>pentest_independent_20260408/upload_response.html</code></td><td>HTML capture after <code>support.php</code> POST</td></tr>
+                        <tr><td><a class="evidence-link" href="evidence/cosmicdfiscovery/upload_debug.txt">upload_debug.txt</a></td><td>Full HTTP trace: <code>POST /support.php</code> (multipart upload)</td></tr>
+                        <tr><td><a class="evidence-link" href="evidence/cosmicdfiscovery/output_10.10.10.10/upload_response.txt">output_10.10.10.10/upload_response.txt</a></td><td>Saved upload response body</td></tr>
+                        <tr><td><a class="evidence-link" href="evidence/cosmicdfiscovery/output_10.10.10.10/sqli_dump.txt">output_10.10.10.10/sqli_dump.txt</a></td><td>Extended SQLi / page context (earlier run)</td></tr>
+                        <tr><td><a class="evidence-link" href="evidence/cosmicdfiscovery/output_10.10.10.10/sqli_request.txt">output_10.10.10.10/sqli_request.txt</a></td><td>Request artifact for SQLi testing</td></tr>
+                        <tr><td><a class="evidence-link" href="evidence/cosmicdfiscovery/output_10.10.10.10/gobust.txt">output_10.10.10.10/gobust.txt</a></td><td>Additional directory enumeration</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <p><strong>Note:</strong> <code>/home/laurin/lab/</code> holds a separate Wi‑Fi / evil‑twin training kit — it is <strong>not</strong> part of this web-application evidence set.</p>
-
-        <div class="block">
-            <span class="label">Archived copy</span>
-            <p>The directory <code>Cyberlab Report/CyberSteps_report_delivery/</code> contains a <strong>mirror</strong> of the report plus the evidence tree above, and <strong><code>CyberSteps_report_bundle.zip</code></strong> — the same content in one archive for submission or archival. Inside the zip, supplementary cosmic paths are rooted at <code>evidence/cosmicdfiscovery/</code> (e.g. <code>evidence/cosmicdfiscovery/upload_debug.txt</code>).</p>
-        </div>
-
-        <p class="end-mark">End of report.</p>
+        <p class="footnote">Files cited in findings but not recovered from the archive: <code>evidence_lfi_rce_admin_upload.txt</code>, <code>pentest_correction_20260408/</code>, <code>pentest_independent_20260408/</code>.</p>
     </main>
 
     <script>

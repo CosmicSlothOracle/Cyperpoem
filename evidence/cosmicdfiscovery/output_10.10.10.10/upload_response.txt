@@ -1,0 +1,134 @@
+Note: Unnecessary use of -X or --request, POST is already inferred.
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0*   Trying 10.10.10.10:80...
+* Established connection to 10.10.10.10 (10.10.10.10 port 80) from 10.10.10.128 port 46250 
+* using HTTP/1.x
+> POST /support.php HTTP/1.1
+> Host: 10.10.10.10
+> User-Agent: curl/8.19.0
+> Accept: */*
+> Content-Length: 574
+> Content-Type: multipart/form-data; boundary=------------------------4U9KEsl5bKffg3CDi4lbTv
+> 
+} [574 bytes data]
+* upload completely sent off: 574 bytes
+< HTTP/1.1 200 OK
+< Date: Thu, 26 Mar 2026 22:26:55 GMT
+< Server: Apache/2.4.41 (Ubuntu)
+< Vary: Accept-Encoding
+< Content-Length: 4278
+< Content-Type: text/html; charset=UTF-8
+< 
+{ [4278 bytes data]
+<html>
+<head>
+<title>CyberStepsVuln</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/bootswatch.css">
+</head>
+
+
+<body>
+
+<div class="header">
+  <h1>CyberStepsVuln</h1>
+  <p>A <b>Technology</b> blog about everything that is new .</p>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="  position: sticky; position: -webkit-sticky;">
+  <a class="navbar-brand">CyberStepsVuln</a>
+  <ul class="navbar-nav mr-auto">
+	  <li class="nav-item active"> <a class="nav-link" href="index.php" >News</a></li>
+	  <li class="nav-item"> <a class="nav-link" href="Reviews.php">Reviews</a> </li>
+	  <li class="nav-item"> <a class="nav-link" href="Deals.php" >Deals</a> </li>
+	  <li class="nav-item"> <a class="nav-link" href="Admin.php" >Admin Panel</a> </li>
+	</ul>
+</nav>
+
+<div class="row">
+  <div class="side">
+  </div>
+  <div class="main">
+	<!--Posts-->
+	<form action="" method="POST" enctype="multipart/form-data">
+  <fieldset>
+    <legend style="font-size:44px;" class="display-3">Dont Worry! We Are Here To Help!</legend>
+    <div class="form-group row">
+      <div class="col-sm-10">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email Address</label>
+      <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">For us to contact you back!</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleSelect1">What Kind Of Problem You Have?</label>
+      <select class="form-control" name="select" id="exampleSelect1" placeholder="Pick A Problem">
+        <option>Payment Failure</option>
+        <option>Website Problems</option>
+        <option>Can Not Rate Posts</option>
+        <option>Can Not Enter Admin Panel</option>
+        <option>Other</option>
+      </select>
+	  <small id="emailHelp" class="form-text text-muted">You Don't Know? Press "Other"</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleTextarea">Write Your Problem</label>
+      <textarea class="form-control" name="text" id="exampleTextarea" rows="5"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputFile">Add Screenshot</label>
+      <input type="file" class="form-control-file" id="file" aria-describedby="fileHelp" name="image"/>
+      <small id="fileHelp" class="form-text text-muted"></small>
+    </div><center>
+    <center><b>Thank you! our Team will contact you as soon as they can!</b></center>Array</center><br><br>
+	<div style="padding-left:30%;"><button type="submit" class="btn btn-primary" style="width:60%;">Submit</button></div>
+    </fieldset></form>
+	
+	<!--End Posts-->
+
+  </div>
+  <div class="Side"></div>  
+</div>
+
+
+<br><br>
+<div class="footer text-white" style="color: white !important;">
+  <div class="footer_side" style="border-right: 3px solid #2fa4e7;">
+	<p>
+		<h3>CyberStepsVuln</h3>
+		<span>A <b>Technology</b> blog about everything that is new</span>
+	</p><br>
+	<p>
+		<h4 style="color: #2fa4e7;">About Us</h4>
+		<span>We are a group of technology experts from different aspects who collaborate to provide you the most relevant information on what's new!</span>
+	</p>
+	<p>
+		<h4 style="color: #2fa4e7;">Contact Us </h4>
+		<span><img src="icon/email.png" width="20" height="20">&nbsp&nbsp&nbsp About@CyberStepsVuln.com</span>
+
+	</p>
+  </div>
+  <div class="footer_side" style="width:70%;text-align:center;">
+	<br>
+	<br><br>
+	
+	<br>
+	<div style="width:200px;margin:auto;">
+		<ul class="navbar-nav mr-auto" style="display:table;width: 100%;text-align:center;">
+			<li class="nav-item" style="display:table-cell;"> <a class="nav-link" href="Info.php" >Info</a> </li> <li style="color:#e0e0e0;">•</li>
+			<li class="nav-item" style="display:table-cell;"> <a class="nav-link" href="support.php" >Support</a> </li> <li style="color:#e0e0e0;">•</li>
+			<li class="nav-item" style="display:table-cell;" > <100   4852 100   4278 100    574 449.3k  61740                              0100   4852 100   4278 100    574 447.1k  61429                              0100   4852 100   4278 100    574 445.0k  61148                              0
+* Connection #0 to host 10.10.10.10:80 left intact
+a class="nav-link" href="index.php" >Home</a> </li>
+		</ul>
+	</div>
+	<span style="color:#e0e0e0;">Made By <b>Elias Vance</b></span>
+	</div>
+  </div>
+</div>
+
+</body>
+<html>

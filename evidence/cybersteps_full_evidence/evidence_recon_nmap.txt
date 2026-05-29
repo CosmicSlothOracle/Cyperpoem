@@ -1,0 +1,32 @@
+=== FINDING: TCP-Portübersicht (nur 22/80 offen) ===
+
+$ nmap -p- -T4 --min-rate 300 10.10.10.10 -oX scan_tcp.xml
+
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-03-31 17:43 -0500
+Nmap scan report for 10.10.10.10
+Host is up (0.00081s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+MAC Address: 00:0C:29:C6:3B:AA (VMware)
+
+Nmap done: 1 IP address (1 host up) scanned in 4.42 seconds
+
+---
+
+$ nmap -sV -p 22,80 10.10.10.10 -oX nmap_services.xml
+
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-03-31 17:43 -0500
+Nmap scan report for 10.10.10.10
+Host is up (0.00060s latency).
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.13 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+MAC Address: 00:0C:29:C6:3B:AA (VMware)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Nmap done: 1 IP address (1 host up) scanned in 6.88 seconds
+
+Erkenntnis: Angriffsfläche primär HTTP; SSH für Folgeangriffe/Bruteforce prüfbar.

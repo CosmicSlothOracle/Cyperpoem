@@ -1,0 +1,14 @@
+=== FINDING: Hart kodierte MySQL-Zugangsdaten (Code-Analyse) ===
+
+Quelle: Lokale Kopie Admin.php (aus Lab, per php://filter / Dateizugriff gewonnen) — Zeilen um mysqli_connect.
+
+PHP (Auszug):
+      $servername = "localhost";
+      $username = "debian-sys-maint";
+      $password = "kM8AdAoQsqZv66Rl";
+      $dbname = "TechNation";
+      $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+Erkenntnis: DB-Passwort im Webroot-Quellcode; kombiniert mit SQLi/LFI vollständige Datenbankkompromittierung bzw. direkter Zugriff vom App-Server aus möglich.
+
+Hinweis: Direkter MySQL-Connect vom Angreifer-PC aus typischerweise nicht möglich (localhost-Bindung); Relevanz: Post-Exploitation auf dem Host.

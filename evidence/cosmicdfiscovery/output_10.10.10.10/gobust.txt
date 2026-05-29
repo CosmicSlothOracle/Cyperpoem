@@ -1,0 +1,17 @@
+index.php           [32m (Status: 200)[0m [Size: 11429]
+blog                [36m (Status: 301)[0m [Size: 309][34m [--> http://10.10.10.10/blog/][0m
+login.php           [31m (Status: 500)[0m [Size: 0]
+support.php         [32m (Status: 200)[0m [Size: 4192]
+info.txt            [32m (Status: 200)[0m [Size: 88]
+icon                [36m (Status: 301)[0m [Size: 309][34m [--> http://10.10.10.10/icon/][0m
+css                 [36m (Status: 301)[0m [Size: 308][34m [--> http://10.10.10.10/css/][0m
+Reviews.php         [32m (Status: 200)[0m [Size: 4542]
+robots.txt          [32m (Status: 200)[0m [Size: 72]
+Info.php            [32m (Status: 200)[0m [Size: 3771]
+dashboard           [36m (Status: 301)[0m [Size: 314][34m [--> http://10.10.10.10/dashboard/][0m
+Admin.php           [32m (Status: 200)[0m [Size: 8935]
+JS                  [36m (Status: 301)[0m [Size: 307][34m [--> http://10.10.10.10/JS/][0m
+exercises           [36m (Status: 301)[0m [Size: 314][34m [--> http://10.10.10.10/exercises/][0m
+Editor              [36m (Status: 301)[0m [Size: 311][34m [--> http://10.10.10.10/Editor/][0m
+Deals.php           [32m (Status: 200)[0m [Size: 6379]
+server-status       [33m (Status: 403)[0m [Size: 276]

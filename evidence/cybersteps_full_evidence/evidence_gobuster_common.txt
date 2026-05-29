@@ -1,0 +1,20 @@
+=== FINDING: Verzeichnisenumeration (Stichprobe, common.txt) ===
+
+$ gobuster dir -u http://10.10.10.10 -w /usr/share/seclists/Discovery/Web-Content/common.txt -t 30 -x php,html,txt -q
+
+.hta                 (Status: 403) [Size: 276]
+.htaccess.txt        (Status: 403) [Size: 276]
+...
+Admin.php            (Status: 200) [Size: 8935]
+blog                 (Status: 301) [Size: 309] [--> http://10.10.10.10/blog/]
+css                  (Status: 301) [Size: 308] [--> http://10.10.10.10/css/]
+dashboard            (Status: 301) [Size: 314] [--> http://10.10.10.10/dashboard/]
+icon                 (Status: 301) [Size: 309] [--> http://10.10.10.10/icon/]
+index.php            (Status: 200) [Size: 11429]
+info.txt             (Status: 200) [Size: 88]
+login.php            (Status: 500) [Size: 0]
+robots.txt           (Status: 200) [Size: 72]
+server-status        (Status: 403) [Size: 276]
+support.php          (Status: 200) [Size: 4192]
+
+Hinweis: Vollständige „raft-large“-Läufe liefern zusätzlich u. a. /classifiedadmin/, /visiter-newsdesk.php, /topsecret.html (im Lab bestätigt; siehe separate Evidence-Dateien / curl).

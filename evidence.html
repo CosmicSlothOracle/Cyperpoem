@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence — CyberStepsVuln</title>
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --surface: #12151c;
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #eef2f7;
+            --muted: #9aa8bc;
+            --subtle: #6b7a8f;
+            --accent: #5eb8ff;
+            --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 12, 16, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+        }
+
+        .navbar-inner {
+            max-width: 920px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav-label {
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .nav-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 16px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-family: var(--mono);
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+        }
+
+        .btn-primary {
+            background: rgba(94, 184, 255, 0.1);
+            border-color: rgba(94, 184, 255, 0.35);
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin: 0 0 8px;
+            font-weight: 600;
+        }
+
+        .lead {
+            color: var(--muted);
+            margin: 0 0 28px;
+            max-width: 65ch;
+        }
+
+        h2 {
+            font-size: 1.05rem;
+            font-family: var(--mono);
+            margin: 36px 0 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .file-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .file-list li:last-child { border-bottom: none; }
+
+        .file-list a {
+            color: var(--text);
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 0.88rem;
+        }
+
+        .file-list a:hover { color: var(--accent); }
+
+        .file-size {
+            color: var(--subtle);
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+
+        .note {
+            margin-top: 24px;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        @media print {
+            .navbar, .btn { display: none !important; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div class="nav-label">Evidence corpus</div>
+            <div class="nav-actions">
+                <a href="report.html" class="btn">Back to report</a>
+                <a href="CyberSteps_evidence_bundle.zip" class="btn btn-primary" download>Download all (.zip)</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1>Referenced evidence files</h1>
+        <p class="lead">Primary scan outputs, transcripts, and lab write-ups cited in the CyberStepsVuln report. Download individual files or the full bundle.</p>
+
+        <h2>Primary — cybersteps_full_evidence/</h2>
+        <ul class="file-list">
+            <li><a href="evidence/cybersteps_full_evidence/evidence_00_scope_meta.txt">evidence_00_scope_meta.txt</a><span class="file-size">378 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_attack_chain_summary.txt">evidence_attack_chain_summary.txt</a><span class="file-size">1.1 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_suspected_not_fully_proven.txt">evidence_suspected_not_fully_proven.txt</a><span class="file-size">615 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_recon_nmap.txt">evidence_recon_nmap.txt</a><span class="file-size">1.0 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/scan_tcp.xml">scan_tcp.xml</a><span class="file-size">1.8 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/nmap_services.xml">nmap_services.xml</a><span class="file-size">1.9 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/merged_scan.xml">merged_scan.xml</a><span class="file-size">684 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_disclosure_robots.txt">evidence_disclosure_robots.txt</a><span class="file-size">783 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_theme_lfi_wrapper.txt">evidence_theme_lfi_wrapper.txt</a><span class="file-size">737 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_gobuster_common.txt">evidence_gobuster_common.txt</a><span class="file-size">1.1 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_info_hint_sqli.txt">evidence_info_hint_sqli.txt</a><span class="file-size">302 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_sqlmap_visiter_newsdesk.txt">evidence_sqlmap_visiter_newsdesk.txt</a><span class="file-size">2.4 KB</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_guest_credentials_status.txt">evidence_guest_credentials_status.txt</a><span class="file-size">828 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_dashboard_idor.txt">evidence_dashboard_idor.txt</a><span class="file-size">580 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_ssrf_fetch_module.txt">evidence_ssrf_fetch_module.txt</a><span class="file-size">616 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_xxe_import_module.txt">evidence_xxe_import_module.txt</a><span class="file-size">530 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_flags_static_pages.txt">evidence_flags_static_pages.txt</a><span class="file-size">547 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_xss_admin_panel_js.txt">evidence_xss_admin_panel_js.txt</a><span class="file-size">733 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/evidence_admin_mysql_hardcoded_review.txt">evidence_admin_mysql_hardcoded_review.txt</a><span class="file-size">716 B</span></li>
+            <li><a href="evidence/cybersteps_full_evidence/CyberSteps_Evidence_Report.html">CyberSteps_Evidence_Report.html</a><span class="file-size">1.3 MB</span></li>
+        </ul>
+
+        <h2>Supplementary — cosmicdfiscovery/</h2>
+        <ul class="file-list">
+            <li><a href="evidence/cosmicdfiscovery/upload_debug.txt">upload_debug.txt</a><span class="file-size">5.4 KB</span></li>
+            <li><a href="evidence/cosmicdfiscovery/output_10.10.10.10/upload_response.txt">output_10.10.10.10/upload_response.txt</a><span class="file-size">5.4 KB</span></li>
+            <li><a href="evidence/cosmicdfiscovery/output_10.10.10.10/sqli_dump.txt">output_10.10.10.10/sqli_dump.txt</a><span class="file-size">9.9 KB</span></li>
+            <li><a href="evidence/cosmicdfiscovery/output_10.10.10.10/sqli_request.txt">output_10.10.10.10/sqli_request.txt</a><span class="file-size">189 B</span></li>
+            <li><a href="evidence/cosmicdfiscovery/output_10.10.10.10/gobust.txt">output_10.10.10.10/gobust.txt</a><span class="file-size">1.2 KB</span></li>
+        </ul>
+
+        <h2>Narrative — cybersteps_vm_reset_evidence/</h2>
+        <ul class="file-list">
+            <li><a href="evidence/cybersteps_vm_reset_evidence/Security%20Assessment%20Report.md">Security Assessment Report.md</a><span class="file-size">20 KB</span></li>
+        </ul>
+
+        <p class="note">Some paths cited in the report (e.g. <code>evidence_lfi_rce_admin_upload.txt</code>, <code>pentest_correction_20260408/</code>, <code>pentest_independent_20260408/</code>) were not present in the available archive and are not included here.</p>
+    </main>
+
+</body>
+
+</html>
