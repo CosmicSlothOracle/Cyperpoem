@@ -4,415 +4,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberStepsVuln — Continuous Security Assessment Guidelines</title>
+    <title>Penetration Test Report — CyberStepsVuln</title>
     <style>
         :root {
-            --bg-color: #080a0f;
-            --surface-color: #11141e;
-            --border-color: rgba(0, 255, 208, 0.15);
-            --border-hover: rgba(0, 255, 208, 0.35);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --text-subtle: #64748b;
-            --accent: #00ffd0;
-            --accent-blue: #38bdf8;
-            --accent-glow: rgba(0, 255, 208, 0.15);
-            --card-glow: rgba(0, 255, 208, 0.02);
-            --mono-font: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            --bg: #0a0c10;
+            --surface: #12151c;
+            --border: rgba(255, 255, 255, 0.09);
+            --text: #eef2f7;
+            --muted: #9aa8bc;
+            --subtle: #6b7a8f;
+            --accent: #5eb8ff;
+            --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            --crit: #f07178;
+            --high: #f0a060;
+            --med: #e6c84a;
+            --low: #7ec699;
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
             margin: 0;
-            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.65;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Navigation */
         .navbar {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(8, 10, 15, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 16px 24px;
+            background: rgba(10, 12, 16, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
         }
 
-        .navbar-container {
-            max-width: 1000px;
+        .navbar-inner {
+            max-width: 920px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 16px;
         }
 
-        .nav-logo {
-            font-family: var(--mono-font);
-            font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: 0.05em;
+        .nav-label {
+            font-family: var(--mono);
+            font-size: 0.82rem;
             color: var(--accent);
+            letter-spacing: 0.04em;
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 255, 208, 0.3);
         }
 
-        .nav-actions {
-            display: flex;
-            gap: 12px;
+        .nav-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 16px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-family: var(--mono);
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
         }
 
-        /* Container */
+        .btn-primary {
+            background: rgba(94, 184, 255, 0.1);
+            border-color: rgba(94, 184, 255, 0.35);
+            color: var(--accent);
+        }
+
+        .btn:hover { background: rgba(255, 255, 255, 0.05); }
+
         .container {
-            max-width: 1000px;
+            max-width: 920px;
             margin: 0 auto;
             padding: 40px 24px 80px;
         }
 
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 18px;
-            background: rgba(0, 255, 208, 0.06);
-            border: 1px solid var(--border-color);
-            color: var(--accent);
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            font-size: 0.88rem;
-            font-family: var(--mono-font);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn:hover {
-            background: var(--accent);
-            color: #080a0f;
-            box-shadow: 0 0 12px var(--accent-glow);
-            border-color: var(--accent);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-        }
-
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: none;
-            color: #ffffff;
-        }
-
-        /* Typography */
-        h1, h2, h3, h4 {
-            font-weight: 600;
-            color: var(--text-main);
-            margin-top: 0;
-        }
-
         h1 {
-            font-size: 2.25rem;
+            font-size: 1.85rem;
+            font-weight: 600;
+            margin: 0 0 24px;
             letter-spacing: -0.02em;
-            margin-bottom: 8px;
-            font-family: var(--mono-font);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-        }
-
-        h1 span {
-            color: var(--accent);
-        }
-
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            font-weight: 400;
+            line-height: 1.25;
         }
 
         h2 {
-            font-size: 1.4rem;
-            margin-top: 48px;
-            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 48px 0 16px;
             padding-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--accent-blue);
-            font-family: var(--mono-font);
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--mono);
         }
 
         h3 {
-            font-size: 1.15rem;
-            margin-bottom: 12px;
-            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 28px 0 12px;
+            color: var(--accent);
+            font-family: var(--mono);
         }
 
-        p {
-            margin-bottom: 16px;
-            color: var(--text-muted);
-            font-size: 0.98rem;
-        }
+        p { margin: 0 0 14px; color: var(--muted); }
 
-        strong {
-            color: var(--text-main);
+        strong { color: var(--text); font-weight: 600; }
+
+        em { color: var(--muted); font-style: italic; }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 32px 0;
         }
 
         code {
-            font-family: var(--mono-font);
-            background: rgba(0, 255, 208, 0.04);
-            border: 1px solid rgba(0, 255, 208, 0.12);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            color: var(--accent);
+            font-family: var(--mono);
+            font-size: 0.88em;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1px 6px;
+            border-radius: 3px;
+            color: #dbe4f0;
         }
 
-        /* Lead Quote Card */
-        .quote-card {
-            background: linear-gradient(135deg, rgba(0, 255, 208, 0.02), rgba(56, 189, 248, 0.01));
-            border: 1px dashed var(--border-color);
-            border-radius: 6px;
-            padding: 24px 32px;
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        .quote-text {
-            font-family: var(--mono-font);
-            font-size: 1.15rem;
-            color: var(--accent);
-            margin: 0 0 8px;
-            letter-spacing: -0.01em;
-        }
-
-        .quote-author {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        /* Grid */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Cards */
-        .card {
-            background: var(--surface-color);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            padding: 24px;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .card:hover {
-            border-color: var(--border-hover);
-            box-shadow: 0 4px 20px var(--card-glow);
-        }
-
-        .card-accent {
-            border-left: 2px solid var(--accent);
-        }
-
-        .card-accent-blue {
-            border-left: 2px solid var(--accent-blue);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            margin-bottom: 16px;
-            font-family: var(--mono-font);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Tables */
-        .table-wrapper {
-            overflow-x: auto;
-            margin-bottom: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-        }
-
-        table {
+        .meta-table, .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
+            margin: 16px 0 24px;
+        }
+
+        .meta-table th,
+        .meta-table td,
+        .data-table th,
+        .data-table td {
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            vertical-align: top;
             text-align: left;
         }
 
-        th {
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-main);
-            font-weight: 600;
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-family: var(--mono-font);
+        .meta-table th,
+        .data-table th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 0.78rem;
             text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-        }
-
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            color: var(--text-muted);
-            vertical-align: top;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.01);
-        }
-
-        /* Lists */
-        ul, ol {
-            padding-left: 20px;
-            margin-bottom: 20px;
-            color: var(--text-muted);
-        }
-
-        li {
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        li strong {
-            color: var(--text-main);
-        }
-
-        /* Steps list */
-        .step-list {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .step-item {
-            position: relative;
-            padding-left: 36px;
-            margin-bottom: 16px;
-        }
-
-        .step-number {
-            position: absolute;
-            left: 0;
-            top: 2px;
-            width: 22px;
-            height: 22px;
-            background: rgba(0, 255, 208, 0.08);
-            border: 1px solid var(--border-color);
-            color: var(--accent);
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--mono-font);
-            font-size: 0.75rem;
+            letter-spacing: 0.04em;
             font-weight: 600;
         }
 
-        /* Links */
-        a.text-link {
-            color: var(--accent);
-            text-decoration: none;
-            transition: border-color 0.2s ease;
-            border-bottom: 1px solid transparent;
+        .meta-table td,
+        .data-table td { color: var(--muted); }
+
+        .table-wrap { overflow-x: auto; margin-bottom: 8px; }
+
+        .sev-critical { color: var(--crit); font-weight: 600; }
+        .sev-high { color: var(--high); font-weight: 600; }
+        .sev-medium { color: var(--med); font-weight: 600; }
+
+        ul, ol {
+            margin: 0 0 16px;
+            padding-left: 22px;
+            color: var(--muted);
         }
 
-        a.text-link:hover {
-            border-color: var(--accent);
+        li { margin-bottom: 8px; }
+
+        .label {
+            display: block;
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--subtle);
+            margin-bottom: 6px;
         }
 
-        /* Print styling */
+        .block { margin-bottom: 20px; }
+
+        .footnote {
+            font-size: 0.88rem;
+            color: var(--subtle);
+            margin-top: 8px;
+        }
+
+        .end-mark {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            color: var(--subtle);
+            font-style: italic;
+            text-align: center;
+        }
+
+        a { color: var(--accent); }
+
         @media print {
-            body {
-                background: #ffffff !important;
-                color: #000000 !important;
-                font-size: 11pt !important;
-                line-height: 1.5 !important;
-            }
-
-            .navbar, .btn, .btn-group, iframe, #print-btn {
-                display: none !important;
-            }
-
-            .container {
-                max-width: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            h1, h2, h3, h4 {
-                color: #000000 !important;
-                border-color: #cccccc !important;
-            }
-
-            h1 {
-                font-size: 20pt !important;
-            }
-
-            h2 {
-                font-size: 14pt !important;
-                margin-top: 30pt !important;
-                page-break-after: avoid;
-            }
-
-            .card {
-                background: #ffffff !important;
-                border: 1px solid #cccccc !important;
-                page-break-inside: avoid;
-            }
-
-            .quote-card {
-                background: #ffffff !important;
-                border: 1px dashed #666666 !important;
-                color: #000000 !important;
-            }
-
-            .quote-text {
-                color: #000000 !important;
-            }
-
-            table {
-                page-break-inside: avoid;
-            }
-
-            td, th {
-                border-color: #cccccc !important;
-                color: #000000 !important;
-            }
-
-            code {
-                background: #eeeeee !important;
-                border: 1px solid #cccccc !important;
-                color: #000000 !important;
-            }
-
-            p, li {
-                color: #333333 !important;
-            }
+            body { background: #fff; color: #111; font-size: 10.5pt; }
+            .navbar, .btn { display: none !important; }
+            .container { max-width: 100%; padding: 0; }
+            h1, h2, h3, p, li, td, th, strong { color: #111 !important; }
+            p, li, td { color: #333 !important; }
+            h2 { page-break-after: avoid; border-color: #ccc; }
+            .table-wrap, table { page-break-inside: avoid; }
+            .sev-critical, .sev-high, .sev-medium { color: #111 !important; }
+            code { background: #eee; border-color: #ccc; color: #111; }
+            a { color: #111; text-decoration: none; }
         }
     </style>
 </head>
@@ -420,190 +229,364 @@
 <body>
 
     <nav class="navbar">
-        <div class="navbar-container">
-            <div class="nav-logo">CyberSteps // Project Spec</div>
+        <div class="navbar-inner">
+            <div class="nav-label">CyberStepsVuln — Framework Report</div>
             <div class="nav-actions">
-                <a href="index.html" class="btn btn-outline">Back to Dashboard</a>
-                <button type="button" class="btn" id="print-btn">Print Specs</button>
+                <a href="index.html" class="btn">Back</a>
+                <button type="button" class="btn btn-primary" id="print-btn">Print / Save PDF</button>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-        <header>
-            <h1>Continuous <span>Penetration Testing Project</span></h1>
-            <div class="subtitle">Operational Scope & Report Guidelines — Target: CyberStepsVuln</div>
-        </header>
+    <main class="container">
+        <h1>Penetration Test Report — CyberStepsVuln (Framework-Aligned)</h1>
 
-        <section class="quote-card">
-            <p class="quote-text">"Learning without application is just reading. Let's break things."</p>
-            <p class="quote-author">Continuous Training Paradigm</p>
-        </section>
-
-        <section>
-            <p>Throughout this block, you will actively test and find real web application vulnerabilities, including <strong>SQL Injection</strong>, <strong>Cross-Site Scripting (XSS)</strong>, <strong>Broken Access Control</strong>, <strong>CSRF</strong>, <strong>SSRF</strong>, <strong>XML External Entities (XXE)</strong>, <strong>LFI</strong>, <strong>RFI</strong>, and <strong>WordPress Security Flaws</strong>.</p>
-            <p>Your objective is to execute a continuous, structured penetration test against a custom, deliberately vulnerable target environment called <strong>CyberStepsVuln</strong>. Rather than deferring analysis to the end of the term, apply your testing methodologies immediately following each technical session. You are expected to document all findings incrementally to build a professional-grade final deliverable.</p>
-            <p>This mimics standard industry engagement lifecycles. The final report is a technical portfolio piece demonstrating rigorous evidence collection, clear impact analysis, and practical remediation guidance.</p>
-        </section>
-
-        <h2>The Target</h2>
-        <div class="card card-accent">
-            <h3>Target Specifications</h3>
-            <p><strong>CyberStepsVuln</strong> is a custom, realistic virtual machine hosting a range of services, administrative interfaces, and hidden pathways designed to test diverse exploitation chains.</p>
-            <p><strong>Setup Instructions:</strong></p>
-            <ol>
-                <li>Download the virtualization archive: <a class="text-link" href="https://drive.google.com/file/d/19FeKR4NqXpyhLoleD2pJ2WIIyaLh5DXp/view?usp=drive_link" target="_blank" rel="noopener noreferrer">CyberStepsVuln.ova</a></li>
-                <li>Import the image into your hypervisor (VMware / VirtualBox).</li>
-                <li>Configure the network adapter to <strong>NAT</strong> mode (Subnet <code>10.10.10.0/24</code>, matching your Kali Linux testing instance).</li>
-                <li>Boot the target virtual machine.</li>
-                <li>Access the initial web interface directly from your testing browser at: <code>http://10.10.10.10</code></li>
-            </ol>
-            <p>All active analysis and testing must be performed exclusively from your isolated Kali Linux virtual machine.</p>
-        </div>
-
-        <h2>Operational Scope</h2>
-        <p>A rigorous definition of scope separates authorized assessments from illegal network intrusions. Strict adherence to these boundaries is mandatory.</p>
-
-        <div class="grid-2">
-            <div class="card card-accent-blue">
-                <h3>In Scope</h3>
-                <ul>
-                    <li><strong>Web Application:</strong> All hosted endpoints, parameter sets, forms, and input fields on <code>10.10.10.10</code>.</li>
-                    <li><strong>Discovered Services:</strong> Any exposed TCP/UDP ports and daemons identified during host enumeration.</li>
-                    <li><strong>Vulnerability Classes:</strong> Injection flaws, server-side actions (SSRF/XXE), file inclusion (LFI/RFI), broken authentication, and session handling.</li>
-                    <li><strong>Content Management:</strong> Installed CMS platforms (WordPress, etc.) and active plugins.</li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3>Out of Scope</h3>
-                <ul>
-                    <li><strong>External Dependencies:</strong> Third-party CDNs, hosted libraries (Bootstrap, jQuery from external links), or external APIs.</li>
-                    <li><strong>Social Engineering:</strong> Phishing, credential harvesting, or physical coercion targeting instructors, classmates, or staff.</li>
-                    <li><strong>Physical Assessments:</strong> Facilities, hosting infrastructure, or networking equipment.</li>
-                </ul>
-            </div>
-        </div>
-        <p><em>Note:</em> Vulnerabilities identified in third-party CDN resources may be logged as auxiliary observations, but they do not constitute valid findings against the core application layer itself.</p>
-
-        <h2>Structured Testing Methodology</h2>
-        <p>Avoid chaotic testing. Apply a methodical, systematic process following each module session. The recommended analytical flow is structured below:</p>
-
-        <ol class="step-list">
-            <li class="step-item">
-                <span class="step-number">1</span>
-                <strong>Reconnaissance & Footprinting:</strong> Enumerate open ports, identify server banners, and map general infrastructure technologies.
-            </li>
-            <li class="step-item">
-                <span class="step-number">2</span>
-                <strong>Directory & Path Mapping:</strong> Fuzz directories, discover hidden interfaces, and map all input parameters.
-            </li>
-            <li class="step-item">
-                <span class="step-number">3</span>
-                <strong>Input Validation Testing:</strong> Systematically test for SQL Injection (SQLi), Cross-Site Scripting (XSS), and Command Injection.
-            </li>
-            <li class="step-item">
-                <span class="step-number">4</span>
-                <strong>Authorization & Authentication:</strong> Probe session handling, cookies, token strength, privilege boundaries, and IDOR vectors.
-            </li>
-            <li class="step-item">
-                <span class="step-number">5</span>
-                <strong>File Handling & Parser Vulnerabilities:</strong> Enumerate Local and Remote File Inclusions (LFI/RFI), SSRF endpoints, and XXE injection vectors.
-            </li>
-            <li class="step-item">
-                <span class="step-number">6</span>
-                <strong>CMS and Third-Party Audits:</strong> Scan active content management systems for known, unpatched CVEs.
-            </li>
-            <li class="step-item">
-                <span class="step-number">7</span>
-                <strong>Post-Exploitation (Safe Limits):</strong> Pivot from initial access to confirm lateral movement possibilities and local host misconfigurations.
-            </li>
-        </ol>
-
-        <p>Utilize the official <a class="text-link" href="https://owasp.org/www-project-web-security-testing-guide/" target="_blank" rel="noopener noreferrer">OWASP Web Security Testing Guide (WSTG)</a> as your core technical checklist.</p>
-
-        <h2>Assessment Tooling</h2>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tool Name</th>
-                        <th>Primary Use Case</th>
-                        <th>Application Context</th>
-                    </tr>
-                </thead>
+        <div class="table-wrap">
+            <table class="meta-table">
                 <tbody>
-                    <tr>
-                        <td><code>Nmap</code></td>
-                        <td>Port scanning & service fingerprinting</td>
-                        <td>Initial host discovery and protocol analysis</td>
-                    </tr>
-                    <tr>
-                        <td><code>gobuster / ffuf / dirb</code></td>
-                        <td>Directory and resource fuzzing</td>
-                        <td>Locating hidden folders, configurations, and scripts</td>
-                    </tr>
-                    <tr>
-                        <td><code>Burp Suite</code></td>
-                        <td>Request interception & manipulation</td>
-                        <td>Manual analysis of session flow and input fields</td>
-                    </tr>
-                    <tr>
-                        <td><code>SQLMap</code></td>
-                        <td>Automated database injection testing</td>
-                        <td>Verifying injection paths after manual identification</td>
-                    </tr>
-                    <tr>
-                        <td><code>WPScan</code></td>
-                        <td>CMS-specific vulnerability checks</td>
-                        <td>Scanning target WordPress core and plugins</td>
-                    </tr>
-                    <tr>
-                        <td><code>Nikto / curl</code></td>
-                        <td>Server scanning & manual request craft</td>
-                        <td>Probing web configurations and raw HTTP handshakes</td>
-                    </tr>
+                    <tr><th>Field</th><th>Value</th></tr>
+                    <tr><td><strong>Target</strong></td><td>Web application at <code>http://10.10.10.10</code> (lab VM)</td></tr>
+                    <tr><td><strong>Assessment snapshot</strong></td><td>March–April 2026</td></tr>
+                    <tr><td><strong>Evidence roots</strong></td><td>Primary: <code>Cyberlab Report/cybersteps_full_evidence/</code> — supplementary: <code>/home/laurin/cosmicdfiscovery/</code> (upload/LFI transcripts, independent methodology)</td></tr>
+                    <tr><td><strong>Delivered bundle</strong></td><td><code>Cyberlab Report/CyberSteps_report_delivery/CyberSteps_report_bundle.zip</code> (this report + mirrored evidence tree; see Section 10)</td></tr>
+                    <tr><td><strong>Classification</strong></td><td>Confidential — educational / authorized lab use only</td></tr>
+                    <tr><td><strong>Frameworks referenced</strong></td><td>NIST (risk &amp; controls), CVE/CVSS/CWE, DIN EN ISO/IEC 27001 (control themes), OWASP Top 10 / ASVS</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <h2>Project Deliverable & Reporting Standards</h2>
-        <p>The primary deliverable is a comprehensive, client-ready security assessment document (PDF or DOCX format). It must bridge high-level operational risk with deep technical evidence, maintaining a professional tone throughout.</p>
+        <hr>
 
-        <div class="grid-2">
-            <div class="card card-accent">
-                <h3>Minimum Requirements</h3>
-                <ul>
-                    <li><strong>Vulnerability Count:</strong> Minimum of 5 fully documented unique findings.</li>
-                    <li><strong>Replication (PoC):</strong> Clear, reproducible steps accompanied by annotated, high-resolution evidence screenshots.</li>
-                    <li><strong>Remediation:</strong> Actionable, specific programming or architecture level solutions for each finding.</li>
-                    <li><strong>Executive Briefing:</strong> A non-technical security health summary suitable for business stakeholders.</li>
-                </ul>
-            </div>
+        <h2>1. Executive summary</h2>
 
-            <div class="card card-accent-blue">
-                <h3>Required Document Structure</h3>
-                <ol>
-                    <li><strong>Cover Page:</strong> Title, target, author details, date, and confidentiality status.</li>
-                    <li><strong>Executive Summary:</strong> High-level summary, overall posture, and critical metrics without technical jargon.</li>
-                    <li><strong>Scope & Methodology:</strong> Scope details, exceptions, and tools.</li>
-                    <li><strong>Summary Table:</strong> Consolidated findings prioritized by industry-standard severities.</li>
-                    <li><strong>Detailed Findings:</strong> Severity, affected components, PoCs, business impact, and specific fixes.</li>
-                    <li><strong>Technical Appendix:</strong> Raw payloads, long-form system outputs, and standards.</li>
-                </ol>
+        <div class="block">
+            <span class="label">Purpose</span>
+            <p>This report summarizes security testing of the intentionally vulnerable <strong>CyberStepsVuln</strong> application in an isolated training environment. It is written for stakeholders who need a clear picture of risk, regulatory-relevant control gaps (at a high level), and prioritized hardening.</p>
+        </div>
+
+        <div class="block">
+            <span class="label">What was found (substance)</span>
+            <p>The application exhibits <strong>multiple critical weaknesses</strong> that chain together: unauthenticated or weakly authenticated users can reach <strong>SQL injection</strong>, <strong>broken access control</strong> (forgeable dashboard identity), and—after administrative access—<strong>remote code execution</strong> via upload plus dynamic inclusion, <strong>server-side request forgery (SSRF)</strong>, <strong>XML external entity (XXE)</strong> processing, and <strong>local file inclusion (LFI)</strong> including <strong>unauthenticated</strong> file read via <code>ThemeLoader.php</code> using PHP stream wrappers (documented in <code>evidence_theme_lfi_wrapper.txt</code>). Host-level <strong>misconfiguration</strong> (e.g. SUID interpreter) allows <strong>privilege escalation to root</strong> once code execution exists. <strong>Information disclosure</strong> (<code>robots.txt</code>, password list paths) and <strong>cross-site scripting (XSS)</strong> patterns in the admin UI add further risk.</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Overall posture</span>
+            <p>The system is <strong>not suitable for production</strong>. Confidentiality, integrity, and accountability are <strong>materially compromised</strong> in the lab configuration; availability is at risk after compromise.</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Items explicitly not proven in the captured evidence session</span>
+            <p>Per <code>evidence_suspected_not_fully_proven.txt</code>: <strong>CSRF</strong> against <code>passchangedocument.php</code> (suspected, no PoC in session), <strong>command injection</strong> in <code>module=fetch</code> (not confirmed; SSRF was), <strong>session fixation</strong> (not tested), and <strong>additional SQLi</strong> in <code>Reviews.php</code> / <code>Deals.php</code> (not re-verified with sqlmap in that run). These should be tracked as <strong>follow-up test items</strong>, not as closed findings.</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Recommendations in one line</span>
+            <p>Remediate <strong>injection</strong>, <strong>unsafe inclusion/upload</strong>, and <strong>access control</strong> first; then SSRF/XXE, disclosure, XSS, secrets management, and OS baseline; retest with the same methodology.</p>
+        </div>
+
+        <hr>
+
+        <h2>2. Scope, methodology, and limitations</h2>
+
+        <div class="block">
+            <span class="label">In scope</span>
+            <p>CyberStepsVuln web surface, discoverable paths, injection and server-side flaw classes, and limited post-exploitation to confirm impact (authorized lab only).</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Methodology</span>
+            <p>Aligned with <strong>OWASP Web Security Testing Guide (WSTG)</strong> practices: reconnaissance, mapping, input testing, authentication/session testing, access control, SSRF/XXE/file handling, and evidence capture (<code>evidence_*.txt</code>, attack chain in <code>evidence_attack_chain_summary.txt</code>).</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Limitations</span>
+            <p>VM resets change credentials and flags; evidence reflects <strong>point-in-time</strong> proofs. Transcripts from different folders may reflect <strong>different VM snapshots</strong> (e.g. Elias password <code>5225</code> in the March‑31 sqlmap bundle vs. older hashes in some <code>cosmicdfiscovery</code> logs — always verify against the live target). Internet-facing attack paths were out of scope. Suspected issues without PoC are listed separately (Section 8).</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Supplementary corpus</span>
+            <p>The compact <code>cybersteps_full_evidence/</code> run does not include every HTTP transcript (e.g. raw <code>POST /support.php</code>). Those are preserved under <strong><code>/home/laurin/cosmicdfiscovery/</code></strong> — see Section 10.</p>
+        </div>
+
+        <hr>
+
+        <h2>3. Risk evaluation</h2>
+
+        <h3>3.1 Method (NIST SP 800-30 style)</h3>
+        <p>Risk is described using <strong>likelihood</strong> and <strong>impact</strong> on organizational operations, assets, and individuals, consistent with <strong>NIST SP 800-30</strong> (Guide for Conducting Risk Assessments). Residual risk after fixes must be reassessed.</p>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Qualitative rating</th><th>Meaning (for this report)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Critical</strong></td><td>Trivial or reliable path to full application or host compromise, or mass credential/data breach</td></tr>
+                    <tr><td><strong>High</strong></td><td>Serious compromise or major data exposure; often chained from another flaw</td></tr>
+                    <tr><td><strong>Medium</strong></td><td>Realistic exploitation with constraints or moderate business impact</td></tr>
+                    <tr><td><strong>Low</strong></td><td>Limited impact or difficult exploitation</td></tr>
+                    <tr><td><strong>Informational</strong></td><td>Defense-in-depth / hygiene</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p><strong>CIA summary (NIST confidentiality / integrity / availability framing)</strong></p>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Pillar</th><th>Assessment</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Confidentiality</strong></td><td><strong>Failed</strong> — DB contents, files, internal pages, and source/credentials reachable via multiple vectors</td></tr>
+                    <tr><td><strong>Integrity</strong></td><td><strong>Failed</strong> — SQLi and RCE allow arbitrary data and code changes</td></tr>
+                    <tr><td><strong>Availability</strong></td><td><strong>At risk</strong> — post-RCE DoS or destructive actions feasible</td></tr>
+                    <tr><td><strong>Accountability</strong></td><td><strong>Weak</strong> — forgeable dashboard tokens undermine attribution</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>3.2 NIST Cybersecurity Framework (CSF) 2.0 — high-level gap view</h3>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Function</th><th>Observation</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Govern (GV)</strong></td><td>Lab target; in production would need explicit security requirements and acceptance criteria before release</td></tr>
+                    <tr><td><strong>Identify (ID)</strong></td><td>Asset inventory and data-flow mapping would expose dangerous trust boundaries (upload → include, XML → file)</td></tr>
+                    <tr><td><strong>Protect (PR)</strong></td><td>Missing secure coding controls (parameterization, session management, input validation, upload restrictions)</td></tr>
+                    <tr><td><strong>Detect (DE)</strong></td><td>No evidence of compensating monitoring; exploitation would be noisy but not necessarily detected</td></tr>
+                    <tr><td><strong>Respond (RS)</strong></td><td>Incident playbooks would assume full rebuild if RCE + DB exposure occurred</td></tr>
+                    <tr><td><strong>Recover (RC)</strong></td><td>Credential rotation and re-imaging indicated after any comparable breach</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>3.3 CVE / CVSS / CWE orientation</h3>
+        <p><strong>Note:</strong> “CVEE” is interpreted here as <strong>CVE</strong> identifiers and <strong>CVSS</strong> scoring practice. This lab app may not have public CVE entries; the table uses <strong>representative CWE</strong> classes and <strong>indicative CVSS vectors</strong> (Base, v3.1 style) for <em>planning</em> severity—actual scores depend on deployment context (network exposure, data sensitivity).</p>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Finding area</th><th>Representative CWE</th><th>Typical OWASP category</th><th>Indicative severity*</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>SQLi (<code>visiter-newsdesk.php</code>)</td><td>CWE-89</td><td>A03:2021 Injection</td><td class="sev-critical"><strong>Critical</strong> (AV:N/AC:L/PR:N…)</td></tr>
+                    <tr><td>RCE (upload + <code>loadfile</code> include)</td><td>CWE-434, CWE-98</td><td>A03:2021, A04:2021</td><td class="sev-critical"><strong>Critical</strong></td></tr>
+                    <tr><td>Dashboard cookie forgery</td><td>CWE-287, CWE-639</td><td>A01:2021 Broken Access Control</td><td class="sev-high"><strong>High</strong></td></tr>
+                    <tr><td>SSRF (<code>module=fetch</code>)</td><td>CWE-918</td><td>A10:2021 SSRF</td><td class="sev-high"><strong>High</strong></td></tr>
+                    <tr><td>XXE (<code>module=import</code>)</td><td>CWE-611</td><td>A05:2021 Security Misconfiguration</td><td class="sev-high"><strong>High</strong></td></tr>
+                    <tr><td>LFI / path traversal (<code>ThemeLoader</code>, <code>loadfile</code>)</td><td>CWE-22, CWE-73</td><td>A01:2021, A03:2021</td><td class="sev-high"><strong>High</strong> (ThemeLoader: <strong>unauth</strong> read → higher exposure)</td></tr>
+                    <tr><td>Hard-coded DB credentials</td><td>CWE-798</td><td>A07:2021</td><td class="sev-high"><strong>High</strong></td></tr>
+                    <tr><td>robots.txt / password list disclosure</td><td>CWE-200, CWE-538</td><td>A01:2021, A05:2021</td><td class="sev-medium"><strong>Medium</strong></td></tr>
+                    <tr><td>Admin XSS (<code>innerHTML</code>)</td><td>CWE-79</td><td>A03:2021</td><td class="sev-medium"><strong>Medium</strong></td></tr>
+                    <tr><td>SUID interpreter on host</td><td>CWE-732</td><td>A05:2021 (deployment)</td><td class="sev-high"><strong>High</strong> (chained)</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="footnote">*Indicative only; validate with your CVSS calculator for production.</p>
+
+        <h3>3.4 DIN EN ISO/IEC 27001:2022 — Annex A control themes (mapping)</h3>
+        <p>German organizations often implement <strong>DIN EN ISO/IEC 27001</strong> with <strong>Annex A</strong> controls. The following themes apply (not an exhaustive ISMS audit):</p>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Control theme (Annex A area)</th><th>Relevance to findings</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>A.5</strong> Information security policies</td><td>Secure SDLC and “no dynamic include of user paths” type rules</td></tr>
+                    <tr><td><strong>A.8</strong> Asset management</td><td>Classification of credentials, DB, and upload storage</td></tr>
+                    <tr><td><strong>A.9</strong> Access control</td><td>Server-side sessions, RBAC, no client-trusted <code>uid</code></td></tr>
+                    <tr><td><strong>A.10</strong> Cryptography</td><td>Proper session tokens, TLS in production; no secrets in source</td></tr>
+                    <tr><td><strong>A.14</strong> System acquisition / development / maintenance</td><td>Prepared statements, safe XML, SSRF allow-lists</td></tr>
+                    <tr><td><strong>A.12</strong> Operations security</td><td>Hardened OS baseline (no SUID interpreters), separation of upload and execution</td></tr>
+                    <tr><td><strong>A.16</strong> Incident management</td><td>Assume breach procedures if SQLi/RCE ever exposed production</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p><em>For formal certification, use the official Annex A statement applicability and SoA.</em></p>
+
+        <h3>3.5 OWASP mapping (Top 10 2021 + ASVS intent)</h3>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>OWASP Top 10 2021</th><th>Findings</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>A01 Broken Access Control</strong></td><td>Dashboard cookie forgery; LFI/Admin <code>loadfile</code> abuse</td></tr>
+                    <tr><td><strong>A02 Cryptographic Failures</strong></td><td>Weak token design; plaintext DB password in source</td></tr>
+                    <tr><td><strong>A03 Injection</strong></td><td>SQLi; XSS pattern</td></tr>
+                    <tr><td><strong>A04 Insecure Design</strong></td><td>Upload + include design; theme loader accepting wrappers</td></tr>
+                    <tr><td><strong>A05 Security Misconfiguration</strong></td><td>XXE-enabled parser; SUID on host; disclosure via <code>robots.txt</code></td></tr>
+                    <tr><td><strong>A06 Vulnerable Components</strong></td><td>(Lab stack; keep patched in real deployments)</td></tr>
+                    <tr><td><strong>A07 Identification / Auth Failures</strong></td><td>Session/token design</td></tr>
+                    <tr><td><strong>A08 Software / Data Integrity</strong></td><td>Unrestricted upload path</td></tr>
+                    <tr><td><strong>A09 Logging / Monitoring</strong></td><td>Not assessed as mature control</td></tr>
+                    <tr><td><strong>A10 SSRF</strong></td><td><code>module=fetch</code></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p><strong>ASVS (Application Security Verification Standard)</strong> — target for rebuild: <strong>V5</strong> (validation), <strong>V7</strong> (access control), <strong>V9</strong> (communications), <strong>V12</strong> (files), <strong>V13</strong> (API), <strong>V14</strong> (configuration), at appropriate level (e.g. Level 2 for internet-facing).</p>
+
+        <hr>
+
+        <h2>4. Findings summary (rated)</h2>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Severity</th>
+                        <th>Primary evidence (<code>cybersteps_full_evidence/</code>)</th>
+                        <th>Supplementary (<code>cosmicdfiscovery/</code>, etc.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>F-01</td><td>SQL injection — <code>visiter-newsdesk.php</code></td><td class="sev-critical">Critical</td><td><code>evidence_sqlmap_visiter_newsdesk.txt</code></td><td><code>output_10.10.10.10/sqli_dump.txt</code>, <code>sqli_request.txt</code></td></tr>
+                    <tr><td>F-02</td><td>RCE — upload + <code>loadfile</code> include</td><td class="sev-critical">Critical</td><td><code>evidence_lfi_rce_admin_upload.txt</code></td><td><code>upload_debug.txt</code>, <code>output_10.10.10.10/upload_response.txt</code>, <code>pentest_correction_20260408/command_log.txt</code>, <code>pentest_correction_20260408/LEAD_PENTESTER_REVIEW.md</code> (curl <code>POST</code> <code>support.php</code>)</td></tr>
+                    <tr><td>F-03</td><td>Broken access control — dashboard cookies</td><td class="sev-high">High</td><td><code>evidence_dashboard_idor.txt</code></td><td><code>evidence_20260326/dashboard_authenticated.html</code>, <code>master_admin_dashboard.html</code></td></tr>
+                    <tr><td>F-04</td><td>SSRF — <code>module=fetch</code></td><td class="sev-high">High</td><td><code>evidence_ssrf_fetch_module.txt</code></td><td><code>pentest_correction_20260408/command_log.txt</code></td></tr>
+                    <tr><td>F-05</td><td>XXE — <code>module=import</code></td><td class="sev-high">High</td><td><code>evidence_xxe_import_module.txt</code></td><td>—</td></tr>
+                    <tr><td>F-06</td><td>LFI — <code>ThemeLoader.php</code> / <code>loadfile</code></td><td class="sev-high">High</td><td><code>evidence_theme_lfi_wrapper.txt</code>, <code>evidence_lfi_rce_admin_upload.txt</code></td><td><code>pentest_independent_20260408/INDEPENDENT_PENTEST_REPORT.md</code> (<code>php://filter</code> → <code>support.php</code> / source recovery)</td></tr>
+                    <tr><td>F-07</td><td>Information disclosure</td><td class="sev-medium">Medium</td><td><code>evidence_disclosure_robots.txt</code>, <code>evidence_gobuster_common.txt</code></td><td><code>evidence_20260326/gobuster_*.txt</code>, <code>robots.txt</code>, <code>info.txt</code></td></tr>
+                    <tr><td>F-08</td><td>XSS pattern — admin UI</td><td class="sev-medium">Medium</td><td><code>evidence_xss_admin_panel_js.txt</code></td><td>—</td></tr>
+                    <tr><td>F-09</td><td>Host privesc — SUID interpreter</td><td class="sev-high">High</td><td><code>evidence_lfi_rce_admin_upload.txt</code></td><td><code>pentest_correction_20260408/command_log.txt</code></td></tr>
+                    <tr><td>F-10</td><td>Hard-coded DB credentials</td><td class="sev-high">High</td><td><code>evidence_admin_mysql_hardcoded_review.txt</code></td><td><code>INDEPENDENT_PENTEST_REPORT.md</code> (LFI + filter methodology); provenance: combine with F-06 transcripts</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <h2>5. Hardening and remediation (prioritized)</h2>
+
+        <h3>5.1 P0 — Stop breach paths</h3>
+        <ol>
+            <li><strong>SQLi:</strong> Parameterized queries everywhere; strict integer validation for IDs; retest <code>Reviews.php</code> / <code>Deals.php</code> with sqlmap in a safe environment.</li>
+            <li><strong>RCE / LFI:</strong> Never <code>include</code>/<code>require</code> user-controlled paths; store uploads <strong>outside web root</strong> or strip execution; <strong>disable PHP</strong> in upload directories; allow-list theme names only (no <code>php://filter</code>).</li>
+            <li><strong>Access control:</strong> Replace cookie <code>uid</code> / Base64 <code>auth_token</code> with <strong>opaque server-side sessions</strong> (httpOnly, Secure, SameSite); enforce authorization on every action.</li>
+        </ol>
+
+        <h3>5.2 P1 — Server-side abuse classes</h3>
+        <ol start="4">
+            <li><strong>SSRF:</strong> Allow-list destinations; block link-local and private ranges; no raw <code>file_get_contents($userUrl)</code> without policy.</li>
+            <li><strong>XXE:</strong> Disable external entities and DTDs on untrusted XML; use safe parser defaults.</li>
+            <li><strong>Secrets:</strong> Remove DB passwords from source; use vault/env injection; rotate after any disclosure; least-privilege DB account.</li>
+        </ol>
+
+        <h3>5.3 P2 — Disclosure, XSS, and client hardening</h3>
+        <ol start="7">
+            <li><strong>robots.txt / static lists:</strong> Do not advertise sensitive paths; remove password corpora from web root.</li>
+            <li><strong>XSS:</strong> Avoid <code>innerHTML</code> with untrusted data; use encoding/CSP.</li>
+            <li><strong>CSRF (follow-up):</strong> For state-changing admin forms (<code>passchangedocument.php</code> etc.), implement <strong>synchronizer tokens</strong> or double-submit cookie; verify with PoC.</li>
+        </ol>
+
+        <h3>5.4 P3 — Host and operations (NIST SP 800-53 / IEC 27001 operations)</h3>
+        <ol start="10">
+            <li><strong>OS baseline:</strong> Remove SUID from interpreters; use vendor-hardened images; segregate web and DB tiers.</li>
+            <li><strong>Monitoring:</strong> Log authentication failures, admin actions, and file/upload anomalies (detect function).</li>
+            <li><strong>SDLC:</strong> Threat modeling on “upload + render + include” flows; security testing in CI (SAST/DAST where appropriate).</li>
+        </ol>
+
+        <hr>
+
+        <h2>6. NIST SP 800-53 Rev. 5 — sample control targets (illustrative)</h2>
+        <p>For a production system, teams often map findings to <strong>NIST SP 800-53</strong> controls. Examples:</p>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Control</th><th>Relevance</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>AC-3</strong> Access enforcement</td><td>Enforce per-request authorization; fix IDOR</td></tr>
+                    <tr><td><strong>AC-4</strong> Information flow</td><td>SSRF restrictions</td></tr>
+                    <tr><td><strong>SI-10</strong> Information input validation</td><td>Parameterization, allow-lists</td></tr>
+                    <tr><td><strong>SC-8</strong> Transmission confidentiality / integrity</td><td>TLS for production</td></tr>
+                    <tr><td><strong>CM-6</strong> Configuration settings</td><td>PHP wrapper/disable dangerous features; XML parser</td></tr>
+                    <tr><td><strong>RA-5</strong> Vulnerability scanning</td><td>Regular retest after remediation</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <h2>7. Attack chain (lab) — for awareness</h2>
+        <p>Documented end-to-end path: recon → <code>robots.txt</code> / discovery → <strong>ThemeLoader LFI</strong> → <strong>SQLi</strong> user dump → <strong>forged dashboard</strong> → admin login → <strong>LFI+RCE</strong> → <strong>SSRF</strong> / <strong>XXE</strong> → static flags → <strong>SUID privesc</strong> (<code>evidence_attack_chain_summary.txt</code>). In production, <strong>any single Critical link</strong> is often enough for unacceptable risk.</p>
+
+        <hr>
+
+        <h2>8. Open / suspected items (not closed in evidence)</h2>
+        <ul>
+            <li>CSRF on <code>passchangedocument.php</code> / admin forms — <strong>test and document</strong></li>
+            <li>Command injection in <code>module=fetch</code> — <strong>clarify vs SSRF</strong></li>
+            <li>Session fixation — <strong>test</strong></li>
+            <li>Additional SQLi surfaces — <strong>verify</strong></li>
+        </ul>
+
+        <hr>
+
+        <h2>9. References</h2>
+        <ul>
+            <li>NIST SP 800-30 (risk assessments): <a href="https://csrc.nist.gov/publications/detail/sp/800-30/rev-1/final">https://csrc.nist.gov/publications/detail/sp/800-30/rev-1/final</a></li>
+            <li>NIST SP 800-53 Rev. 5: <a href="https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final">https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final</a></li>
+            <li>NIST Cybersecurity Framework: <a href="https://www.nist.gov/cyberframework">https://www.nist.gov/cyberframework</a></li>
+            <li>CVE / CWE: <a href="https://www.cve.org/">https://www.cve.org/</a> , <a href="https://cwe.mitre.org/">https://cwe.mitre.org/</a></li>
+            <li>DIN EN ISO/IEC 27001:2022 (purchase via Beuth/DIN; map Annex A in SoA)</li>
+            <li>OWASP Top 10: <a href="https://owasp.org/www-project-top-ten/">https://owasp.org/www-project-top-ten/</a></li>
+            <li>OWASP ASVS: <a href="https://owasp.org/www-project-application-security-verification-standard/">https://owasp.org/www-project-application-security-verification-standard/</a></li>
+            <li>OWASP WSTG: <a href="https://owasp.org/www-project-web-security-testing-guide/">https://owasp.org/www-project-web-security-testing-guide/</a></li>
+        </ul>
+
+        <hr>
+
+        <h2>10. Evidence corpus and delivery bundle</h2>
+
+        <div class="block">
+            <span class="label">Primary bundle (March‑31 evidence run)</span>
+            <p>All files under:</p>
+            <p><code>Cyberlab Report/cybersteps_full_evidence/</code></p>
+            <p>Includes: <code>evidence_00_scope_meta.txt</code>, <code>evidence_attack_chain_summary.txt</code>, <code>evidence_suspected_not_fully_proven.txt</code>, <code>evidence_recon_nmap.txt</code>, <code>scan_tcp.xml</code>, <code>nmap_services.xml</code>, <code>evidence_disclosure_robots.txt</code>, <code>evidence_theme_lfi_wrapper.txt</code>, <code>evidence_gobuster_common.txt</code>, <code>evidence_info_hint_sqli.txt</code>, <code>evidence_sqlmap_visiter_newsdesk.txt</code>, <code>evidence_guest_credentials_status.txt</code>, <code>evidence_dashboard_idor.txt</code>, <code>evidence_lfi_rce_admin_upload.txt</code>, <code>evidence_ssrf_fetch_module.txt</code>, <code>evidence_xxe_import_module.txt</code>, <code>evidence_flags_static_pages.txt</code>, <code>evidence_xss_admin_panel_js.txt</code>, <code>evidence_admin_mysql_hardcoded_review.txt</code>, <code>merged_scan.xml</code>, <code>CyberSteps_Evidence_Report.html</code>.</p>
+        </div>
+
+        <div class="block">
+            <span class="label">Narrative / lab write-up</span>
+            <p><code>Cyberlab Report/cybersteps_vm_reset_evidence/Security Assessment Report.md</code></p>
+        </div>
+
+        <div class="block">
+            <span class="label">Supplementary transcripts and methodology</span>
+            <p>Under <code>/home/laurin/cosmicdfiscovery/</code>:</p>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Relative path</th><th>Role</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>upload_debug.txt</code></td><td>Full HTTP trace: <code>POST /support.php</code> (multipart upload)</td></tr>
+                        <tr><td><code>output_10.10.10.10/upload_response.txt</code></td><td>Saved upload response body</td></tr>
+                        <tr><td><code>output_10.10.10.10/sqli_dump.txt</code></td><td>Extended SQLi / page context (earlier run)</td></tr>
+                        <tr><td><code>output_10.10.10.10/sqli_request.txt</code></td><td>Request artifact for SQLi testing</td></tr>
+                        <tr><td><code>output_10.10.10.10/gobust.txt</code></td><td>Additional directory enumeration</td></tr>
+                        <tr><td><code>output_10.10.10.10/evidence_20260326/</code></td><td>Gobuster wordlists output, <code>login_guest_test.txt</code>, recon snapshots, <code>scan_*.xml</code>, etc.</td></tr>
+                        <tr><td><code>pentest_correction_20260408/command_log.txt</code></td><td>Long-form session log (LFI, upload, RCE, privesc)</td></tr>
+                        <tr><td><code>pentest_correction_20260408/LEAD_PENTESTER_REVIEW.md</code></td><td>Methodology notes + explicit <code>curl</code> upload line</td></tr>
+                        <tr><td><code>pentest_independent_20260408/INDEPENDENT_PENTEST_REPORT.md</code></td><td>Clean-slate chain; <code>php://filter</code> source recovery</td></tr>
+                        <tr><td><code>pentest_independent_20260408/upload_response.html</code></td><td>HTML capture after <code>support.php</code> POST</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <h2>Technical Guidance & Quality Tips</h2>
-        <ul>
-            <li><strong>Write the Executive Summary Last:</strong> It is the single most visible page in the report. Summarize business impact plainly; avoid tool listings or specific CVE strings here.</li>
-            <li><strong>Provide Actionable Remediation:</strong> Avoid generic advice. Instead of writing "Fix input validation", specify "Utilize parameterized prepared statements for the query at <code>/search.php</code> on line 42."</li>
-            <li><strong>Do Not Dump Tool Outputs:</strong> Raw terminal dumps from scanners do not equal a finding. Explain what the output means, context-link it to the environment, and provide a clear narrative.</li>
-            <li><strong>Document Continuously:</strong> Capture evidence and screenshots in real-time as you test. Finding replication is significantly more difficult after-the-fact.</li>
-        </ul>
+        <p><strong>Note:</strong> <code>/home/laurin/lab/</code> holds a separate Wi‑Fi / evil‑twin training kit — it is <strong>not</strong> part of this web-application evidence set.</p>
 
-        <p>Review the presentation materials on <a class="text-link" href="https://gamma.app/docs/Penetration-Testing-Report-arg23adlmupk2wj?mode=doc" target="_blank" rel="noopener noreferrer">Penetration Test Reporting</a> for advanced details on professional narrative drafting.</p>
-    </div>
+        <div class="block">
+            <span class="label">Archived copy</span>
+            <p>The directory <code>Cyberlab Report/CyberSteps_report_delivery/</code> contains a <strong>mirror</strong> of the report plus the evidence tree above, and <strong><code>CyberSteps_report_bundle.zip</code></strong> — the same content in one archive for submission or archival. Inside the zip, supplementary cosmic paths are rooted at <code>evidence/cosmicdfiscovery/</code> (e.g. <code>evidence/cosmicdfiscovery/upload_debug.txt</code>).</p>
+        </div>
+
+        <p class="end-mark">End of report.</p>
+    </main>
 
     <script>
         document.getElementById('print-btn').addEventListener('click', function () {
