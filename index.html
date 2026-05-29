@@ -378,9 +378,6 @@
         <header>
             <h1>Cyber Steps Analysis – Part 2</h1>
             <div class="subtitle">Evidence-based single-host reconnaissance report. Target: scanme.cybersteps.de</div>
-            <div class="header-actions">
-                <button type="button" class="btn-subtle" id="open-report-btn">Surface_Tension_Din5008_Lab_Report</button>
-            </div>
         </header>
 
         <section class="intro-section">
@@ -653,12 +650,8 @@ Server: Apache/2.4.6</pre>
         </section>
 
         <div class="action-section">
-            <div class="download-box">
-                <h3>Download Evidence Package</h3>
-                <p>Raw scan outputs, JSON probes, and full logs.</p>
-            </div>
             <div class="btn-group">
-                <a href="evidence_bundle.zip" class="btn">Download .ZIP</a>
+                <button type="button" class="btn btn-outline" id="open-report-btn">Report</button>
                 <a href="cosmic_poem.html" class="btn btn-outline">Poetic Analysis</a>
             </div>
         </div>
@@ -668,15 +661,14 @@ Server: Apache/2.4.6</pre>
     <div class="modal-overlay" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal">
             <h3 id="modal-title">Report disclaimer</h3>
-            <p>The DIN 5008 lab report (<strong>Surface_Tension_Din5008_Lab_Report.pdf</strong>) was generated with
+            <p>The corrected lab report was originally generated and structured with
                 <a href="https://github.com/CosmicSlothOracle/evididencetohtml" target="_blank" rel="noopener noreferrer">evidence2html</a>,
-                an open-source tool that merges pen-test scan outputs into a single HTML report and exports structured
-                PDF documents (including DIN-style A4 security reports).</p>
+                an open-source tool that merges pen-test scan outputs into a single HTML report.</p>
             <p>In short: place scan evidence in one folder, run the CLI, and the tool produces an editable report with
                 port matrix, evidence references, and optional risk evaluation — then export to PDF.</p>
             <div class="modal-actions">
                 <button type="button" class="btn btn-outline" id="modal-cancel">Cancel</button>
-                <a href="Surface_Tension_Din5008_Lab_Report.pdf" class="btn" id="modal-open" target="_blank" rel="noopener noreferrer">Open report</a>
+                <a href="report.html" class="btn" id="modal-open">Open report</a>
             </div>
         </div>
     </div>
